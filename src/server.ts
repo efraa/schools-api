@@ -1,4 +1,4 @@
-import { DatabaseConnection } from '@database/DatabaseConnection'
+import DatabaseConnection from '@database/DatabaseConnection'
 
 export class Server {
   constructor(private app: any) {}
@@ -6,7 +6,7 @@ export class Server {
   // Lauch Server
   public async start() : Promise<void> {
     try {
-      const connected = await new DatabaseConnection()
+      const connected = await DatabaseConnection
         .connect()
 
       if (connected)

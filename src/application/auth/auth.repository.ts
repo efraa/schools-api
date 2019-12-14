@@ -1,20 +1,26 @@
 import { getRepository, Repository } from 'typeorm'
+import Connection from '@database/DatabaseConnection'
 
 // Entity
 import { User } from '@app/user/user.providers'
 
-export class AuthRepository {
-  private _User: Repository<User> = getRepository(User)
+class AuthRepository {
+  private _User: Repository<User>
 
-  public signup = async (user: User): Promise<User> =>
+  constructor() {
+    this.manager(getRepository)
+  }
+
+  private manager = async (repo: any) => {
+    await Connection.connect()
+    this._User = repo(User)
+  }
+
+  public create = async (user: User): Promise<User> =>
     await this._User.create(user)
-
-  public getByEmail = async (email: string): Promise<User|undefined> =>
-    await this._User.findOne({ email })
-
-  public getByUsername = async (username: string): Promise<User|undefined> =>
-    await this._User.findOne({ username })
 
   public save = async (user: User): Promise<User> =>
     await this._User.save(user)
 }
+
+export default new AuthRepository()
