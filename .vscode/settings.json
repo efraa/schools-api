@@ -1,0 +1,11 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/.editorconfig": true,
+    "**/.gitignore": false,
+    "**/package-lock.json": true,
+    "**/jest.config.js": false,
+    "**/.dockerignore": true
+  }
+}

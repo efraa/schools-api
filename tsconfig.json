@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      "*": ["node_modules/*"],
+      "@src/*": ["src/*"],
+      "@config/*": ["config/*"],
+      "@app/*": ["src/application/*"],
+      "@database/*": ["src/database/*"],
+      "@infra/*": ["src/infrastructure/*"],
+      "@utils/*": ["src/infrastructure/utils/*"],
+      "@middlewares/*": ["src/infrastructure/middleware/*"],
+      "@http/*": ["src/infrastructure/http/*"]
+    },
+    "typeRoots" : [
+      "./node_modules/@types",
+      "src/application/@types",
+      "src/database/@types",
+      "src/infrastructure/@types"
+    ],
+  },
+  "exclude": [
+    "**/node_modules/*",
+    "**/src/**/*.spec.ts",
+    "**/@types/*"
+  ]
+}

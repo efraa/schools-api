@@ -1,0 +1,8 @@
+# Created by Efrain Peralta.
+node_modules
+coverage
+.env
+dist
+build
+data
+uploads
