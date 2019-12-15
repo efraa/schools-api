@@ -10,6 +10,6 @@ export class ErrorHandler extends Error {
     this.error = error
   }
 
-  public build = (props: { status: number, msg: string, error?: any }) =>
+  public static build = (props: { status: number, msg: string, error?: any }) =>
     new ErrorHandler(props.status, props.msg, props.error)
 }

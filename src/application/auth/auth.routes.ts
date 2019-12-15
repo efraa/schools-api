@@ -1,9 +1,8 @@
 import { Router, Response, RequestHandler, Request } from 'express'
 import { ResponseHandler, RouteMethod, statusCodes } from '@http/routes'
 
-import {
-  AuthController
-} from './auth.providers'
+import { AuthController } from './auth.providers'
+import { validators } from '@app/auth/utils/auth.validator'
 
 class AuthRoutes {
   readonly api: Router = Router()
@@ -15,6 +14,7 @@ class AuthRoutes {
     */
     this.api.post(
       '/signup',
+      validators.signup as Array<any>,
       this.signup
     )
 

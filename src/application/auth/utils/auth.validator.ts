@@ -1,16 +1,21 @@
-import { check, checkSchema, param } from 'express-validator'
+import { check, checkSchema } from 'express-validator'
 import { AuthResponses } from './auth.responses'
 import { getCommonPassword as passwords } from '@utils/readPassword'
 
 const { validator } = AuthResponses
 
-const signupValidator = [
+const signup = [
   check('name', validator.name)
     .trim()
     .isLength({ min: 2 }),
   check('lastname', validator.lastname)
+    .optional()
     .trim()
     .isLength({ min: 2 }),
+  check('codeSchool', validator.codeSchool)
+    .optional()
+    .trim()
+    .isLength({ min: 6 }),
   check('username', validator.username)
     .trim()
     .isLength({ min: 3 }),
@@ -23,16 +28,16 @@ const signupValidator = [
     .withMessage(validator.commonPass)
     .isLength({ min: 6 }),
   checkSchema({
-    'gender': {
+    'role': {
       in: 'body',
       matches: {
-        options: [/\b(?:male|female|others)\b/],
-        errorMessage: validator.gender
+        options: [/\b(?:school|teacher|student|owner)\b/],
+        errorMessage: validator.role
       }
     }
   })
 ]
 
-export {
-  signupValidator,
+export const validators = {
+  signup,
 }

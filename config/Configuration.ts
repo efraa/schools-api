@@ -24,10 +24,13 @@ export const Configuration = {
   forgotPass: {
     url: process.env.AGENT_CLIENT_URI
   },
-  userOptions: {
-    uploads: process.env.UPLOADS_USERS || 'uploads/users/'
-  },
   test: {
     uri: process.env.TEST_URI
+  },
+  utils: {
+    userUploads: process.env.UPLOADS_USERS || 'uploads/users/',
+    maxTeachers: process.env.MAX_TEACHERS || 4,
+    maxStudents: process.env.MAX_STUDENTS || 25,
+    googleClientID: process.env.GOOGLE_CLIENT_ID
   }
 }

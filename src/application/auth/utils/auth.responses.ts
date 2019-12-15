@@ -6,6 +6,12 @@ export const AuthResponses: any = {
     email: 'Please, include a valid email.',
     password: 'Please, enter a password with 6 or more characters.',
     commonPass: 'Oops!, your password is not safe, try using not so common words and numbers.',
+    codeSchool: 'The institution code must be valid and is mandatory.',
+    schoolNotExist: 'There is no institution with this code.',
+    schoolDisabled: 'Sorry this institution is currently disabled.',
+    maxTeachers: 'Oops! Your institution has reached the maximum number of registered teachers.',
+    maxStudents: 'Oops! Your institution has reached the maximum number of registered students.',
+    role: 'Please, enter a valid role.'
   },
   auth: {
     validator: {
@@ -31,8 +37,8 @@ export const AuthResponses: any = {
       token: 'Password reset token is required.',
     }
   },
-  usernameExists: 'the username cannot already exist in the database.',
-  emailExists: 'the email cannot already exist in the database.',
+  usernameExists: 'This username is already in use.',
+  emailExists: 'This email is already in use.',
   nodemailer: {
     subject: 'Password reset request',
   }

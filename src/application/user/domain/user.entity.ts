@@ -1,5 +1,5 @@
 import { Entity, Column } from 'typeorm'
-import { Roles } from '@app/user/utils/user.roles'
+import { Roles } from '@utils/roles'
 import { BaseEntity } from '@database/BaseEntity'
 
 @Entity({ name: 'users' })
@@ -7,7 +7,9 @@ export class User extends BaseEntity {
   @Column()
   name: string
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   lastname: string
 
   @Column({
@@ -55,7 +57,7 @@ export class User extends BaseEntity {
   isPremium: boolean
 
   @Column({
-    default: true
+    default: false
   })
   isActive: boolean
 
