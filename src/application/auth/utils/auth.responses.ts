@@ -18,7 +18,7 @@ export const AuthResponses: any = {
       emailOrUsername: 'Please include a valid username or email',
     },
     accountDoesNotExist: 'Oops! There is no user with these credentials.',
-    accountIsDisable: 'Oops! Your account is temporarily deactivated.',
+    accountIsDisable: 'Oops! Your account is temporarily deactivated. Contact the institution.',
     badCredentials: 'Oops! Something in your credentials is wrong.',
   },
   changePassword: {

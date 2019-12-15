@@ -2,7 +2,7 @@ import { check, checkSchema } from 'express-validator'
 import { AuthResponses } from './auth.responses'
 import { getCommonPassword as passwords } from '@utils/readPassword'
 
-const { validator } = AuthResponses
+const { validator, auth } = AuthResponses
 
 const signup = [
   check('name', validator.name)
@@ -38,6 +38,18 @@ const signup = [
   })
 ]
 
+const authentication = [
+  check('emailOrUsername', auth.validator.emailOrUsername)
+    .isLength({
+      min: 3
+    }),
+  check('password', validator.password)
+    .isLength({
+      min: 6
+    })
+]
+
 export const validators = {
   signup,
+  authentication
 }

@@ -2,7 +2,7 @@ import { AuthRepository, AuthResponses } from './auth.providers'
 import { Configuration as config } from '@config/Configuration'
 import { ErrorHandler, statusCodes } from '@http/routes'
 import { UserMapper } from '@app/user/user.providers'
-import { encryptPassword } from '@utils/encryption'
+import { encryptPassword, comparePassword } from '@utils/encryption'
 import { JWToken } from '@utils/JWToken'
 import { Roles } from '@utils/roles'
 
@@ -70,7 +70,6 @@ class AuthService {
             status: statusCodes.BAD_REQUEST,
             msg: AuthResponses.validator.maxStudents
           })
-
       }
     }
 
@@ -83,6 +82,39 @@ class AuthService {
     }
 
     return await JWToken.generateToken(UserMapper.mapToDTO(created))
+  }
+
+  public auth = async (userPayload: {
+    emailOrUsername: string,
+    password: string
+  }): Promise<{
+    token: string
+  }> => {
+    const { emailOrUsername, password } = userPayload
+    const getUserByEmail = await AuthRepository.getByEmail(emailOrUsername)
+    const getUserByUsername = await AuthRepository.getByUsername(emailOrUsername)
+    const user = getUserByEmail || getUserByUsername
+
+    if (!user)
+      throw ErrorHandler.build({
+        status: statusCodes.BAD_REQUEST,
+        msg: AuthResponses.auth.accountDoesNotExist
+      })
+
+    if (user && comparePassword(password, user.password)) {
+      if (!user.isActive && user.role !== Roles.School)
+        throw ErrorHandler.build({
+          status: statusCodes.UNAUTHORIZED,
+          msg: AuthResponses.auth.accountIsDisable
+        })
+
+      return await JWToken.generateToken(UserMapper.mapToDTO(user))
+    }
+
+    throw ErrorHandler.build({
+      status: statusCodes.BAD_REQUEST,
+      msg: AuthResponses.auth.badCredentials
+    })
   }
 }
 
