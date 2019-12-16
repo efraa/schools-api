@@ -2,12 +2,6 @@ import { MapProp } from 'ts-simple-automapper'
 
 export class UserDTO {
   @MapProp()
-  id: number
-
-  @MapProp()
-  uuid: string
-
-  @MapProp()
   name: string
 
   @MapProp()
