@@ -1,6 +1,6 @@
 import nodemailer, { Transporter, SendMailOptions } from 'nodemailer'
 import { Configuration } from '@config/Configuration'
-import Handlebars from 'handlebars'
+import handlebars from 'handlebars'
 import fs from 'fs'
 
 class EmailService {
@@ -33,13 +33,13 @@ class EmailService {
   }, data: {}) {
     const { from } = Configuration.nodemailer
     const { to, subject, template } = props
-    const templateFile = fs.readFileSync(`src/templates/${template}.hbs`, 'utf-8')
-    const content = Handlebars.compile(templateFile)(data)
+    const templateFile = fs.readFileSync(`src/templates/${template}.html`, 'utf-8')
+    const html = handlebars.compile(templateFile)(data)
     const message: SendMailOptions = {
       from,
       to,
       subject,
-      html: content,
+      html,
     }
 
     const send = await this.transporter.sendMail(message)

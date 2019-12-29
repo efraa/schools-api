@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm'
+import { getRepository, Repository, MoreThanOrEqual } from 'typeorm'
 import Connection from '@database/DatabaseConnection'
 
 import { User } from '@app/user/user.providers'
@@ -55,6 +55,12 @@ class AuthRepository {
       students
     }
   }
+
+  public getByForgotPasswordToken = async (token: string): Promise<User|undefined> =>
+    await this._User.findOne({
+      forgotPasswordToken: token,
+      forgotPasswordExpire: MoreThanOrEqual(new Date())
+    })
 }
 
 export default new AuthRepository()

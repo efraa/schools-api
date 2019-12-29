@@ -1,6 +1,7 @@
 import { Configuration as config } from '@config/Configuration'
 import { AuthService, AuthResponses } from './auth.providers'
 import EmailService from '@utils/EmailService'
+import { User } from '@app/user/user.providers'
 
 export class AuthController {
   public signup = async (user: any): Promise<{
@@ -27,6 +28,14 @@ export class AuthController {
       })
     }
   }
+
+  // Verify that the forgotten token password has not yet expired.
+  public checkPasswordExpire = async (token: string): Promise<User> =>
+    await AuthService.checkPasswordExpire(token)
+
+  // Receive the token and the new password and return confirmation message.
+  public resetPassword = async (token: string, password: string): Promise<string> =>
+    await AuthService.resetPassword(token, password)
 }
 
 export default new AuthController()

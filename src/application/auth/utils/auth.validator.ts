@@ -1,8 +1,8 @@
-import { check, checkSchema } from 'express-validator'
+import { check, checkSchema, param } from 'express-validator'
 import { AuthResponses } from './auth.responses'
 import { getCommonPassword as passwords } from '@utils/readPassword'
 
-const { validator, auth } = AuthResponses
+const { validator, auth, forgotPass, changePassword } = AuthResponses
 
 const signup = [
   check('name', validator.name)
@@ -49,7 +49,37 @@ const authentication = [
     })
 ]
 
+const forgotPassExpire = [
+  param('token', forgotPass.validator.token)
+    .isLength({
+      min: 10
+    })
+]
+
+const forgotPassword = [
+  check('email', validator.email)
+    .isEmail()
+    .normalizeEmail({ all_lowercase: true }),
+]
+
+const resetPass = [
+  check('password', changePassword.validator.pass)
+    .trim()
+    .not().isIn(passwords() as string[])
+    .withMessage(validator.commonPass)
+    .isLength({
+      min: 6
+    }),
+  param('token', forgotPass.validator.token)
+    .isLength({
+      min: 10
+    })
+]
+
 export const validators = {
   signup,
-  authentication
+  authentication,
+  forgotPassword,
+  forgotPassExpire,
+  resetPass
 }

@@ -1,7 +1,7 @@
 import { AuthRepository, AuthResponses } from './auth.providers'
 import { Configuration as config } from '@config/Configuration'
 import { ErrorHandler, statusCodes } from '@http/routes'
-import { UserMapper, User } from '@app/user/user.providers'
+import { UserMapper, User, UserDTO } from '@app/user/user.providers'
 import { encryptPassword, comparePassword } from '@utils/encryption'
 import { JWToken } from '@utils/JWToken'
 import { Roles } from '@utils/roles'
@@ -150,6 +150,36 @@ class AuthService {
     return {
       token: forgotPasswordToken,
       user: updateUser,
+    }
+  }
+
+  public checkPasswordExpire = async (token: string): Promise<User> => {
+    const user = await AuthRepository
+      .getByForgotPasswordToken(token)
+
+    if (!user)
+      throw ErrorHandler.build({
+        status: statusCodes.BAD_REQUEST,
+        msg: AuthResponses.forgotPass.userNotFound
+      })
+
+    return user
+  }
+
+  public resetPassword = async (token: string, password: string): Promise<any> => {
+    const user = await this.checkPasswordExpire(token)
+    if (user) {
+      const newPassword = encryptPassword(password)
+      const updateUser = await AuthRepository.update(user,
+        {
+          forgotPasswordToken: null,
+          forgotPasswordExpire: null,
+          password: newPassword,
+        })
+
+      if (updateUser) await AuthRepository.save(user)
+
+      return AuthResponses.forgotPass.success
     }
   }
 }
