@@ -1,7 +1,7 @@
 import { getRepository, Connection, Repository } from 'typeorm'
 
 // Entity
-import { User, Roles } from './user.providers'
+import { User } from './user.providers'
 
 export class UserRepository {
   private _User: Repository<User>

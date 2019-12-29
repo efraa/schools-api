@@ -6,11 +6,11 @@ export const AuthResponses: any = {
     email: 'Please, include a valid email.',
     password: 'Please, enter a password with 6 or more characters.',
     commonPass: 'Oops!, your password is not safe, try using not so common words and numbers.',
-    codeSchool: 'The institution code must be valid and is mandatory.',
-    schoolNotExist: 'There is no institution with this code.',
-    schoolDisabled: 'Sorry this institution is currently disabled.',
-    maxTeachers: 'Oops! Your institution has reached the maximum number of registered teachers.',
-    maxStudents: 'Oops! Your institution has reached the maximum number of registered students.',
+    codeSchool: 'The organization code must be valid and is mandatory.',
+    schoolNotExist: 'There is no organization with this code.',
+    schoolDisabled: 'Sorry this organization is currently disabled.',
+    maxTeachers: 'Oops! Your organization has reached the maximum number of registered teachers.',
+    maxStudents: 'Oops! Your organization has reached the maximum number of registered students.',
     role: 'Please, enter a valid role.'
   },
   auth: {
@@ -18,7 +18,7 @@ export const AuthResponses: any = {
       emailOrUsername: 'Please include a valid username or email',
     },
     accountDoesNotExist: 'Oops! There is no user with these credentials.',
-    accountIsDisable: 'Oops! Your account is temporarily deactivated. Contact the institution.',
+    accountIsDisable: 'Oops! Your account is temporarily deactivated. Contact the organization.',
     badCredentials: 'Oops! Something in your credentials is wrong.',
   },
   changePassword: {

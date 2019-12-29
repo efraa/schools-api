@@ -1,1 +1,1 @@
-# Academ API 🚀
+# Schools API 🚀

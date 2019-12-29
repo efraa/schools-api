@@ -22,6 +22,12 @@ class AuthRoutes {
       this.auth
     )
 
+    // Forgot Password
+    this.api.post(
+      '/forgot-password',
+      this.forgotPassword
+    )
+
     return this.api
   }
 
@@ -44,6 +50,17 @@ class AuthRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(user, false))
+      }, req, res
+    })
+
+  public forgotPassword: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const response = await AuthController.forgotPassword(req.body.email)
+        if (response)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(response))
       }, req, res
     })
 }

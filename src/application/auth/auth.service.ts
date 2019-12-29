@@ -1,10 +1,11 @@
 import { AuthRepository, AuthResponses } from './auth.providers'
 import { Configuration as config } from '@config/Configuration'
 import { ErrorHandler, statusCodes } from '@http/routes'
-import { UserMapper } from '@app/user/user.providers'
+import { UserMapper, User } from '@app/user/user.providers'
 import { encryptPassword, comparePassword } from '@utils/encryption'
 import { JWToken } from '@utils/JWToken'
 import { Roles } from '@utils/roles'
+import crypto from 'crypto'
 
 class AuthService {
   public signup = async (userPayload: any): Promise<{
@@ -115,6 +116,41 @@ class AuthService {
       status: statusCodes.BAD_REQUEST,
       msg: AuthResponses.auth.badCredentials
     })
+  }
+
+  public forgotPassword = async (email: string): Promise<{
+    token: string,
+    user: User
+  }> => {
+    const user = await AuthRepository.getByEmail(email)
+
+    if (!user)
+      throw ErrorHandler.build({
+        status: statusCodes.BAD_REQUEST,
+        msg: AuthResponses.auth.accountDoesNotExist
+      })
+
+    // Generate Token
+    const token: string = crypto.randomBytes(20).toString('hex')
+    const forgotPasswordToken = crypto
+      .createHash('sha256')
+      .update(token)
+      .digest('hex')
+
+    const expireDate = new Date()
+    // Increase 30 minutes to the current time
+    expireDate.setMinutes(expireDate.getMinutes() + 30)
+    const forgotPasswordExpire = expireDate
+    const updateUser = await AuthRepository.update(user,
+      { forgotPasswordToken, forgotPasswordExpire })
+
+    if (updateUser)
+      await AuthRepository.save(user)
+
+    return {
+      token: forgotPasswordToken,
+      user: updateUser,
+    }
   }
 }
 
