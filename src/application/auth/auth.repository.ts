@@ -1,5 +1,5 @@
 import { getRepository, Repository, MoreThanOrEqual } from 'typeorm'
-import Connection from '@database/DatabaseConnection'
+import { DatabaseConnection } from '@database/DatabaseConnection'
 
 import { User } from '@app/user/user.providers'
 import { Roles } from '@utils/roles'
@@ -12,7 +12,7 @@ class AuthRepository {
   }
 
   private manager = async (repo: any) => {
-    await Connection.connect()
+    await DatabaseConnection.connect()
     this._User = repo(User)
   }
 

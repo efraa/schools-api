@@ -1,7 +1,19 @@
-import { UserDTO } from './user.providers'
+import { UserDTO, UserService } from './user.providers'
 
-export class UserController {
-  constructor(
-    private UserService: any,
-  ) {}
+class UserController {
+  public upload = async (query: {
+    username: string,
+    userLogged: UserDTO,
+    picture: {
+      path: string,
+      name: string,
+    },
+  }): Promise<{
+    picture: {
+      url: string,
+      id: string
+    }
+  }> => await UserService.upload(query)
 }
+
+export default new UserController()

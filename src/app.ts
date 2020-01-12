@@ -10,7 +10,7 @@ import { Configuration } from '@config/Configuration'
 
 class App {
   private app: Application = express()
-  private port: number = Configuration.server.port
+  public port: number = Configuration.server.port
 
   constructor () {
     this.middlewares()
@@ -27,9 +27,13 @@ class App {
     this.app.use(compression())
   }
 
-  public listen = async () =>
-    await this.app.listen(this.port, () => console.log('API: running on port', this.port))
+  public listen = async (cb: () => void) => {
+    await this.app.listen(this.port, cb)
 
+    // this.io.on('connection', (client: any) => {
+    //   console.log(client, 'connected')
+    // })
+  }
 }
 
 export default new App()

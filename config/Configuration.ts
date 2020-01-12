@@ -28,7 +28,7 @@ export const Configuration = {
     uri: process.env.TEST_URI
   },
   utils: {
-    userUploads: process.env.UPLOADS_USERS || 'uploads/users/',
+    uploads: process.env.UPLOADS_USERS || 'uploads',
     maxTeachers: process.env.MAX_TEACHERS || 4,
     maxStudents: process.env.MAX_STUDENTS || 25,
     googleClientID: process.env.GOOGLE_CLIENT_ID

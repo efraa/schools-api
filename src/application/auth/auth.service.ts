@@ -1,7 +1,7 @@
 import { AuthRepository, AuthResponses } from './auth.providers'
 import { Configuration as config } from '@config/Configuration'
 import { ErrorHandler, statusCodes } from '@http/routes'
-import { UserMapper, User, UserDTO } from '@app/user/user.providers'
+import { UserMapper, User } from '@app/user/user.providers'
 import { encryptPassword, comparePassword } from '@utils/encryption'
 import { JWToken } from '@utils/JWToken'
 import { Roles } from '@utils/roles'

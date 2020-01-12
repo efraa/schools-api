@@ -1,23 +1,32 @@
-import { getRepository, Connection, Repository } from 'typeorm'
+import { getRepository, Repository } from 'typeorm'
+import { DatabaseConnection } from '@database/DatabaseConnection'
 
-// Entity
-import { User } from './user.providers'
+import { User } from '@app/user/user.providers'
 
-export class UserRepository {
+class UserRepository {
   private _User: Repository<User>
 
-  constructor(
-    private DatabaseConnection: Connection
-  ) {
-    this.getUserRepository()
+  constructor() {
+    this.manager(getRepository)
   }
 
-  private async getUserRepository() {
-    await this.DatabaseConnection.connect()
-    this._User = getRepository(User)
-    return this._User
+  private manager = async (repo: any) => {
+    await DatabaseConnection.connect()
+    this._User = repo(User)
   }
 
-  public getUserByUsername = async (username: string): Promise<User|undefined> =>
+  public save = async (user: User): Promise<User> =>
+    await this._User.save(user)
+
+  public getByEmail = async (email: string): Promise<User|undefined> =>
+    await this._User.findOne({ email })
+
+  public getByUsername = async (username: string): Promise<User|undefined> =>
     await this._User.findOne({ username })
+
+  public update = async (user: User, update: {}): Promise<User> =>
+    await this._User.merge(user, update)
+
 }
+
+export default new UserRepository()

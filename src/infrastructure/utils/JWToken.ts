@@ -2,7 +2,7 @@ import jwt, { Secret } from 'jsonwebtoken'
 import { Configuration } from '@config/Configuration'
 
 export const JWToken = {
-  verifyToken: async (token: string): Promise<string|object> =>
+  verifyToken: async (token: string): Promise<any> =>
     await jwt.verify(token, Configuration.jwt.secret as string | Buffer),
 
   generateToken: async (user: any): Promise<{ token: string }> =>

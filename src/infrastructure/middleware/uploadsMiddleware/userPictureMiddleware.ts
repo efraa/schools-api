@@ -1,11 +1,10 @@
 import multer from 'multer'
 import path from 'path'
-
 import { Configuration as config } from '@config/Configuration'
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, config.userOptions.uploads)
+    cb(null, config.utils.uploads)
   },
   filename: (req, file, cb) => {
     if (req.user && file) {
@@ -13,7 +12,6 @@ const storage = multer.diskStorage({
       const { uuid } = req.user
       const name = `${uuid}-${Date.now()}.${mimetype.split('/')[1]}`
       cb(null, name)
-      req.user.picture = name
     }
   }
 })
@@ -24,7 +22,7 @@ export const userPictureMiddleware = multer({
     fileSize: 25000000
   },
   fileFilter: (req, file, cb) => {
-    const onlyExtension = /jpeg|png|jpg|PNG/
+    const onlyExtension = /jpeg|png|jpg|PNG|JPG/
     const mimetype = onlyExtension.test(file.mimetype)
     const fileExtension = onlyExtension.test(path.extname(file.originalname))
 

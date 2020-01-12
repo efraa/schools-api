@@ -26,9 +26,13 @@ export class User extends BaseEntity {
   password: string
 
   @Column({
+    type: 'simple-json',
     nullable: true
   })
-  picture: string
+  picture: {
+    url: string,
+    id: string,
+  }
 
   @Column({
     type: 'enum',

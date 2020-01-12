@@ -1,12 +1,41 @@
-import { Router, Response, Request, RequestHandler } from 'express'
-// import path from 'path'
+import { Router, Response, RequestHandler, Request } from 'express'
+import { ResponseHandler, RouteMethod, statusCodes } from '@http/routes'
 
-export class UserRoutes {
+import { UserController, UserDTO } from './user.providers'
+// import { validators } from '@app/auth/utils/auth.validator'
+import { ensureAuth } from '@middlewares/AuthenticationMiddleware'
+import { userPictureMiddleware } from '@middlewares/uploadsMiddleware/userPictureMiddleware'
+
+class UserRoutes {
   readonly api: Router = Router()
 
-  constructor () {}
-
   public get routes(): Router {
+    // Upload Picture
+    this.api.put('/user-picture/:username',
+      [ensureAuth, userPictureMiddleware],
+      this.upload
+    )
+
     return this.api
   }
+
+  public upload: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const user = await UserController.upload({
+          userLogged: req.user as UserDTO,
+          username: req.params.username,
+          picture: {
+            path: req.file.path,
+            name: req.file.filename,
+          },
+        })
+        if (user)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(user, false))
+      }, req, res
+    })
 }
+
+export default new UserRoutes().routes

@@ -1,4 +1,4 @@
-import DatabaseConnection from '@database/DatabaseConnection'
+import { DatabaseConnection } from '@database/DatabaseConnection'
 
 export class Server {
   constructor(private app: any) {}
@@ -6,12 +6,13 @@ export class Server {
   // Lauch Server
   public async start() : Promise<void> {
     try {
-      const connected = await DatabaseConnection
-        .connect()
+      await this.app.listen(async () => {
+        const connected = await DatabaseConnection
+          .connect()
 
-      if (connected)
-        await this.app.listen() // API: running on port ${port}
-
+        if (connected)
+          console.log('API: running on port', this.app.port)
+      })
     } catch (err) {
       console.log(err)
     }
