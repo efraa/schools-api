@@ -21,6 +21,7 @@ class UserService {
     if (userLogged.username === username) {
       const user = await UserRepository.getByUsername(username)
       if (user) {
+
         const uploaded = await cloud.upload(picture.path, {
           folder: 'users',
           width: 200,
@@ -28,7 +29,7 @@ class UserService {
           format: 'jpg'
         })
 
-        if (user.picture.id)
+        if (user.picture && user.picture.id)
           await cloud.destroy(user.picture.id)
 
         // Update user picture
