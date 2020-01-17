@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es6",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
-    "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
     "outDir": "dist",
     "paths": {
       "*": ["node_modules/*"],
@@ -31,6 +33,12 @@
   "exclude": [
     "**/node_modules/*",
     "**/src/**/*.spec.ts",
-    "**/@types/*"
+    "**/@types/*",
+    "dist"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "config/*.ts",
+    "main.ts"
   ]
 }
