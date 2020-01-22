@@ -58,7 +58,7 @@ class UserService {
         }})
 
         await UserRepository.save(user)
-        await deleteUploadedFiles(`users/${picture.name}`)
+        await deleteUploadedFiles(picture.name)
 
         return {
           picture: changePicture.picture
