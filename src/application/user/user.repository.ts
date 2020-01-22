@@ -21,8 +21,8 @@ class UserRepository {
   public getByEmail = async (email: string): Promise<User|undefined> =>
     await this._User.findOne({ email })
 
-  public getByUsername = async (username: string): Promise<User|undefined> =>
-    await this._User.findOne({ username })
+  public getByUsername = async (query: { username: string, codeSchool: string }): Promise<User|undefined> =>
+    await this._User.findOne(query)
 
   public update = async (user: User, update: {}): Promise<User> =>
     await this._User.merge(user, update)

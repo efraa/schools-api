@@ -1,4 +1,4 @@
-import { Response, NextFunction, Request } from 'express'
+/* import { Response, NextFunction, Request } from 'express'
 import { Roles } from '@app/user/user.providers'
 
 export class OwnerMiddleware implements ownerMiddleware {
@@ -17,3 +17,4 @@ export class OwnerMiddleware implements ownerMiddleware {
     next()
   }
 }
+*/

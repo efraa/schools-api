@@ -10,6 +10,13 @@ class UserRoutes {
   readonly api: Router = Router()
 
   public get routes(): Router {
+    //
+    this.api.route('/user/:username')
+      .get(
+        ensureAuth,
+        this.get
+      )
+
     // Upload Picture
     this.api.put('/user-picture/:username',
       [ensureAuth, userPictureMiddleware],
@@ -18,6 +25,17 @@ class UserRoutes {
 
     return this.api
   }
+
+  public get: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const user = await UserController.get(req.params.username, req.user as UserDTO)
+        if (user)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(user, false))
+      }, req, res
+    })
 
   public upload: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({

@@ -1,6 +1,9 @@
 import { UserDTO, UserService } from './user.providers'
 
 class UserController {
+  public get = async (username: string, userLogged: UserDTO): Promise<UserDTO> =>
+    await UserService.get(username, userLogged)
+
   public upload = async (query: {
     username: string,
     userLogged: UserDTO,

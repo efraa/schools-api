@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "node dist/main.js",
-    "watch": "nodemon --exec ts-node --transpile-only --files -r tsconfig-paths/register main.ts",
+    "watch": "nodemon -L --exec ts-node --transpile-only --files -r tsconfig-paths/register main.ts",
     "build": "tsc",
     "ts:watch": "tsc --watch",
     "test": "jest",

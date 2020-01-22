@@ -2,8 +2,27 @@ import { UserDTO, UserResponses, UserRepository, UserMapper } from './user.provi
 import { ErrorHandler, statusCodes } from '@http/routes'
 import { deleteUploadedFiles } from '@utils/deleteUploadedFiles'
 import { cloud } from '@utils/Cloudinary'
+import { Roles } from '@utils/roles'
 
 class UserService {
+  public get = async (username: string, userLogged: UserDTO) : Promise<UserDTO> => {
+    if (userLogged.username === username || userLogged.role === Roles.School) {
+      const user = await UserRepository.getByUsername({ username, codeSchool: userLogged.codeSchool })
+      if (!user)
+        throw ErrorHandler.build({
+          status: statusCodes.BAD_REQUEST,
+          msg: UserResponses.userNotFound
+        })
+      console.log('efra')
+      return await UserMapper.mapToDTO(user)
+    }
+
+    throw ErrorHandler.build({
+      status: statusCodes.UNAUTHORIZED,
+      msg: UserResponses.unauthorized
+    })
+  }
+
   public upload = async (props: {
     username: string,
     userLogged: UserDTO,
@@ -18,8 +37,8 @@ class UserService {
     }
   }> => {
     const { username, userLogged, picture } = props
-    if (userLogged.username === username) {
-      const user = await UserRepository.getByUsername(username)
+    if (userLogged.username === username || userLogged.role === Roles.School) {
+      const user = await UserRepository.getByUsername({ username, codeSchool: userLogged.codeSchool })
       if (user) {
 
         const uploaded = await cloud.upload(picture.path, {

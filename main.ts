@@ -6,7 +6,6 @@ class API {
     try {
       const server = new Server(App)
       await server.start()
-
     } catch (err) {
       console.error(err)
       process.exit()
