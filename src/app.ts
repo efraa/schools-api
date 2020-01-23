@@ -5,8 +5,8 @@ import compression from 'compression'
 import cors from 'cors'
 import morgan from 'morgan'
 
-import { Routing } from '@http/routes'
-import { Configuration } from '@config/Configuration'
+import { Routing } from './infrastructure/http/routes'
+import { Configuration } from '../config/Configuration'
 
 class App {
   private app: Application = express()
@@ -27,13 +27,8 @@ class App {
     this.app.use(compression())
   }
 
-  public listen = async (cb: () => void) => {
+  public listen = async (cb: () => void) =>
     await this.app.listen(this.port, cb)
-
-    // this.io.on('connection', (client: any) => {
-    //   console.log(client, 'connected')
-    // })
-  }
 }
 
 export default new App()

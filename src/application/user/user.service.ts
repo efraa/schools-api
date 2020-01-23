@@ -1,8 +1,8 @@
 import { UserDTO, UserResponses, UserRepository, UserMapper } from './user.providers'
-import { ErrorHandler, statusCodes } from '@http/routes'
-import { deleteUploadedFiles } from '@utils/deleteUploadedFiles'
-import { cloud } from '@utils/Cloudinary'
-import { Roles } from '@utils/roles'
+import { ErrorHandler, statusCodes } from '../../infrastructure/http/routes'
+import { deleteUploadedFiles } from '../../infrastructure/utils/deleteUploadedFiles'
+import { cloud } from '../../infrastructure/utils/Cloudinary'
+import { Roles } from '../../infrastructure/utils/roles'
 
 class UserService {
   public get = async (username: string, userLogged: UserDTO) : Promise<UserDTO> => {

@@ -1,5 +1,5 @@
 import { validationResult } from 'express-validator'
-import { ResponseHandler, statusCodes } from '@http/routes'
+import { ResponseHandler, statusCodes } from '.'
 
 export class RouteMethod {
   public static async build({ req, res, resolve }: any) {

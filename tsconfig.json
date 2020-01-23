@@ -13,18 +13,7 @@
     "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
-    "outDir": "dist",
-    "paths": {
-      "*": ["node_modules/*"],
-      "@src/*": ["src/*"],
-      "@config/*": ["config/*"],
-      "@app/*": ["src/application/*"],
-      "@database/*": ["src/database/*"],
-      "@infra/*": ["src/infrastructure/*"],
-      "@utils/*": ["src/infrastructure/utils/*"],
-      "@middlewares/*": ["src/infrastructure/middleware/*"],
-      "@http/*": ["src/infrastructure/http/*"]
-    },
+    "outDir": "build",
     "typeRoots" : [
       "./node_modules/@types",
       "src/infrastructure/@types"
@@ -33,10 +22,11 @@
   "exclude": [
     "**/node_modules/*",
     "**/src/**/*.spec.ts",
+    ".vscode/*"
   ],
-  "include": [
-    "src/**/*.ts",
-    "config/*.ts",
+  "files": [
+    "src/**/*",
+    "config/*",
     "main.ts"
   ]
 }

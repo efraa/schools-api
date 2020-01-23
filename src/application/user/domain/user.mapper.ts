@@ -1,6 +1,6 @@
 import { Mapper } from 'ts-simple-automapper'
 import { User, UserDTO } from '../user.providers'
-import { AuthRepository } from '@app/auth/auth.providers'
+import { AuthRepository } from '../../auth/auth.providers'
 
 class UserMapper {
   public mapToDTO(from: any): UserDTO {

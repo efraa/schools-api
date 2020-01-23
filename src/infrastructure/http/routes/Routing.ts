@@ -1,7 +1,7 @@
 
 import { Router } from 'express'
-import { Configuration } from '@config/Configuration'
-import { Routes } from '@src/app.routes'
+import { Configuration } from '../../../../config/Configuration'
+import { Routes } from '../../../app.routes'
 
 class Routing {
   public readonly router: Router = Router()

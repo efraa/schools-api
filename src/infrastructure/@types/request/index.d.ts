@@ -1,4 +1,4 @@
-import { UserDTO } from '@app/user/user.providers'
+import { UserDTO } from '../../../application/user/user.providers'
 
 declare global {
   namespace Express {

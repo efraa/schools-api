@@ -1,5 +1,5 @@
 import jwt, { Secret } from 'jsonwebtoken'
-import { Configuration } from '@config/Configuration'
+import { Configuration } from '../../../config/Configuration'
 
 export const JWToken = {
   verifyToken: async (token: string): Promise<any> =>

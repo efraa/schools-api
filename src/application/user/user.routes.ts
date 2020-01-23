@@ -1,10 +1,10 @@
 import { Router, Response, RequestHandler, Request } from 'express'
-import { ResponseHandler, RouteMethod, statusCodes } from '@http/routes'
+import { ResponseHandler, RouteMethod, statusCodes } from '../../infrastructure/http/routes'
 
 import { UserController, UserDTO } from './user.providers'
 // import { validators } from '@app/auth/utils/auth.validator'
-import { ensureAuth } from '@middlewares/AuthenticationMiddleware'
-import { userPictureMiddleware } from '@middlewares/uploadsMiddleware/userPictureMiddleware'
+import { ensureAuth } from '../../infrastructure/middleware/AuthenticationMiddleware'
+import { userPictureMiddleware } from '../../infrastructure/middleware/uploadsMiddleware/userPictureMiddleware'
 
 class UserRoutes {
   readonly api: Router = Router()

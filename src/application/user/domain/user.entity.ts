@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm'
-import { Roles } from '@utils/roles'
-import { BaseEntity } from '@database/BaseEntity'
+import { Roles } from '../../../infrastructure/utils/roles'
+import { BaseEntity } from '../../../database/BaseEntity'
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {

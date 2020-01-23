@@ -2,12 +2,12 @@
   "name": "schools-api",
   "version": "0.2.3",
   "description": "Created with NodeJS.",
-  "main": "dist/main.js",
+  "main": "build/main.js",
   "scripts": {
-    "start": "node dist/main.js",
-    "watch": "nodemon -L --exec ts-node --transpile-only --files -r tsconfig-paths/register main.ts",
+    "start": "node build/main.js",
+    "watch": "nodemon -L --exec ts-node --transpile-only main.ts",
     "build": "tsc",
-    "ts:watch": "tsc --watch",
+    "watch-ts": "tsc -w",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -35,7 +35,6 @@
     "supertest": "4.0.2",
     "ts-jest": "24.1.0",
     "ts-node": "7.0.0",
-    "tsconfig-paths": "3.9.0",
     "tslint": "5.20.0",
     "typescript": "3.6.4"
   },

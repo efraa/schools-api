@@ -1,8 +1,8 @@
 import { Router, Response, RequestHandler, Request } from 'express'
-import { ResponseHandler, RouteMethod, statusCodes } from '@http/routes'
+import { ResponseHandler, RouteMethod, statusCodes } from '../../infrastructure/http/routes'
 
 import { AuthController } from './auth.providers'
-import { validators } from '@app/auth/utils/auth.validator'
+import { validators } from './utils/auth.validator'
 
 class AuthRoutes {
   readonly api: Router = Router()

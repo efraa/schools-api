@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 export const getCommonPassword = (fileName = 'commonPasswords.txt') => {
-  const passwordsPath = path.resolve(__dirname, fileName)
+  const passwordsPath = path.resolve('src/infrastructure/utils/', fileName)
   if (fs.existsSync(passwordsPath)) {
     const list: string[] = []
     const passwords = fs.readFileSync(passwordsPath, 'utf8').split('\n')

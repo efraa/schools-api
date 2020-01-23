@@ -1,8 +1,8 @@
 import { getRepository, Repository, MoreThanOrEqual } from 'typeorm'
-import { DatabaseConnection } from '@database/DatabaseConnection'
+import { DatabaseConnection } from '../../database/DatabaseConnection'
 
-import { User } from '@app/user/user.providers'
-import { Roles } from '@utils/roles'
+import { User } from '../user/user.providers'
+import { Roles } from '../../infrastructure/utils/roles'
 
 class AuthRepository {
   private _User: Repository<User>

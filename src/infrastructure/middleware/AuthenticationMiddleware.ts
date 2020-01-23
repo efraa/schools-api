@@ -1,6 +1,6 @@
 import { Response, NextFunction, Request } from 'express'
-import { ResponseHandler, statusCodes } from '@http/routes'
-import { JWToken } from '@utils/JWToken'
+import { ResponseHandler, statusCodes } from '../http/routes'
+import { JWToken } from '../utils/JWToken'
 
 export const ensureAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {

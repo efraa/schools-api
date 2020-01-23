@@ -1,7 +1,7 @@
-import { Configuration as config } from '@config/Configuration'
+import { Configuration as config } from '../../../config/Configuration'
 import { AuthService, AuthResponses } from './auth.providers'
-import EmailService from '@utils/EmailService'
-import { User } from '@app/user/user.providers'
+import EmailService from '../../infrastructure/utils/EmailService'
+import { User } from '../user/user.providers'
 
 export class AuthController {
   public signup = async (user: any): Promise<{

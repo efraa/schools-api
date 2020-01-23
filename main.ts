@@ -1,5 +1,5 @@
-import { Server } from '@src/server'
-import App from '@src/app'
+import { Server } from './src/server'
+import App from './src/app'
 
 class API {
   static async main(): Promise<void> {

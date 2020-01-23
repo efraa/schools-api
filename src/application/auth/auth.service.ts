@@ -1,10 +1,10 @@
 import { AuthRepository, AuthResponses } from './auth.providers'
-import { Configuration as config } from '@config/Configuration'
-import { ErrorHandler, statusCodes } from '@http/routes'
-import { UserMapper, User } from '@app/user/user.providers'
-import { encryptPassword, comparePassword } from '@utils/encryption'
-import { JWToken } from '@utils/JWToken'
-import { Roles } from '@utils/roles'
+import { Configuration as config } from '../../../config/Configuration'
+import { ErrorHandler, statusCodes } from '../../infrastructure/http/routes'
+import { UserMapper, User } from '../user/user.providers'
+import { encryptPassword, comparePassword } from '../../infrastructure/utils/encryption'
+import { JWToken } from '../../infrastructure/utils/JWToken'
+import { Roles } from '../../infrastructure/utils/roles'
 import crypto from 'crypto'
 
 class AuthService {

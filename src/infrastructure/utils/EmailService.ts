@@ -1,5 +1,5 @@
 import nodemailer, { Transporter, SendMailOptions } from 'nodemailer'
-import { Configuration } from '@config/Configuration'
+import { Configuration } from '../../../config/Configuration'
 import handlebars from 'handlebars'
 import fs from 'fs'
 

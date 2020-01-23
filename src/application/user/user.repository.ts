@@ -1,7 +1,7 @@
 import { getRepository, Repository } from 'typeorm'
-import { DatabaseConnection } from '@database/DatabaseConnection'
+import { DatabaseConnection } from '../../database/DatabaseConnection'
 
-import { User } from '@app/user/user.providers'
+import { User } from './user.providers'
 
 class UserRepository {
   private _User: Repository<User>

@@ -1,4 +1,4 @@
-import { DatabaseConnection } from '@database/DatabaseConnection'
+import { DatabaseConnection } from './database/DatabaseConnection'
 
 export class Server {
   constructor(private app: any) {}
