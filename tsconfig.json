@@ -24,7 +24,7 @@
     "**/src/**/*.spec.ts",
     ".vscode/*"
   ],
-  "files": [
+  "include": [
     "src/**/*",
     "config/*",
     "main.ts"
