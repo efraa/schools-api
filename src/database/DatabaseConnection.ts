@@ -15,7 +15,7 @@ export const DatabaseConnection = {
         logging: false,
         synchronize: true,
         entities: ['src/**/*.entity.ts'],
-        ssl: true,
+        ssl: process.env.SSL as any,
       })
     }
 
