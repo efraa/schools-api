@@ -5,5 +5,7 @@
     "**/.editorconfig": true,
     "**/.gitignore": false,
     "**/jest.config.js": false,
+    "**/build/": true,
+    "**/.vscode/": true,
   }
 }
