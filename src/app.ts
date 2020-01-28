@@ -25,6 +25,7 @@ class App {
     this.app.use(morgan('dev'))
     this.app.use(cors())
     this.app.use(compression())
+    console.log(process.env.NODE_ENV)
   }
 
   public listen = async (cb: () => void) =>

@@ -4,7 +4,7 @@
   "description": "Created with NodeJS.",
   "main": "build/main.js",
   "scripts": {
-    "start": "node build/main.js",
+    "start": "heroku config:set NODE_ENV=\"production\" && node build/main.js",
     "serve": "nodemon -L build/main.js",
     "watch": "tsc -w",
     "dev": "concurrently \"npm run watch\" \"npm run serve\"",
