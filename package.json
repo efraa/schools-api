@@ -4,10 +4,10 @@
   "description": "Created with NodeJS.",
   "main": "build/main.js",
   "scripts": {
-    "start": "node build/main.js",
-    "watch": "nodemon -L --exec ts-node --transpile-only main.ts",
+    "start": "nodemon -L build/main.js",
+    "watch": "tsc -w",
+    "dev": "concurrently \"npm run watch\" \"npm start\"",
     "build": "tsc",
-    "watch-ts": "tsc -w",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -30,6 +30,7 @@
     "@types/nodemailer": "6.2.1",
     "@types/socket.io": "^2.1.4",
     "@types/supertest": "2.0.4",
+    "concurrently": "^5.1.0",
     "jest": "24.9.0",
     "nodemon": "1.19.3",
     "supertest": "4.0.2",
