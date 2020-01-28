@@ -22,10 +22,9 @@ class App {
   private middlewares(): void {
     this.app.use(bodyParser.urlencoded({ extended: false }))
     this.app.use(bodyParser.json())
-    this.app.use(morgan('dev'))
     this.app.use(cors())
     this.app.use(compression())
-    console.log(process.env.NODE_ENV)
+    if (process.env.NODE_ENV === 'dev') this.app.use(morgan('dev'))
   }
 
   public listen = async (cb: () => void) =>
