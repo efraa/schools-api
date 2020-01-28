@@ -1,6 +1,6 @@
 import { Configuration as config } from '../../../config/Configuration'
 import { AuthService, AuthResponses } from './auth.providers'
-import EmailService from '../../infrastructure/utils/EmailService'
+import { EmailService } from '../../infrastructure/utils'
 import { User } from '../user/user.providers'
 
 export class AuthController {

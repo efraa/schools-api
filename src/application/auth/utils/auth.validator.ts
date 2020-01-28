@@ -1,6 +1,6 @@
 import { check, checkSchema, param } from 'express-validator'
 import { AuthResponses } from './auth.responses'
-import { getCommonPassword as passwords } from '../../../infrastructure/utils/readPassword'
+import { getCommonPassword as passwords } from '../../../infrastructure/utils'
 
 const { validator, auth, forgotPass, changePassword } = AuthResponses
 

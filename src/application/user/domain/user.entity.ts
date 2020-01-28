@@ -1,5 +1,5 @@
 import { Entity, Column } from 'typeorm'
-import { Roles } from '../../../infrastructure/utils/roles'
+import { Roles } from '../../../infrastructure/utils'
 import { BaseEntity } from '../../../database/BaseEntity'
 
 @Entity({ name: 'users' })

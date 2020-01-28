@@ -1,8 +1,6 @@
 import { UserDTO, UserResponses, UserRepository, UserMapper } from './user.providers'
 import { ErrorHandler, statusCodes } from '../../infrastructure/http/routes'
-import { deleteUploadedFiles } from '../../infrastructure/utils/deleteUploadedFiles'
-import { cloud } from '../../infrastructure/utils/Cloudinary'
-import { Roles } from '../../infrastructure/utils/roles'
+import { deleteUploadedFiles, cloud, Roles } from '../../infrastructure/utils'
 
 class UserService {
   public get = async (username: string, userLogged: UserDTO) : Promise<UserDTO> => {
@@ -13,7 +11,7 @@ class UserService {
           status: statusCodes.BAD_REQUEST,
           msg: UserResponses.userNotFound
         })
-      console.log('efra')
+
       return await UserMapper.mapToDTO(user)
     }
 

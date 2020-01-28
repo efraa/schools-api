@@ -13,8 +13,8 @@ export const DatabaseConnection = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         logging: false,
-        synchronize: true,
-        entities: ['build/src/**/*.entity.js'],
+        synchronize: process.env.SYNCHRONIZE as any,
+        entities: [process.env.ENTITIES || 'build/src/**/*.entity.js'],
         ssl: process.env.SSL as any,
       })
     }
