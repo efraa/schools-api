@@ -15,7 +15,7 @@ services:
       - 5432:5432
     restart: always
 
-  app:
+  api:
     build: .
     ports:
       - 2302:2302
@@ -27,6 +27,8 @@ services:
       - db
     volumes:
       - .:/app/
+      - /app/build
+      - /app/node_modules
 
   adminer:
     image: adminer

@@ -5,7 +5,7 @@
   "main": "build/main.js",
   "scripts": {
     "start": "node build/main.js",
-    "serve": "nodemon -L build/main.js",
+    "serve": "nodemon",
     "watch": "tsc -w",
     "dev": "concurrently \"npm run watch\" \"npm run serve\"",
     "build": "tsc",
