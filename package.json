@@ -7,7 +7,7 @@
     "start": "node build/main.js",
     "serve": "nodemon",
     "watch": "tsc -w",
-    "dev": "concurrently \"npm run watch\" \"npm run serve\"",
+    "dev": "concurrently -n \"TypeScript,API\" \"npm run watch\" \"npm run serve\"",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch"
