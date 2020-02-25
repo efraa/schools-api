@@ -2,12 +2,11 @@ FROM node:12
 
 WORKDIR /app
 
-ENV NODE_ENV development
+COPY package.json ./
+COPY yarn.lock ./
 
-COPY package*.json ./
-
-RUN npm i -g tsc-watch typescript && npm i
+RUN yarn
 
 COPY . .
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "watch"]
