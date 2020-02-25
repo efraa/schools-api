@@ -23,7 +23,7 @@ class App {
     this.app.use(express.json())
     this.app.use(cors())
     this.app.use(compression())
-    if (process.env.NODE_ENV === 'dev') this.app.use(morgan('dev'))
+    if (process.env.NODE_ENV === 'development') this.app.use(morgan('dev'))
   }
 
   public listen = async (cb: () => void) =>
