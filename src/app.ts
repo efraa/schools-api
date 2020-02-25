@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import express, { Application } from 'express'
-import bodyParser from 'body-parser'
 import compression from 'compression'
 import cors from 'cors'
 import morgan from 'morgan'
@@ -20,8 +19,8 @@ class App {
   private routes = () => this.app.use(Routing.build())
 
   private middlewares(): void {
-    this.app.use(bodyParser.urlencoded({ extended: false }))
-    this.app.use(bodyParser.json())
+    this.app.use(express.urlencoded({ extended: false }))
+    this.app.use(express.json())
     this.app.use(cors())
     this.app.use(compression())
     if (process.env.NODE_ENV === 'dev') this.app.use(morgan('dev'))
