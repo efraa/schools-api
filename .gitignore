@@ -7,3 +7,5 @@ build
 data
 uploads
 ./postgres
+yarn-error.log
+package-lock.json
