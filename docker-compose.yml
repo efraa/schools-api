@@ -3,7 +3,7 @@ version: '3.1'
 services:
   db:
     image: postgres:11.5
-    container_name: SCHOOLS_DB
+    container_name: ${APP_NAME}_DB
     env_file:
       - .env
     environment:
@@ -18,7 +18,7 @@ services:
 
   app:
     build: .
-    container_name: SCHOOLS
+    container_name: ${APP_NAME}_API
     ports:
       - 2302:2302
     networks:
@@ -34,7 +34,7 @@ services:
 
   adminer:
     image: adminer
-    container_name: SCHOOLS_ADMIN
+    container_name: ${APP_NAME}_ADMIN
     restart: always
     ports:
       - 8080:8080
