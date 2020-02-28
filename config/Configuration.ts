@@ -31,6 +31,7 @@ export const Configuration = {
     uploads: process.env.UPLOADS_USERS || 'uploads',
     maxTeachers: process.env.MAX_TEACHERS || 4,
     maxStudents: process.env.MAX_STUDENTS || 25,
-    googleClientID: process.env.GOOGLE_CLIENT_ID
+    googleClientID: process.env.GOOGLE_CLIENT_ID,
+    slackHook: process.env.SLACK_WEBHOOK,
   }
 }
