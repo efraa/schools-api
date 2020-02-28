@@ -7,18 +7,12 @@ class UserService {
     if (userLogged.username === username || userLogged.role === Roles.School) {
       const user = await UserRepository.getByUsername({ username, codeSchool: userLogged.codeSchool })
       if (!user)
-        throw ErrorHandler.build({
-          status: statusCodes.BAD_REQUEST,
-          msg: UserResponses.userNotFound
-        })
+        throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.userNotFound)
 
       return await UserMapper.mapToDTO(user)
     }
 
-    throw ErrorHandler.build({
-      status: statusCodes.UNAUTHORIZED,
-      msg: UserResponses.unauthorized
-    })
+    throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.unauthorized)
   }
 
   public upload = async (props: {
@@ -64,10 +58,7 @@ class UserService {
       }
     }
 
-    throw ErrorHandler.build({
-      status: statusCodes.UNAUTHORIZED,
-      msg: UserResponses.unauthorized
-    })
+    throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.unauthorized)
   }
 }
 

@@ -1,15 +1,13 @@
-export class ErrorHandler extends Error {
-  public statusCode: number
-  public message: string
-  public error: Error
+import { Logger } from '../../utils/logging/Logger'
 
-  constructor(statusCode: number, message: string, error?: any) {
-    super()
-    this.statusCode = statusCode
-    this.message = message
-    this.error = error
+const build = (statusCode: number, message: string | string[]) => {
+  Logger.info(message)
+  return {
+    statusCode,
+    message,
   }
+}
 
-  public static build = (props: { status: number, msg: string, error?: any }) =>
-    new ErrorHandler(props.status, props.msg, props.error)
+export const ErrorHandler = {
+  build
 }

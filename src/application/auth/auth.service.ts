@@ -19,56 +19,32 @@ class AuthService {
     const usernameExists = await AuthRepository.getByUsername(user.username)
 
     if (isRegistered)
-      throw ErrorHandler.build({
-        status: statusCodes.BAD_REQUEST,
-        msg: AuthResponses.emailExists
-      })
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.emailExists)
 
     if (usernameExists)
-      throw ErrorHandler.build({
-        status: statusCodes.BAD_REQUEST,
-        msg: AuthResponses.usernameExists
-      })
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.usernameExists)
 
     if (user.role !== Roles.School && !user.lastname)
-      throw ErrorHandler.build({
-        status: statusCodes.BAD_REQUEST,
-        msg: AuthResponses.validator.lastname
-      })
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.validator.lastname)
 
     if (user.role !== Roles.School) {
       if (!user.codeSchool)
-        throw ErrorHandler.build({
-          status: statusCodes.BAD_REQUEST,
-          msg: AuthResponses.validator.codeSchool
-        })
+        throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.validator.codeSchool)
 
       const isSchool = await AuthRepository.findSchool(user.codeSchool)
       if (!isSchool) {
-        throw ErrorHandler.build({
-          status: statusCodes.NOT_FOUND,
-          msg: AuthResponses.validator.schoolNotExist
-        })
+        throw ErrorHandler.build(statusCodes.NOT_FOUND, AuthResponses.validator.schoolNotExist)
 
       } else if (!isSchool.isActive) {
-        throw ErrorHandler.build({
-          status: statusCodes.UNAUTHORIZED,
-          msg: AuthResponses.validator.schoolDisabled
-        })
+        throw ErrorHandler.build(statusCodes.UNAUTHORIZED, AuthResponses.validator.schoolDisabled)
 
       } else if (!isSchool.isPremium) {
         const members = await AuthRepository.schoolMembers(user.codeSchool)
         if (user.role === Roles.Teacher && members.teachers >= config.utils.maxTeachers)
-          throw ErrorHandler.build({
-            status: statusCodes.BAD_REQUEST,
-            msg: AuthResponses.validator.maxTeachers
-          })
+          throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.validator.maxTeachers)
 
         if (user.role === Roles.Student && members.students >= config.utils.maxStudents)
-          throw ErrorHandler.build({
-            status: statusCodes.BAD_REQUEST,
-            msg: AuthResponses.validator.maxStudents
-          })
+          throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.validator.maxStudents)
       }
     }
 
@@ -95,25 +71,16 @@ class AuthService {
     const user = getUserByEmail || getUserByUsername
 
     if (!user)
-      throw ErrorHandler.build({
-        status: statusCodes.BAD_REQUEST,
-        msg: AuthResponses.auth.accountDoesNotExist
-      })
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.auth.accountDoesNotExist)
 
     if (user && comparePassword(password, user.password)) {
       if (!user.isActive && user.role !== Roles.School)
-        throw ErrorHandler.build({
-          status: statusCodes.UNAUTHORIZED,
-          msg: AuthResponses.auth.accountIsDisable
-        })
+        throw ErrorHandler.build(statusCodes.UNAUTHORIZED, AuthResponses.auth.accountIsDisable)
 
       return await JWToken.generateToken(UserMapper.mapToDTO(user))
     }
 
-    throw ErrorHandler.build({
-      status: statusCodes.BAD_REQUEST,
-      msg: AuthResponses.auth.badCredentials
-    })
+    throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.auth.badCredentials)
   }
 
   public forgotPassword = async (email: string): Promise<{
@@ -123,10 +90,7 @@ class AuthService {
     const user = await AuthRepository.getByEmail(email)
 
     if (!user)
-      throw ErrorHandler.build({
-        status: statusCodes.BAD_REQUEST,
-        msg: AuthResponses.auth.accountDoesNotExist
-      })
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.auth.accountDoesNotExist)
 
     // Generate Token
     const token: string = crypto.randomBytes(20).toString('hex')
@@ -156,10 +120,7 @@ class AuthService {
       .getByForgotPasswordToken(token)
 
     if (!user)
-      throw ErrorHandler.build({
-        status: statusCodes.BAD_REQUEST,
-        msg: AuthResponses.forgotPass.userNotFound
-      })
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, AuthResponses.forgotPass.userNotFound)
 
     return user
   }

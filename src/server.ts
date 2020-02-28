@@ -1,4 +1,5 @@
 import { DatabaseConnection } from './database/DatabaseConnection'
+import { Logger } from './infrastructure/utils/logging/Logger'
 
 export class Server {
   constructor(private app: any) {}
@@ -14,7 +15,7 @@ export class Server {
           console.log('Running on port', this.app.port)
       })
     } catch (err) {
-      console.log(err)
+      Logger.error(err)
     }
   }
 }
