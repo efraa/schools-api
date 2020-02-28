@@ -53,7 +53,9 @@
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.3.0",
     "ts-simple-automapper": "^1.0.2",
-    "typeorm": "^0.2.22"
+    "typeorm": "^0.2.22",
+    "winston": "^3.2.1",
+    "winston-slack-webhook-transport": "^1.2.0"
   },
   "repository": {
     "type": "git",

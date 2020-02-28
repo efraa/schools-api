@@ -1,5 +1,6 @@
 import { validationResult } from 'express-validator'
 import { ResponseHandler, statusCodes } from '.'
+import { Logger } from '../../utils/logging/Logger'
 
 export class RouteMethod {
   public static async build({ req, res, resolve }: any) {
@@ -12,6 +13,7 @@ export class RouteMethod {
     try {
       await resolve()
     } catch (err) {
+      if (!err.statusCode) Logger.error(`[${err.name}]: ${err.message}`)
       return res
         .status(err.statusCode || statusCodes.INTERNAL_ERROR)
         .send(ResponseHandler.build(err.message))

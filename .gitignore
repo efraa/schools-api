@@ -6,6 +6,10 @@ dist
 build
 data
 uploads
-./postgres
-yarn-error.log
 package-lock.json
+
+# Logs
+logs
+*.log
+yarn-debug.log
+yarn-error.log

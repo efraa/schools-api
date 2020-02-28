@@ -1,6 +1,6 @@
 export { encryptPassword, comparePassword } from './encryption'
 export { JWToken } from './JWToken'
-export { Roles } from './roles'
+export { Roles } from './Roles'
 export { getCommonPassword } from './readPassword'
 export { default as EmailService } from './EmailService'
 export { deleteUploadedFiles } from './deleteUploadedFiles'
