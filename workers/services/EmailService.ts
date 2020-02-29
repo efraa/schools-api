@@ -1,5 +1,6 @@
 import nodemailer, { Transporter, SendMailOptions } from 'nodemailer'
-import { Configuration } from '../../../config/Configuration'
+import { Configuration } from '../../config/Configuration'
+import { Logger } from '../../src/infrastructure/utils/logging/Logger'
 import handlebars from 'handlebars'
 import fs from 'fs'
 
@@ -31,20 +32,22 @@ class EmailService {
     subject: string,
     template: string
   }, data: {}) {
-    const { from } = Configuration.nodemailer
-    const { to, subject, template } = props
-    const templateFile = fs.readFileSync(`src/templates/${template}.html`, 'utf-8')
-    const html = handlebars.compile(templateFile)(data)
-    const message: SendMailOptions = {
-      from,
-      to,
-      subject,
-      html,
-    }
+    try {
+      const { from } = Configuration.nodemailer
+      const { to, subject, template } = props
+      const templateFile = fs.readFileSync(`src/templates/${template}.html`, 'utf-8')
+      const html = handlebars.compile(templateFile)(data)
+      const message: SendMailOptions = {
+        from,
+        to,
+        subject,
+        html,
+      }
 
-    const send = await this.transporter.sendMail(message)
-    if (send)
-      return 'The email has been sent successfully.'
+      await this.transporter.sendMail(message)
+    } catch (err) {
+      Logger.error(`[EMAIL SERVICE]: ${err.mesagge}`)
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 let instance: Connection|undefined = undefined
+const ssl = process.env.SSL ? true : false
 export const DatabaseConnection = {
   connect: async () => {
     if (!instance) {
@@ -15,7 +16,7 @@ export const DatabaseConnection = {
         logging: false,
         synchronize: process.env.SYNCHRONIZE as any,
         entities: [process.env.ENTITIES || 'build/src/**/*.entity.js'],
-        ssl: process.env.SSL as any,
+        ssl,
       })
     }
 

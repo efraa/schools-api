@@ -1,4 +1,4 @@
-export const AuthResponses: any = {
+export const AuthResponses = {
   validator: {
     name: 'Please, enter a name with 2 or more characters.',
     lastname: 'Please, enter a lastname with 2 or more characters.',
@@ -33,6 +33,7 @@ export const AuthResponses: any = {
   forgotPass: {
     userNotFound: 'Password reset token is invalid or has expired.',
     success: 'Your password has been changed successfully.',
+    sendEmail: 'An email has been sent to your account.',
     validator: {
       token: 'Password reset token is required.',
     }

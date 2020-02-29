@@ -1,4 +1,4 @@
-export const UserResponses: any = {
+export const UserResponses = {
   userNotFound: 'Oops! We did not find this user in the organization.',
   unauthorized: 'You are not authorized for this request.',
   noRecords: 'There are no user records yet.',
