@@ -27,6 +27,7 @@
   "include": [
     "src/**/*",
     "config/*",
+    "workers/**/*",
     "main.ts"
   ]
 }

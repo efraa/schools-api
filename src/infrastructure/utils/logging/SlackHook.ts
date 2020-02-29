@@ -11,7 +11,7 @@ const slackOptions: any = {
           type: "mrkdwn",
           text: data.level === 'error' ?
             ":sos: :fire: *EXCEPTION, UNEXPECTED ERROR* :fire: :sos:"
-            : ":information_source: *INFORMATION+ :snowflake:"
+            : ":information_source: *INFORMATION*"
         }
       },
       {
@@ -21,7 +21,7 @@ const slackOptions: any = {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: data.level === 'error' ? 
+          text: data.level === 'error' ?
             ":fire: Hi Team, we have problems, an uncontrolled error has occurred in the API Server, this is what happened: :fire:"
             : ":coffee: Hi Team, we have a bit of movement in the API Server, this is what happened:"
         }
@@ -38,12 +38,21 @@ const slackOptions: any = {
         elements: [
           {
             "type": "mrkdwn",
-            "text": `*At* ${new Date()} `
+            "text": `Environment: ${process.env.NODE_ENV && process.env.NODE_ENV}`
+          }
+        ]
+      },
+      {
+        type: "context",
+        elements: [
+          {
+            "type": "mrkdwn",
+            "text": `At ${new Date()}`
           }
         ]
       }
     ],
-  }) 
+  })
 }
 // @ts-ignore
 export const SlackHook = new WinstonSlackHook(slackOptions)

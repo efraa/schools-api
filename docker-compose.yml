@@ -1,21 +1,6 @@
 version: '3.1'
 
 services:
-  db:
-    image: postgres:11.5
-    container_name: ${APP_NAME}_DB
-    env_file:
-      - .env
-    environment:
-      POSTGRES_PASSWORD: "${DB_PASSWORD}"
-      POSTGRES_USER: "${DB_USER}"
-      POSTGRES_DB: "${DB_NAME}"
-    networks:
-      - app
-    ports:
-      - 5432:5432
-    restart: always
-
   app:
     build: .
     container_name: ${APP_NAME}_API
@@ -25,23 +10,37 @@ services:
       - app
     env_file:
       - .env
-    depends_on:
-      - db
     volumes:
       - .:/app/
       - /app/build
       - /app/node_modules
-
-  adminer:
-    image: adminer
-    container_name: ${APP_NAME}_ADMIN
     restart: always
-    ports:
-      - 8080:8080
-    env_file:
-      - .env
-    networks:
-      - app
+
+  # db:
+  #   image: postgres:11.5
+  #   container_name: ${APP_NAME}_DB
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     POSTGRES_PASSWORD: "${DB_PASSWORD}"
+  #     POSTGRES_USER: "${DB_USER}"
+  #     POSTGRES_DB: "${DB_NAME}"
+  #   networks:
+  #     - app
+  #   ports:
+  #     - 5431:5432
+  #   restart: always
+
+  # adminer:
+  #   image: adminer
+  #   container_name: ${APP_NAME}_ADMIN
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - app
 
 networks:
   app:

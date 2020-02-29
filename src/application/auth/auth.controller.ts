@@ -1,7 +1,7 @@
 import { Configuration as config } from '../../../config/Configuration'
 import { AuthService, AuthResponses } from './auth.providers'
-import { EmailService } from '../../infrastructure/utils'
 import { User } from '../user/user.providers'
+import { Worker } from '../../../workers'
 
 export class AuthController {
   public signup = async (user: any): Promise<{
@@ -18,14 +18,16 @@ export class AuthController {
   public forgotPassword = async (email: string): Promise<string|undefined> => {
     const { token, user } = await AuthService.forgotPassword(email)
     if (token) {
-      return await EmailService.build({
+      await Worker.EmailJob.add({
         to: email,
         subject: AuthResponses.nodemailer.subject,
-        template: 'forgotPassword'
-      }, {
-        name: user.name,
-        url: `${config.forgotPass.url}/reset-password/${token}`
+        template: 'forgotPassword',
+        data: {
+          name: user.name,
+          url: `${config.forgotPass.url}/reset-password/${token}`
+        }
       })
+      return AuthResponses.forgotPass.sendEmail
     }
   }
 

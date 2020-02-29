@@ -3,6 +3,8 @@ import express, { Application } from 'express'
 import compression from 'compression'
 import cors from 'cors'
 import morgan from 'morgan'
+import BullBoard from 'bull-board'
+import { Worker } from '../workers'
 
 import { Routing } from './infrastructure/http/routes'
 import { Configuration } from '../config/Configuration'
@@ -23,7 +25,11 @@ class App {
     this.app.use(express.json())
     this.app.use(cors())
     this.app.use(compression())
-    if (process.env.NODE_ENV === 'development') this.app.use(morgan('dev'))
+    if (process.env.NODE_ENV === 'development') {
+      this.app.use(morgan('dev'))
+      BullBoard.setQueues(Worker.queues.map(job => job.queue));
+      this.app.use('/jobs', BullBoard.UI)
+    }
   }
 
   public listen = async (cb: () => void) =>

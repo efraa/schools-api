@@ -33,5 +33,6 @@ export const Configuration = {
     maxStudents: process.env.MAX_STUDENTS || 25,
     googleClientID: process.env.GOOGLE_CLIENT_ID,
     slackHook: process.env.SLACK_WEBHOOK,
-  }
+  },
+  redis: process.env.REDIS_URI,
 }
