@@ -5,6 +5,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import BullBoard from 'bull-board'
 import { Worker } from '../workers'
+import { io } from './infrastructure/utils/Socket'
 
 import { Routing } from './infrastructure/http/routes'
 import { Configuration } from '../config/Configuration'
@@ -25,8 +26,11 @@ class App {
     this.app.use(express.json())
     this.app.use(cors())
     this.app.use(compression())
+    this.app.set('io', io)
+
     if (process.env.NODE_ENV === 'development') {
       this.app.use(morgan('dev'))
+      io.on('connection', () => console.log('[SOCKET]: A new client connected'))
       BullBoard.setQueues(Worker.queues.map(job => job.queue));
       this.app.use('/jobs', BullBoard.UI)
     }
