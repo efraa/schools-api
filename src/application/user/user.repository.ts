@@ -1,4 +1,4 @@
-import { getRepository, Repository, Like, Not } from 'typeorm'
+import { getRepository, Repository, Like, Not, FindOperatorType, FindOperator } from 'typeorm'
 import { DatabaseConnection } from '../../database/DatabaseConnection'
 
 import { User } from './user.providers'
@@ -42,21 +42,38 @@ class UserRepository {
   }> => {
     const page = query.page || 1
     const where: {}[] = []
-    const defaultValues = {
+    const defaultValues: {
+      codeSchool: string,
+      isActive: string,
+      role: FindOperator<Roles>|string,
+    } = {
       codeSchool: query.codeSchool,
-      isActive: query.status ? query.status : true,
+      isActive: query.status ? query.status : 'true',
       role: Not(Roles.School)
     }
     const perPage = query.perPage || 25
-    const queryBuilder = (field?: string, term?: string): void => {
-      let options: any = { ...defaultValues }
-      query.role && (options.role = query.role)
-      field && term && (options[field] = Like(`%${term.trim().toLocaleLowerCase()}%`))
-      where.push(options)
+    const queryBuilder = (field?: string, queryString?: string[]): void => {
+      const wordSearch = (word: string) => {
+        let options = { ...defaultValues }
+        query.role && (options.role = query.role)
+        if (field)
+          options[field] = Like(`%${word.trim().toLocaleLowerCase()}%`)
+
+        where.push(options)
+      }
+
+      if (queryString) {
+        queryString.length === 1 ?
+          wordSearch(queryString[0]) : queryString.map(word => wordSearch(word))
+      }
     }
 
-    query.search ? ['name', 'lastname', 'email', 'username']
-      .forEach(field => queryBuilder(field, query.search)) : queryBuilder()
+    if (query.search) {
+      const terms = query.search.split(' ')
+      const fields = ['name', 'lastname', 'username']
+      terms.length > 1 && (fields.pop())
+      fields.forEach(field => queryBuilder(field, terms))
+    }
 
     const [rows, count] = await this._User.findAndCount({
       skip: ((perPage * page) - perPage),
