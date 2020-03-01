@@ -1,19 +1,24 @@
 import { Entity, Column } from 'typeorm'
 import { Roles } from '../../../infrastructure/utils'
 import { BaseEntity } from '../../../database/BaseEntity'
+import { lowercase, encode, capitalize } from '../../../database/transformers'
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
-  @Column()
+  @Column({
+    transformer: [capitalize]
+  })
   name: string
 
   @Column({
-    nullable: true
+    nullable: true,
+    transformer: [capitalize]
   })
   lastname: string
 
   @Column({
-    unique: true
+    unique: true,
+    transformer: [lowercase, encode]
   })
   email: string
 
