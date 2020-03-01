@@ -110,7 +110,7 @@ class UserService {
         const fields = ['name', 'lastname', 'username']
         terms.length > 1 && (fields.pop())
         fields.forEach(field => queryBuilder(field, terms))
-      }
+      } else where.push(defaultValues)
 
       const query: any = await UserRepository.listOfMembers({
         page,
