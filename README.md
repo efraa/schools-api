@@ -19,6 +19,17 @@ This is the core of the Schools application, built with TypeScript and served by
 
 3. copy ``` prod.env ``` to ``` .env ```
 
+### Running workers
+
+The workers must be launched in a process other than the API server,
+once the API is running it can execute the workers in a terminal.
+
+**Open a terminal**
+
+run ``` docker exec SCHOOLS_API yarn worker ```
+
+Note: SCHOOLS_API is the name of the container.
+
 ### Ready
 ---
 
