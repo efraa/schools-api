@@ -17,6 +17,15 @@ class UserController {
       id: string
     }
   }> => await UserService.upload(query)
+
+  public listOfMembers = async (query: {
+    userLogged: UserDTO,
+    perPage?: number,
+    page?: number,
+    search?: string,
+    status?: string,
+    role?: string
+  }) => await UserService.listOfmembers(query)
 }
 
 export default new UserController()

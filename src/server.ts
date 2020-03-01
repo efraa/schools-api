@@ -12,7 +12,7 @@ export class Server {
           .connect()
 
         if (connected)
-          console.log('Running on port', this.app.port)
+          console.log('[API SERVER]: running on port', this.app.port)
       })
     } catch (err) {
       Logger.error(err)

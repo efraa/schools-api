@@ -1,4 +1,4 @@
-import { UserDTO, UserResponses, UserRepository, UserMapper } from './user.providers'
+import { UserDTO, UserResponses, UserRepository, UserMapper, User } from './user.providers'
 import { ErrorHandler, statusCodes } from '../../infrastructure/http/routes'
 import { deleteUploadedFiles, cloud, Roles } from '../../infrastructure/utils'
 
@@ -55,6 +55,44 @@ class UserService {
         return {
           picture: changePicture.picture
         }
+      }
+    }
+
+    throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.unauthorized)
+  }
+
+  public listOfmembers = async (props: {
+    userLogged: UserDTO,
+    perPage?: number,
+    page?: number,
+    schedule?: string,
+    status?: string,
+    role?: string,
+    search?: string
+  }) : Promise<{
+    users: UserDTO[],
+    allUsers: number,
+    pages: number
+  }> => {
+    const { page, perPage, status, role, search, userLogged } = props
+    if (userLogged.role === Roles.School) {
+      const query: any = await UserRepository.listOfMembers({
+        page,
+        perPage,
+        codeSchool: userLogged.codeSchool,
+        status,
+        role,
+        search,
+      })
+      // console.log(query.rows)
+
+      if (!query.rows[0])
+        throw ErrorHandler.build(statusCodes.NOT_FOUND, UserResponses.noRecords)
+
+      return {
+        users: UserMapper.mapListToDTO(query.rows),
+        allUsers: query.allUsers,
+        pages: query.pages
       }
     }
 

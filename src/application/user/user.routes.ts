@@ -23,6 +23,9 @@ class UserRoutes {
       this.upload
     )
 
+    // List of members
+    this.api.get('/members', ensureAuth, this.listOfMembers)
+
     return this.api
   }
 
@@ -47,6 +50,26 @@ class UserRoutes {
             path: req.file.path,
             name: req.file.filename,
           },
+        })
+        if (user)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(user, false))
+      }, req, res
+    })
+
+  public listOfMembers: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        if (!req.user) return
+        const { page, perPage, search, role, status } = req.query
+        const user = await UserController.listOfMembers({
+          userLogged: req.user as UserDTO,
+          page,
+          perPage,
+          search,
+          role,
+          status,
         })
         if (user)
           return res
