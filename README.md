@@ -12,8 +12,12 @@ This is the core of the Schools application, built with TypeScript and served by
 
 1. clone
 2. move to ``` cd schools-api ```
-3. copy ``` .example.env ``` to ``` .env ```
-4. run ``` yarn && docker-compose up ```
+3. copy ``` development.env ``` to ``` .env ```
+4. run ``` yarn && docker-compose up --build ```
+
+### Production
+
+3. copy ``` prod.env ``` to ``` .env ```
 
 ### Ready
 ---
