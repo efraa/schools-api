@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
     "baseUrl": "./",
     "outDir": "build",
     "typeRoots" : [

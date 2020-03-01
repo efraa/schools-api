@@ -55,4 +55,4 @@ const slackOptions: any = {
   })
 }
 // @ts-ignore
-export const SlackHook = new WinstonSlackHook(slackOptions)
+export const SlackHook: TransportStream = new WinstonSlackHook(slackOptions)
