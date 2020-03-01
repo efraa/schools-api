@@ -1,6 +1,7 @@
 import { UserDTO, UserResponses, UserRepository, UserMapper, User } from './user.providers'
 import { ErrorHandler, statusCodes } from '../../infrastructure/http/routes'
 import { deleteUploadedFiles, cloud, Roles } from '../../infrastructure/utils'
+import { FindOperator, Not, Like } from 'typeorm'
 
 class UserService {
   public get = async (username: string, userLogged: UserDTO) : Promise<UserDTO> => {
@@ -74,17 +75,48 @@ class UserService {
     allUsers: number,
     pages: number
   }> => {
-    const { page, perPage, status, role, search, userLogged } = props
+    const { status, role, search, userLogged } = props
     if (userLogged.role === Roles.School) {
+      const page = props.page || 1
+      const where: {}[] = []
+      const defaultValues: {
+        codeSchool: string,
+        isActive: string,
+        role: FindOperator<Roles>|string,
+      } = {
+        codeSchool: userLogged.codeSchool,
+        isActive: status ? status : 'true',
+        role: Not(Roles.School)
+      }
+      const perPage = props.perPage || 25
+      const queryBuilder = (field?: string, queryString?: string[]): void => {
+        const wordSearch = (word: string) => {
+          let options = { ...defaultValues }
+          role && (options.role = role)
+          if (field)
+            options[field] = Like(`%${word.trim().toLocaleLowerCase()}%`)
+
+          where.push(options)
+        }
+
+        if (queryString) {
+          queryString.length === 1 ?
+            wordSearch(queryString[0]) : queryString.map(word => wordSearch(word))
+        }
+      }
+
+      if (search) {
+        const terms = search.split(' ')
+        const fields = ['name', 'lastname', 'username']
+        terms.length > 1 && (fields.pop())
+        fields.forEach(field => queryBuilder(field, terms))
+      }
+
       const query: any = await UserRepository.listOfMembers({
         page,
         perPage,
-        codeSchool: userLogged.codeSchool,
-        status,
-        role,
-        search,
+        where
       })
-      // console.log(query.rows)
 
       if (!query.rows[0])
         throw ErrorHandler.build(statusCodes.NOT_FOUND, UserResponses.noRecords)
