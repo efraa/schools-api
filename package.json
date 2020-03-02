@@ -4,12 +4,12 @@
   "description": "Created with NodeJS.",
   "main": "build/main.js",
   "scripts": {
-    "start": "node build/main.js",
+    "start": "node build/src/server.js",
     "worker": "node build/workers/init.js",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
-    "watch": "tsc-watch --onSuccess \"node build/main.js\""
+    "watch": "tsc-watch --onSuccess \"node build/src/server.js\""
   },
   "engines": {
     "node": ">=12.10.0"

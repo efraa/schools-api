@@ -5,39 +5,28 @@ import cors from 'cors'
 import morgan from 'morgan'
 import BullBoard from 'bull-board'
 import { Worker } from '../workers'
-import { io } from './infrastructure/utils/Socket'
-
 import { Routing } from './infrastructure/http/routes'
-import { Configuration } from '../config/Configuration'
+import { Configuration as config } from '../config/Configuration'
 
-class App {
-  private app: Application = express()
-  public port: number = Configuration.server.port
+// Express Application
+const app: Application = express()
 
-  constructor () {
-    this.middlewares()
-    this.routes()
-  }
+// Middlewares
+app.use(express.urlencoded({ extended: false }))
+app.set('port', config.server.port)
+app.use(express.json())
+app.use(compression())
+app.use(cors())
 
-  private routes = () => this.app.use(Routing.build())
-
-  private middlewares(): void {
-    this.app.use(express.urlencoded({ extended: false }))
-    this.app.use(express.json())
-    this.app.use(cors())
-    this.app.use(compression())
-    this.app.set('io', io)
-
-    if (process.env.NODE_ENV === 'development') {
-      this.app.use(morgan('dev'))
-      io.on('connection', () => console.log('[SOCKET]: A new client connected'))
-      BullBoard.setQueues(Worker.queues.map(job => job.queue));
-      this.app.use('/jobs', BullBoard.UI)
-    }
-  }
-
-  public listen = async (cb: () => void) =>
-    await this.app.listen(this.port, cb)
+if (process.env.NODE_ENV === 'development') {
+  BullBoard.setQueues(Worker.queues.map(job => job.queue))
+  app.use('/jobs', BullBoard.UI)
+  app.use(morgan('dev'))
 }
 
-export default new App()
+// Routes
+app.use(Routing.build())
+
+export {
+  app
+}

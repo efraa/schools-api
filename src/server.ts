@@ -1,21 +1,33 @@
 import { DatabaseConnection } from './database/DatabaseConnection'
 import { Logger } from './infrastructure/utils/logging/Logger'
+import http, { Server } from 'http'
+import socket from 'socket.io'
+import { app } from './app'
+import { Events } from './socket/Events'
 
-export class Server {
-  constructor(private app: any) {}
+// HTTP Server
+const server: Server = http.createServer(app)
 
+// Socket Server
+const io = socket(server)
+
+try {
   // Lauch Server
-  public async start() : Promise<void> {
-    try {
-      await this.app.listen(async () => {
-        const connected = await DatabaseConnection
-          .connect()
+  server.listen(app.get('port'), async () => {
+    const connected = await DatabaseConnection
+      .connect()
 
-        if (connected)
-          console.log('[API SERVER]: running on port', this.app.port)
-      })
-    } catch (err) {
-      Logger.error(err)
-    }
-  }
+    if (connected)
+      console.log('[API SERVER]: running on port', app.get('port'))
+
+    io.on(Events.CONNECTION, () => console.log('[SOCKER SERVER]: a new client connected'))
+  })
+} catch (error) {
+  Logger.error(error)
+  process.exit()
+}
+
+export {
+  io,
+  server
 }
