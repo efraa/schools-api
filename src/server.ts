@@ -3,7 +3,7 @@ import { Logger } from './infrastructure/utils/logging/Logger'
 import http, { Server } from 'http'
 import socket from 'socket.io'
 import { app } from './app'
-import { Events } from './socket/Events'
+import { Events } from './socket'
 
 // HTTP Server
 const server: Server = http.createServer(app)
