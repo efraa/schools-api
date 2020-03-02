@@ -39,4 +39,4 @@ Note: SCHOOLS_API is the name of the container.
 
 **SOCKET SERVER**
 
-``` localhost:4000 ```
+``` localhost:2302 ```
