@@ -31,7 +31,6 @@
     "@types/nodemailer": "^6.4.0",
     "@types/socket.io": "^2.1.4",
     "@types/supertest": "^2.0.8",
-    "bull-board": "^0.6.0",
     "jest": "^25.1.0",
     "supertest": "^4.0.2",
     "ts-jest": "^25.2.1",
@@ -42,6 +41,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "bull": "^3.13.0",
+    "bull-board": "^0.6.0",
     "cloudinary": "^1.19.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
