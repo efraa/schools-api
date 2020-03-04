@@ -5,28 +5,46 @@ This is the core of the Schools application, built with TypeScript and served by
 ### API Docs
 ---
 
-[Schools API](https://documenter.getpostman.com/view/7831505/S1Zw6VCU?version=latest)
+[Documentation](https://documenter.getpostman.com/view/7831505/S1Zw6VCU?version=latest)
 
-### Development and running the API Server
+### Get Started
 ---
 
 1. clone
 2. move to ``` cd schools-api ```
+
+### Running API Server alone to consume (Frontend development)
+---
+
+3. copy ``` prod.env ``` to ``` .env ```
+4. run ``` yarn && yarn build && yarn start ```
+
+**Your API should be ready on port 2302**
+
+``` localhost:2302/api/v1 ```
+
+
+### Or running API Server to development
+---
+
 3. copy ``` development.env ``` to ``` .env ```
 4. run ``` yarn && docker-compose up --build ```
 
-### Production
-
-3. copy ``` prod.env ``` to ``` .env ```
 
 ### Running workers
 
 The workers must be launched in a process other than the API server,
 once the API is running it can execute the workers in a terminal.
 
-**Open a terminal**
+_Open a terminal_
+
+**Development**
 
 run ``` docker exec SCHOOLS_API yarn worker ```
+
+**Consume (Frontend)**
+
+run ``` yarn worker ```
 
 Note: SCHOOLS_API is the name of the container.
 

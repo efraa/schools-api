@@ -1,9 +1,9 @@
 import { DatabaseConnection } from './database/DatabaseConnection'
 import { Logger } from './infrastructure/utils/logging/Logger'
 import http, { Server } from 'http'
+import { Events } from './socket'
 import socket from 'socket.io'
 import { app } from './app'
-import { Events } from './socket'
 
 // HTTP Server
 const server: Server = http.createServer(app)
@@ -17,10 +17,11 @@ try {
     const connected = await DatabaseConnection
       .connect()
 
-    if (connected)
+    if (connected) {
+      console.log(`[DATABASE]: connected on host: ${process.env.DB_HOST}`)
       console.log('[API SERVER]: running on port', app.get('port'))
-
-    io.on(Events.CONNECTION, () => console.log('[SOCKER SERVER]: a new client connected'))
+      io.on(Events.CONNECTION, () => console.log('[SOCKER SERVER]: a new client connected'))
+    }
   })
 } catch (error) {
   Logger.error(error)

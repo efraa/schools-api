@@ -1,12 +1,12 @@
 import 'reflect-metadata'
+import { Configuration as config } from '../config/Configuration'
+import { Routing } from './infrastructure/http/routes'
 import express, { Application } from 'express'
 import compression from 'compression'
-import cors from 'cors'
-import morgan from 'morgan'
-import BullBoard from 'bull-board'
 import { Worker } from '../workers'
-import { Routing } from './infrastructure/http/routes'
-import { Configuration as config } from '../config/Configuration'
+import BullBoard from 'bull-board'
+import morgan from 'morgan'
+import cors from 'cors'
 
 // Express Application
 const app: Application = express()

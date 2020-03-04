@@ -6,7 +6,6 @@ services:
     container_name: ${APP_NAME}_API
     ports:
       - ${PORT}:${PORT}
-      - ${SOCKET_PORT}:${SOCKET_PORT}
     networks:
       - app
     env_file:
