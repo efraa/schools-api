@@ -1,6 +1,6 @@
 # Schools API 🚀
 
-This is the core of the Schools application, built with TypeScript and served by docker.
+This is the core of Schools application, built with TypeScript and served by docker.
 
 ### API Docs
 ---
@@ -33,8 +33,8 @@ This is the core of the Schools application, built with TypeScript and served by
 
 ### Running workers
 
-The workers must be launched in a process other than the API server,
-once the API is running it can execute the workers in a terminal.
+The workers must be launched in a process other than API server,
+once API is running it can execute workers in a terminal.
 
 _Open a terminal_
 
@@ -45,8 +45,6 @@ run ``` docker exec SCHOOLS_API yarn worker ```
 **Consume (Frontend)**
 
 run ``` yarn worker ```
-
-Note: SCHOOLS_API is the name of the container.
 
 ### Ready
 ---
