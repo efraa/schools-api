@@ -6,5 +6,7 @@ export const UserResponses = {
   emailExists: 'the email cannot already exist in the database.',
   disabled: 'Oops! This user account is deactivated.',
   active: 'This user has been actived.',
-  delete: 'the user has been removed.'
+  delete: 'the user has been removed.',
+  fileExt: 'Oops! The file or its extension is incorrect.',
+  bulkLoad: 'Bulk load started!',
 }

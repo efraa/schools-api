@@ -1,10 +1,8 @@
 import { Router, Response, RequestHandler, Request } from 'express'
-import { ResponseHandler, RouteMethod, statusCodes } from '../../infrastructure/http/routes'
-
-import { UserController, UserDTO } from './user.providers'
-// import { validators } from '@app/auth/utils/auth.validator'
-import { ensureAuth } from '../../infrastructure/middleware/AuthenticationMiddleware'
-import { userPictureMiddleware } from '../../infrastructure/middleware/uploadsMiddleware/userPictureMiddleware'
+import { ResponseHandler, RouteMethod, statusCodes, ErrorHandler } from '../../infrastructure/http/routes'
+import { UserController, UserDTO, UserResponses } from './user.providers'
+import { ensureAuth } from '../../infrastructure/middleware/AuthMiddle'
+import { userPictureMiddle, bulkLoadMiddle } from '../../infrastructure/middleware/uploads'
 
 class UserRoutes {
   readonly api: Router = Router()
@@ -19,8 +17,14 @@ class UserRoutes {
 
     // Upload Picture
     this.api.put('/user-picture/:username',
-      [ensureAuth, userPictureMiddleware],
+      [ensureAuth, userPictureMiddle],
       this.upload
+    )
+
+    // Add members
+    this.api.put('/bulk-load',
+      [ensureAuth, bulkLoadMiddle],
+      this.bulkLoad
     )
 
     // List of members
@@ -43,6 +47,9 @@ class UserRoutes {
   public upload: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
+        if (!req.file)
+          throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.fileExt)
+
         const user = await UserController.upload({
           userLogged: req.user as UserDTO,
           username: req.params.username,
@@ -55,6 +62,23 @@ class UserRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(user, false))
+      }, req, res
+    })
+
+  public bulkLoad: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        if (!req.file)
+          throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.fileExt)
+
+        const bulkLoadProcess = await UserController.bulkLoad({
+          userLogged: req.user as UserDTO,
+          file: req.file.path,
+        })
+        if (bulkLoadProcess)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(bulkLoadProcess, false))
       }, req, res
     })
 

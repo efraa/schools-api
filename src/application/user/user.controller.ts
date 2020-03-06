@@ -26,6 +26,11 @@ class UserController {
     status?: string,
     role?: string
   }) => await UserService.listOfmembers(query)
+
+  public bulkLoad = async (query: {
+    userLogged: UserDTO,
+    file: string,
+  }) => await UserService.bulkLoad(query)
 }
 
 export default new UserController()

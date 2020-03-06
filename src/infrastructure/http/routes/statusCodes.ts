@@ -6,4 +6,5 @@ export const statusCodes = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   INTERNAL_ERROR: 500,
+  UNPROCESSABLE: 422,
 }

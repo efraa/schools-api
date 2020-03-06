@@ -2,6 +2,7 @@ import { UserDTO, UserResponses, UserRepository, UserMapper, User } from './user
 import { ErrorHandler, statusCodes } from '../../infrastructure/http/routes'
 import { deleteUploadedFiles, cloud, Roles } from '../../infrastructure/utils'
 import { FindOperator, Not, Like } from 'typeorm'
+import { Worker } from '../../../workers'
 
 class UserService {
   public get = async (username: string, userLogged: UserDTO) : Promise<UserDTO> => {
@@ -30,7 +31,7 @@ class UserService {
     }
   }> => {
     const { username, userLogged, picture } = props
-    if (userLogged.username === username || userLogged.role === Roles.School) {
+    if (userLogged.username === username) {
       const user = await UserRepository.getByUsername({ username, codeSchool: userLogged.codeSchool })
       if (user) {
 
@@ -57,6 +58,24 @@ class UserService {
           picture: changePicture.picture
         }
       }
+    }
+
+    throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.unauthorized)
+  }
+
+  public bulkLoad = async (props: {
+    userLogged: UserDTO,
+    file: string,
+  }) => {
+    const { userLogged, file } = props
+    if (userLogged.role === Roles.School) {
+      await Worker.BulkLoadJob.add({
+        file,
+        userLogged
+      })
+      // Emit Socket
+
+      return UserResponses.bulkLoad
     }
 
     throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.unauthorized)

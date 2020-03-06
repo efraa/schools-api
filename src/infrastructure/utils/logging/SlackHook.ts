@@ -22,8 +22,8 @@ const slackOptions: any = {
         text: {
           type: "mrkdwn",
           text: data.level === 'error' ?
-            ":fire: Hi Team, we have problems, an uncontrolled error has occurred in the API Server, this is what happened: :fire:"
-            : ":coffee: Hi Team, we have a bit of movement in the API Server, this is what happened:"
+            ":fire: Hi Team, we have problems, an uncontrolled error has occurred in API Server, this is what happened: :fire:"
+            : ":coffee: Hi Team, we have a bit of movement in API Server, this is what happened:"
         }
       },
       {

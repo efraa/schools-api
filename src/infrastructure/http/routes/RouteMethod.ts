@@ -9,7 +9,7 @@ export class RouteMethod {
       errors.array().map(err =>
         Logger.info(`${err.param.toUpperCase()} VALIDATOR ERROR: ${err.msg}`))
       return res
-        .status(statusCodes.BAD_REQUEST)
+        .status(statusCodes.UNPROCESSABLE)
         .send(ResponseHandler.build(errors.array(), false))
     }
 

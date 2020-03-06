@@ -26,16 +26,7 @@ const signup = [
     .trim()
     .not().isIn(passwords() as string[])
     .withMessage(validator.commonPass)
-    .isLength({ min: 6 }),
-  checkSchema({
-    'role': {
-      in: 'body',
-      matches: {
-        options: [/\b(?:school|teacher|student|owner)\b/],
-        errorMessage: validator.role
-      }
-    }
-  })
+    .isLength({ min: 6 })
 ]
 
 const authentication = [
@@ -77,7 +68,19 @@ const resetPass = [
 ]
 
 export const validators = {
-  signup,
+  signup: [
+    ...signup,
+    checkSchema({
+      'role': {
+        in: 'body',
+        matches: {
+          options: [/\b(?:school|teacher|student|owner)\b/],
+          errorMessage: validator.role
+        }
+      }
+    })
+  ],
+  bullLoad: signup,
   authentication,
   forgotPassword,
   forgotPassExpire,

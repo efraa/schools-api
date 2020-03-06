@@ -16,17 +16,11 @@ const storage = multer.diskStorage({
   }
 })
 
-export const userPictureMiddleware = multer({
-  storage,
-  limits: {
-    fileSize: 25000000
-  },
-  fileFilter: (req, file, cb) => {
-    const onlyExtension = /jpeg|png|jpg|PNG|JPG/
-    const mimetype = onlyExtension.test(file.mimetype)
-    const fileExtension = onlyExtension.test(path.extname(file.originalname))
+const validateExt = (extensions: RegExp, mimetype: string, ext: string) =>
+  extensions.test(mimetype) && extensions.test(path.extname(ext)) ? true : false
 
-    if (mimetype && fileExtension) cb(null, true)
-    else cb(null, false)
-  }
-}).single('picture')
+export {
+  storage,
+  multer,
+  validateExt
+}
