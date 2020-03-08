@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Configuration as config } from '../config/Configuration'
-import { Routing } from './infrastructure/http/routes'
 import express, { Application } from 'express'
+import { AppContext } from './appContext'
 import compression from 'compression'
 import { Worker } from '../workers'
 import BullBoard from 'bull-board'
@@ -24,9 +24,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-// Routes
-app.use(Routing.build())
+const initialize = () =>
+  new AppContext(config.server.prefixRoutes as string, app).init()
 
 export {
-  app
+  app,
+  initialize,
 }

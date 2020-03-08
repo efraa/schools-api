@@ -22,13 +22,13 @@
   },
   "exclude": [
     "**/node_modules/*",
-    "**/src/**/*.spec.ts",
+    "**/*.spec.ts",
     ".vscode/*"
   ],
   "include": [
     "src/**/*",
     "config/*",
     "workers/**/*",
-    "main.ts"
+    "__tests__/**/*"
   ]
 }

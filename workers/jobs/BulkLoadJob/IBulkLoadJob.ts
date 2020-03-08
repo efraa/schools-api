@@ -1,8 +1,8 @@
-import { UserDTO } from '../../../src/application/user/user.providers'
+// import { UserDTO } from '../../../src/application/user/user.providers'
 
 export interface IBulkLoadJob {
   file: string,
-  userLogged: UserDTO,
+  // userLogged: UserDTO,
 }
 
 export interface IUser {

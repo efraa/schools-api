@@ -1,5 +1,5 @@
 import { Response, NextFunction, Request } from 'express'
-import { ResponseHandler, statusCodes } from '../http/routes'
+import { ResponseHandler, statusCodes } from '../routes'
 import { JWToken } from '../utils/JWToken'
 import { Logger } from '../utils/logging/Logger'
 

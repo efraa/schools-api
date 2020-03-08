@@ -1,9 +1,9 @@
 import csv from 'csv-parser'
 import fs from 'fs'
 import { IUser } from '../IBulkLoadJob'
-import { UserDTO } from '../../../../src/application/user/user.providers'
+// import { UserDTO } from '../../../../src/application/user/user.providers'
 
-export const perUserInFile = async (file: string, userLogged: UserDTO, cb: Function) => {
+export const perUserInFile = async (file: string, userLogged: any, cb: Function) => {
   const users: { body: IUser }[] = []
 
   await fs.createReadStream(file)

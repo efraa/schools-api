@@ -1,9 +1,8 @@
-import { DatabaseConnection } from './database/DatabaseConnection'
 import { Logger } from './infrastructure/utils/logging/Logger'
 import http, { Server } from 'http'
 import { Events } from './socket'
 import socket from 'socket.io'
-import { app } from './app'
+import { app, initialize } from './app'
 
 // HTTP Server
 const server: Server = http.createServer(app)
@@ -12,16 +11,12 @@ const server: Server = http.createServer(app)
 const io = socket(server)
 
 try {
-  // Lauch Server
-  server.listen(app.get('port'), async () => {
-    const connected = await DatabaseConnection
-      .connect()
-
-    if (connected) {
-      console.log(`[DATABASE]: connected on host: ${process.env.DB_HOST}`)
+  // Lauch App and Connected to Database
+  initialize().then(() => {
+    server.listen(app.get('port'), () => {
       console.log('[API SERVER]: running on port', app.get('port'))
       io.on(Events.CONNECTION, () => console.log('[SOCKER SERVER]: a new client connected'))
-    }
+    })
   })
 } catch (error) {
   Logger.error(error)

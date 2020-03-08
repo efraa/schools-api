@@ -1,6 +1,6 @@
 # Schools API 🚀
 
-This is the core of Schools application, built with TypeScript and served by docker.
+Core of Schools Management Application, built with TypeScript and served by docker.
 
 ### API Docs
 ---

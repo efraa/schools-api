@@ -1,7 +1,7 @@
 {
   "name": "schools-api",
   "version": "0.2.3",
-  "description": "Created with NodeJS.",
+  "description": "Core of Schools Management Application, built with TypeScript and served by docker.",
   "main": "build/main.js",
   "scripts": {
     "start": "node build/src/server.js",

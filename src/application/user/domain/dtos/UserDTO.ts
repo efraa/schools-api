@@ -29,20 +29,8 @@ export class UserDTO {
   role: string
 
   @MapProp()
+  status: string
+
+  @MapProp()
   codeSchool: string
-
-  @MapProp()
-  isGoogle: boolean
-
-  @MapProp()
-  isVerified: boolean
-
-  @MapProp()
-  isPremium: boolean
-
-  @MapProp()
-  isActive: boolean
-
-  @MapProp()
-  onBoarding: boolean
 }
