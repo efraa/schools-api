@@ -23,17 +23,12 @@ export class UserService {
       return this._UserMapper.mapToDTO(user)
   }
 
-  public async getUserByUsernameInSchool(username: string, codeSchool: string): Promise<UserDTO|undefined> {
-    const user = await this._UserRepository.getByUsernameInSchool(username, codeSchool)
-    if (user)
-      return this._UserMapper.mapToDTO(user)
-  }
+  public async create(userEntity: User): Promise<User> {
+    let user = await this._UserRepository.save(userEntity)
+    user.generateCodeSchool(user.uuid)
+    user = await this._UserRepository.save(user)
 
-  public async create(user: User): Promise<UserDTO> {
-    let created = await this._UserRepository.save(user)
-    created.generateCodeSchool(created.uuid)
-    created = await this._UserRepository.save(created)
-    return this._UserMapper.mapToDTO(created)
+    return user
   }
 
   public async getUser(userId: number): Promise<UserDTO|undefined> {

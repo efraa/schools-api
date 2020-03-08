@@ -1,7 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToOne } from 'typeorm'
 import { Roles, UserStatus } from '../../application/user/providers/UserProvider'
 import { lowercase, encode, capitalize } from '../transformers'
 import bcrypt from 'bcryptjs'
+
+// Relations
+import { School } from './School'
 
 @Entity({ name: 'users' })
 export class User {
@@ -66,6 +69,9 @@ export class User {
     nullable: true
   })
   codeSchool: string
+
+  @OneToOne(type => School, school => school.user)
+  school: School | null
 
   comparePassword = async (password: string): Promise<boolean> =>
     await bcrypt.compareSync(password, this.password)

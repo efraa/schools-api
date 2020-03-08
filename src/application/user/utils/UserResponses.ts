@@ -13,4 +13,8 @@ export const UserResponses = {
   EMAIL_EXISTS: 'Oops! Email is already registered',
   STATUS: 'Oops! This user account is ',
   DELETE: 'the user has been removed.',
+  SUBJECT: {
+    PASSWORD_RESET: 'Password reset request',
+    WELCOME_SIGNUP_AS_SCHOOL: 'Welcome to Schools!, We\'re Happy to have you with us.'
+  },
 }
