@@ -19,7 +19,7 @@ export class UserRoutes {
   public signupAsSchool: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
-        const user = await this._UserController.signupAsSchool(req.body)
+        const user = await this._UserController.signupAsSchool(req.clientInfo as ClientInfo, req.body)
         if (user)
           return res
             .status(statusCodes.CREATE)

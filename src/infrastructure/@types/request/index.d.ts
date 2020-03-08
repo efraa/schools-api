@@ -5,6 +5,7 @@ declare global {
     export interface Request {
       user?: UserDTO
       io?: SocketIO.Server
+      clientInfo?: ClientInfo
     }
   }
 }

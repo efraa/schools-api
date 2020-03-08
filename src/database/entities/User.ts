@@ -1,10 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToOne } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToOne, OneToMany } from 'typeorm'
 import { Roles, UserStatus } from '../../application/user/providers/UserProvider'
 import { lowercase, encode, capitalize } from '../transformers'
 import bcrypt from 'bcryptjs'
 
 // Relations
 import { School } from './School'
+import { Session } from './Session'
+import { UserVolatite } from './UserVolatile'
 
 @Entity({ name: 'users' })
 export class User {
@@ -72,6 +74,12 @@ export class User {
 
   @OneToOne(type => School, school => school.user)
   school: School | null
+
+  @OneToOne(type => UserVolatite, volatile => volatile.user)
+  volatile: UserVolatite | null
+
+  @OneToMany(type => Session, session => session.user)
+  sessions: Session[]
 
   comparePassword = async (password: string): Promise<boolean> =>
     await bcrypt.compareSync(password, this.password)

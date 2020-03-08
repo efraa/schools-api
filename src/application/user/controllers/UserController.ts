@@ -1,17 +1,18 @@
 import { UserService, Roles, UserResponses } from '../providers/UserProvider'
+import { SessionDTO, SessionService } from '../providers/SessionProvider'
 import { UserPayload } from '../utils/UserPayload'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import { Worker } from '../../../../workers'
-import { JWToken } from '../../../infrastructure/utils'
 import { SchoolController } from './SchoolController'
 
 export class UserController {
   constructor(
     private _UserService: UserService,
+    private _SessionService: SessionService,
     private _SchoolController: SchoolController,
   ) {}
 
-  public async signupAsSchool(userPayload: UserPayload): Promise<{
+  public async signupAsSchool(device: ClientInfo, userPayload: UserPayload): Promise<{
     token: string
   }> {
     const user = await this._UserService.mapToEntity({ ...userPayload, role: Roles.SCHOOL})
@@ -38,6 +39,6 @@ export class UserController {
       })
     }
 
-    return await JWToken.generateToken(created)
+    return await this._SessionService.create(device, created)
   }
 }
