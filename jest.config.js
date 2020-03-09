@@ -18,7 +18,7 @@ module.exports = {
   testEnvironment: 'node',
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ['__tests__/**/*.spec.ts'],
+  testMatch: ['**/*.spec.ts'],
 
   transform: {
     '^.+\\.ts$': 'ts-jest'
