@@ -23,4 +23,5 @@ export const UserResponses = {
   },
   EMAIL_SENT: 'An email has been sent to your account.',
   FORGOT_PASS_CHANGED: 'Your password has been changed successfully.',
+  INVALID_FILE_EXT: 'Oops! The file or its extension is incorrect.'
 }

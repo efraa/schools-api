@@ -1,6 +1,6 @@
-import { ResponseHandler, RouteMethod, statusCodes } from '../../../infrastructure/routes'
+import { ResponseHandler, RouteMethod, statusCodes, ErrorHandler } from '../../../infrastructure/routes'
 import { Router, Response, RequestHandler, Request } from 'express'
-import { UserController, validators, UserDTO } from '../providers/UserProvider'
+import { UserController, validators, UserDTO, UserResponses } from '../providers/UserProvider'
 import { ensureAuth } from '../../../infrastructure/middleware/AuthMiddle'
 import { userPictureMiddle } from '../../../infrastructure/middleware/uploads'
 
@@ -110,6 +110,9 @@ export class UserRoutes {
   public upload: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
+        if (!req.file)
+          throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.INVALID_FILE_EXT)
+
         const uploaded = await this._UserController.upload({
           userLogged: req.user as UserDTO,
           id: parseInt(req.params.id),
