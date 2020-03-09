@@ -1,7 +1,8 @@
-import { UserDTO, UserRepository, UserMapper, UserResponses, UserStatus } from '../providers/UserProvider'
+import { UserDTO, UserRepository, UserMapper, UserResponses } from '../providers/UserProvider'
 import { User } from 'src/database/entities/User'
 import { UserPayload } from '../utils/UserPayload'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
+import crypto from 'crypto'
 
 export class UserService {
   constructor(
@@ -60,5 +61,52 @@ export class UserService {
     }
 
     throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.ACCOUNT_NOT_FOUND)
+  }
+
+  public async forgotPassword(email: string): Promise<{
+    token: string,
+    user: User|undefined
+  }> {
+    const user = await this._UserRepository.getByEmail(email)
+    if (!user)
+      throw ErrorHandler.build(statusCodes.NOT_FOUND, UserResponses.ACCOUNT_NOT_FOUND)
+
+    // Generate token
+    const token: string = crypto.randomBytes(20).toString('hex')
+    const forgotToken = crypto.createHash('sha256').update(token).digest('hex')
+    const expireDate = new Date()
+    // Increase 60 minutes to the current time
+    expireDate.setMinutes(expireDate.getMinutes() + 60)
+    const updated = await this._UserRepository.updateUser(user, {
+      forgotToken, forgotExpire: expireDate
+    })
+    if (updated)
+      await this._UserRepository.save(updated)
+
+    return {
+      token: forgotToken,
+      user: updated
+    }
+  }
+
+  public checkPasswordExpire = async (token: string): Promise<User> => {
+    const user = await this._UserRepository.getByForgotToken(token)
+    if (!user)
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.USER_NOT_FOUND)
+
+    return user
+  }
+
+  public async resetPassword(token: string, password: string) {
+    const user = await this.checkPasswordExpire(token)
+    const updated = await this._UserRepository.updateUser(user, {
+      forgotToken: null,
+      forgotExpire: null,
+      password: user.encryptPassword(password)
+    })
+    if (updated)
+      await this._UserRepository.save(updated)
+
+    return UserResponses.FORGOT_PASS_CHANGED
   }
 }

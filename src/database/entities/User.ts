@@ -6,7 +6,6 @@ import bcrypt from 'bcryptjs'
 // Relations
 import { School } from './School'
 import { Session } from './Session'
-import { UserVolatite } from './UserVolatile'
 
 @Entity({ name: 'users' })
 export class User {
@@ -72,11 +71,34 @@ export class User {
   })
   codeSchool: string
 
+  @Column({
+    default: false
+  })
+  isGoogle: boolean
+
+  @Column({
+    default: false
+  })
+  isPremium: boolean
+
+  @Column({
+    default: true
+  })
+  onBoarding: boolean
+
+  @Column({
+    nullable: true,
+    unique: true
+  })
+  forgotToken: string
+
+  @Column({
+    nullable: true
+  })
+  forgotExpire: Date
+
   @OneToOne(type => School, school => school.user)
   school: School | null
-
-  @OneToOne(type => UserVolatite, volatile => volatile.user)
-  volatile: UserVolatite | null
 
   @OneToMany(type => Session, session => session.user)
   sessions: Session[]
@@ -85,8 +107,9 @@ export class User {
     await bcrypt.compareSync(password, this.password)
 
   @BeforeInsert()
-  async encryptPassword(): Promise<string> {
-    const encrypted = await bcrypt.hashSync(this.password, 10)
+  async encryptPassword(password?: string): Promise<string> {
+    const pass = password ? password : this.password
+    const encrypted = await bcrypt.hashSync(pass, 10)
     this.password = encrypted
     return encrypted
   }

@@ -1,4 +1,4 @@
-import { Repository, EntityRepository, FindManyOptions } from 'typeorm'
+import { Repository, EntityRepository, FindManyOptions, MoreThanOrEqual } from 'typeorm'
 import { User } from '../../../database/entities/User'
 
 @EntityRepository(User)
@@ -20,4 +20,10 @@ export class UserRepository extends Repository<User> {
 
   public delete = async (id: number) =>
     await this.manager.getRepository(User).delete({ id })
+
+  public getByForgotToken = async (token: string): Promise<User|undefined> =>
+    await this.manager.getRepository(User).findOne({
+      forgotToken: token,
+      forgotExpire: MoreThanOrEqual(new Date())
+    })
 }

@@ -4,6 +4,7 @@ import { UserPayload } from '../utils/UserPayload'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import { Worker } from '../../../../workers'
 import { SchoolController } from './SchoolController'
+import { Configuration as config } from '../../../../config/Configuration'
 
 export class UserController {
   constructor(
@@ -55,4 +56,38 @@ export class UserController {
         return session
     }
   }
+
+  public async forgotPassword(email: string) {
+    const { token, user } = await this._UserService.forgotPassword(email)
+    if (token && user) {
+      await Worker.EmailJob.add({
+        to: email,
+        subject: UserResponses.SUBJECT.PASSWORD_RESET,
+        template: 'forgotPassword',
+        data: {
+          name: user.name,
+          url: `${config.forgotPass.url}/reset-password/${token}`
+        }
+      })
+
+      return UserResponses.EMAIL_SENT
+    }
+  }
+
+  // Verify that the forgotten token password has not yet expired.
+  public checkPasswordExpire = async (token: string) => {
+    const user = await this._UserService.checkPasswordExpire(token)
+    const { name, lastname, username, picture } = user
+
+    return {
+      name,
+      lastname,
+      username,
+      picture,
+    }
+  }
+
+  // Receive the token and the new password and return confirmation message.
+  public resetPassword = async (token: string, password: string): Promise<string> =>
+    await this._UserService.resetPassword(token, password)
 }

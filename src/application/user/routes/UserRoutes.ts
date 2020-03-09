@@ -20,6 +20,27 @@ export class UserRoutes {
       this.login
     )
 
+    // Forgot Password
+    this.api.post(
+      '/forgot-password',
+      validators.forgotPassword,
+      this.forgotPassword
+    )
+
+    // Check Password Expire
+    this.api.get(
+      '/forgot-password-expire/:token',
+      validators.forgotPassExpire,
+      this.checkPasswordExpire
+    )
+
+    // Reset Password
+    this.api.put(
+      '/reset-password/:token',
+      validators.resetPass,
+      this.resetPassword
+    )
+
     return this.api
   }
 
@@ -42,6 +63,39 @@ export class UserRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(session, false))
+      }, req, res
+    })
+
+  public forgotPassword: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const response = await this._UserController.forgotPassword(req.body.email)
+        if (response)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(response))
+      }, req, res
+    })
+
+  public checkPasswordExpire: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const response = await this._UserController.checkPasswordExpire(req.params.token)
+        if (response)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(response, false))
+      }, req, res
+    })
+
+  public resetPassword: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const response = await this._UserController.resetPassword(req.params.token, req.body.password)
+        if (response)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(response))
       }, req, res
     })
 }

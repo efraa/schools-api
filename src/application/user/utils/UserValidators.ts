@@ -1,4 +1,4 @@
-import { check } from 'express-validator'
+import { check, param } from 'express-validator'
 import { UserResponses } from './UserResponses'
 import { getCommonPassword as passwords } from '../../../infrastructure/utils'
 
@@ -32,7 +32,37 @@ const login = [
     })
 ]
 
+const forgotPassword = [
+  check('email', VALIDATOR.EMAIL)
+    .isEmail()
+    .normalizeEmail({ all_lowercase: true }),
+]
+
+const forgotPassExpire = [
+  param('token', VALIDATOR.TOKEN)
+    .isLength({
+      min: 8
+    })
+]
+
+const resetPass = [
+  check('password', VALIDATOR.PASSWORD)
+    .trim()
+    .not().isIn(passwords() as string[])
+    .withMessage(VALIDATOR.COMMON_PASSWORD)
+    .isLength({
+      min: 6
+    }),
+  param('token', VALIDATOR.TOKEN)
+    .isLength({
+      min: 10
+    })
+]
+
 export const validators = {
   signup,
-  login
+  login,
+  forgotPassword,
+  forgotPassExpire,
+  resetPass,
 }
