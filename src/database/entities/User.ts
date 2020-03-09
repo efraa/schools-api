@@ -97,4 +97,7 @@ export class User {
 
     return this
   }
+
+  isActive = (): boolean =>
+    this.status !== UserStatus.ACTIVE && this.status !== UserStatus.UNVERIFIED ? false : true
 }

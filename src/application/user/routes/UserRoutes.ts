@@ -13,6 +13,13 @@ export class UserRoutes {
       this.signupAsSchool
     )
 
+    // Login
+    this.api.post(
+      '/login',
+      validators.login,
+      this.login
+    )
+
     return this.api
   }
 
@@ -24,6 +31,17 @@ export class UserRoutes {
           return res
             .status(statusCodes.CREATE)
             .send(ResponseHandler.build(user, false))
+      }, req, res
+    })
+
+  public login: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const session = await this._UserController.login(req.clientInfo as ClientInfo, req.body)
+        if (session)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(session, false))
       }, req, res
     })
 }

@@ -21,6 +21,18 @@ const signup = [
     .isLength({ min: 6 })
 ]
 
+const login = [
+  check('emailOrUsername', VALIDATOR.EMAIL_OR_USERNAME)
+    .isLength({
+      min: 3
+    }),
+  check('password', VALIDATOR.PASSWORD)
+    .isLength({
+      min: 6
+    })
+]
+
 export const validators = {
   signup,
+  login
 }

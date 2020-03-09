@@ -1,5 +1,5 @@
 import { UserService, Roles, UserResponses } from '../providers/UserProvider'
-import { SessionDTO, SessionService } from '../providers/SessionProvider'
+import { SessionService } from '../providers/SessionProvider'
 import { UserPayload } from '../utils/UserPayload'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import { Worker } from '../../../../workers'
@@ -14,7 +14,7 @@ export class UserController {
 
   public async signupAsSchool(device: ClientInfo, userPayload: UserPayload): Promise<{
     token: string
-  }> {
+  }|undefined> {
     const user = await this._UserService.mapToEntity({ ...userPayload, role: Roles.SCHOOL})
     const emailExists = await this._UserService.getUserByEmail(user.email as string)
     const usernameExists = await this._UserService.getUserByUsername(user.username)
@@ -39,6 +39,20 @@ export class UserController {
       })
     }
 
-    return await this._SessionService.create(device, created)
+    const session = await this._SessionService.create(device, created)
+    if (session)
+      return session
+  }
+
+  public async login(device: ClientInfo, userPayload: {
+    emailOrUsername: string,
+    password: string
+  }) {
+    const user = await this._UserService.login(userPayload.emailOrUsername, userPayload.password)
+    if (user && user.id) {
+      const session = await this._SessionService.create(device, user)
+      if (session)
+        return session
+    }
   }
 }

@@ -1,6 +1,7 @@
-import { UserDTO, UserRepository, UserMapper } from '../providers/UserProvider'
+import { UserDTO, UserRepository, UserMapper, UserResponses, UserStatus } from '../providers/UserProvider'
 import { User } from 'src/database/entities/User'
 import { UserPayload } from '../utils/UserPayload'
+import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 
 export class UserService {
   constructor(
@@ -40,5 +41,24 @@ export class UserService {
   public async getAll(query: object): Promise<UserDTO[]> {
     const users = await this._UserRepository.getAll(query)
     return this._UserMapper.mapListToDTO(users)
+  }
+
+  public async login(emailOrUsername: string, password: string): Promise<User> {
+    const emailExists = await this._UserRepository.getByEmail(emailOrUsername)
+    const usernameExists = await this._UserRepository.getByUsername(emailOrUsername)
+    const user = emailExists || usernameExists
+
+    if (user && user.id) {
+      if (!user.isActive())
+        throw ErrorHandler.build(statusCodes.UNAUTHORIZED, `${UserResponses.STATUS} ${user.status}`)
+
+      const matchPassword = await user.comparePassword(password)
+      if (!matchPassword)
+        throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.BAD_CREDENTIALS)
+
+      return user
+    }
+
+    throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.ACCOUNT_NOT_FOUND)
   }
 }
