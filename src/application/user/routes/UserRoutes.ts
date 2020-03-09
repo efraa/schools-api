@@ -1,6 +1,8 @@
 import { ResponseHandler, RouteMethod, statusCodes } from '../../../infrastructure/routes'
 import { Router, Response, RequestHandler, Request } from 'express'
-import { UserController, validators } from '../providers/UserProvider'
+import { UserController, validators, UserDTO } from '../providers/UserProvider'
+import { ensureAuth } from '../../../infrastructure/middleware/AuthMiddle'
+import { userPictureMiddle } from '../../../infrastructure/middleware/uploads'
 
 export class UserRoutes {
   constructor(private api: Router, private _UserController: UserController) {}
@@ -39,6 +41,12 @@ export class UserRoutes {
       '/reset-password/:token',
       validators.resetPass,
       this.resetPassword
+    )
+
+    // Upload Picture
+    this.api.put('/:id/picture',
+      [ensureAuth, userPictureMiddle],
+      this.upload
     )
 
     return this.api
@@ -96,6 +104,24 @@ export class UserRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(response))
+      }, req, res
+    })
+
+  public upload: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const uploaded = await this._UserController.upload({
+          userLogged: req.user as UserDTO,
+          id: parseInt(req.params.id),
+          picture: {
+            path: req.file.path,
+            name: req.file.filename
+          }
+        })
+        if (uploaded)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(uploaded, false))
       }, req, res
     })
 }

@@ -3,6 +3,7 @@ import { User } from 'src/database/entities/User'
 import { UserPayload } from '../utils/UserPayload'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import crypto from 'crypto'
+import { cloud, deleteUploadedFiles } from '../../../infrastructure/utils'
 
 export class UserService {
   constructor(
@@ -108,5 +109,38 @@ export class UserService {
       await this._UserRepository.save(updated)
 
     return UserResponses.FORGOT_PASS_CHANGED
+  }
+
+  public async upload(id: number, codeSchool: string, picture: { path: string, name: string }) {
+    const user = await this._UserRepository.getByIdInSchool(id, codeSchool)
+    if (user) {
+      const uploaded = await cloud.upload(picture.path, {
+        folder: 'users',
+        width: 200,
+        crop: 'limit',
+        format: 'jpg'
+      })
+
+      if (user.picture && user.picture.id)
+        await cloud.destroy(user.picture.id)
+
+      const updatePicture = await this._UserRepository.updateUser(user, {
+        picture: {
+          url: uploaded.secure_url,
+          id: uploaded.public_id
+        }
+      })
+      if (updatePicture) {
+        await this._UserRepository.save(updatePicture)
+        await deleteUploadedFiles(picture.name)
+
+        return {
+          picture: updatePicture.picture
+        }
+      }
+    }
+
+    await deleteUploadedFiles(picture.name)
+    throw ErrorHandler.build(statusCodes.NOT_FOUND, UserResponses.USER_NOT_FOUND)
   }
 }

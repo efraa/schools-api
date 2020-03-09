@@ -1,4 +1,4 @@
-import { UserService, Roles, UserResponses } from '../providers/UserProvider'
+import { UserService, Roles, UserResponses, UserDTO } from '../providers/UserProvider'
 import { SessionService } from '../providers/SessionProvider'
 import { UserPayload } from '../utils/UserPayload'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
@@ -90,4 +90,20 @@ export class UserController {
   // Receive the token and the new password and return confirmation message.
   public resetPassword = async (token: string, password: string): Promise<string> =>
     await this._UserService.resetPassword(token, password)
+
+  public async upload(props: {
+    id: number,
+    userLogged: UserDTO,
+    picture: {
+      path: string,
+      name: string,
+    }
+  }) {
+    const { id, userLogged, picture } = props
+    if (userLogged.id === id || userLogged.role === Roles.SCHOOL) {
+      return await this._UserService.upload(id, userLogged.codeSchool, picture)
+    }
+
+    throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.UNAUTHORIZED)
+  }
 }

@@ -12,6 +12,9 @@ export class UserRepository extends Repository<User> {
   public getByEmail = async (email: string): Promise<User|undefined> =>
     await this.manager.getRepository(User).findOne({ email })
 
+  public getByIdInSchool = async (id: number, codeSchool: string): Promise<User|undefined> =>
+    await this.manager.getRepository(User).findOne({ id, codeSchool })
+
   public updateUser = async (user: User, updates: any): Promise<User|undefined> =>
     await this.manager.getRepository(User).merge(user, updates)
 
