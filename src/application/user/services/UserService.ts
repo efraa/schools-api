@@ -1,6 +1,5 @@
 import { UserDTO, UserRepository, UserMapper, UserResponses } from '../providers/UserProvider'
 import { User } from 'src/database/entities/User'
-import { UserPayload } from '../utils/UserPayload'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import crypto from 'crypto'
 import { cloud, deleteUploadedFiles } from '../../../infrastructure/utils'
@@ -20,35 +19,20 @@ export class UserService {
       return this._UserMapper.mapToDTO(user)
   }
 
+  public getUserById = async (id: number) =>
+    await this._UserRepository.getById(id)
+
   public async getUserByUsername(username: string): Promise<UserDTO|undefined> {
     const user = await this._UserRepository.getByUsername(username)
     if (user)
       return this._UserMapper.mapToDTO(user)
   }
 
-  public async create(userEntity: User): Promise<User> {
-    let user = await this._UserRepository.save(userEntity)
-    user.generateCodeSchool(user.uuid)
-    user = await this._UserRepository.save(user)
-
-    return user
-  }
-
-  public async getUser(userId: number): Promise<UserDTO|undefined> {
-    const user = await this._UserRepository.findOne({ id: userId })
-    if (user)
-      return this._UserMapper.mapToDTO(user)
-  }
-
-  public async getAll(query: object): Promise<UserDTO[]> {
-    const users = await this._UserRepository.getAll(query)
-    return this._UserMapper.mapListToDTO(users)
-  }
+  public create = async (userEntity: User): Promise<User> =>
+    await this._UserRepository.save(userEntity)
 
   public async login(emailOrUsername: string, password: string): Promise<User> {
-    const emailExists = await this._UserRepository.getByEmail(emailOrUsername)
-    const usernameExists = await this._UserRepository.getByUsername(emailOrUsername)
-    const user = emailExists || usernameExists
+    const user = await this._UserRepository.getByEmailOrUsername(emailOrUsername)
 
     if (user && user.id) {
       if (!user.isActive())
@@ -111,8 +95,7 @@ export class UserService {
     return UserResponses.FORGOT_PASS_CHANGED
   }
 
-  public async upload(id: number, codeSchool: string, picture: { path: string, name: string }) {
-    const user = await this._UserRepository.getByIdInSchool(id, codeSchool)
+  public async upload(user: User, picture: { path: string, name: string }) {
     if (user) {
       const uploaded = await cloud.upload(picture.path, {
         folder: 'users',

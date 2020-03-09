@@ -5,9 +5,6 @@ import { getCommonPassword as passwords } from '../../../infrastructure/utils'
 const { VALIDATOR } = UserResponses
 
 const signup = [
-  check('name', VALIDATOR.NAME)
-    .trim()
-    .isLength({ min: 3 }),
   check('email', VALIDATOR.EMAIL)
     .isEmail()
     .normalizeEmail({ all_lowercase: true }),

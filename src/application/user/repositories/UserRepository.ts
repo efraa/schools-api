@@ -3,17 +3,14 @@ import { User } from '../../../database/entities/User'
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  public getByUsernameInSchool = async (username: string, codeSchool: string): Promise<User|undefined> =>
-    await this.manager.getRepository(User).findOne({ username, codeSchool })
+  public getById = async (id: number): Promise<User|undefined> =>
+    await this.manager.getRepository(User).findOne({ id })
 
   public getByUsername = async (username: string): Promise<User|undefined> =>
     await this.manager.getRepository(User).findOne({ username })
 
   public getByEmail = async (email: string): Promise<User|undefined> =>
     await this.manager.getRepository(User).findOne({ email })
-
-  public getByIdInSchool = async (id: number, codeSchool: string): Promise<User|undefined> =>
-    await this.manager.getRepository(User).findOne({ id, codeSchool })
 
   public updateUser = async (user: User, updates: any): Promise<User|undefined> =>
     await this.manager.getRepository(User).merge(user, updates)
@@ -29,4 +26,10 @@ export class UserRepository extends Repository<User> {
       forgotToken: token,
       forgotExpire: MoreThanOrEqual(new Date())
     })
+
+  public getByEmailOrUsername = async (term: string): Promise<User|undefined> =>
+    await this.manager.getRepository(User).createQueryBuilder('user')
+      .where('user.email = :email', { email: term })
+      .orWhere('user.username = :username', { username: term })
+      .getOne()
 }

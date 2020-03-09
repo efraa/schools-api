@@ -1,22 +1,18 @@
-import { UserService, Roles, UserResponses, UserDTO } from '../providers/UserProvider'
-import { SessionService } from '../providers/SessionProvider'
-import { UserPayload } from '../utils/UserPayload'
+import { UserService, UserResponses, UserDTO } from '../providers/UserProvider'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import { Worker } from '../../../../workers'
-import { SchoolController } from './SchoolController'
 import { Configuration as config } from '../../../../config/Configuration'
+import { SessionService } from '../providers/SessionProvider'
+import { User } from 'src/database/entities/User'
 
 export class UserController {
   constructor(
     private _UserService: UserService,
     private _SessionService: SessionService,
-    private _SchoolController: SchoolController,
   ) {}
 
-  public async signupAsSchool(device: ClientInfo, userPayload: UserPayload): Promise<{
-    token: string
-  }|undefined> {
-    const user = await this._UserService.mapToEntity({ ...userPayload, role: Roles.SCHOOL})
+  public async create(device: ClientInfo, userPayload: UserPayload) {
+    const user = await this._UserService.mapToEntity(userPayload)
     const emailExists = await this._UserService.getUserByEmail(user.email as string)
     const usernameExists = await this._UserService.getUserByUsername(user.username)
 
@@ -28,15 +24,11 @@ export class UserController {
 
     const created = await this._UserService.create(user)
     if (created) {
-      await this._SchoolController.create(created)
-
       await Worker.EmailJob.add({
         to: user.email as string,
-        subject: UserResponses.SUBJECT.WELCOME_SIGNUP_AS_SCHOOL,
-        template: 'signupAsSchool',
-        data: {
-          name: user.name
-        }
+        subject: UserResponses.SUBJECT.WELCOME_NEW_USER,
+        template: 'newUser',
+        data: {}
       })
     }
 
@@ -65,7 +57,6 @@ export class UserController {
         subject: UserResponses.SUBJECT.PASSWORD_RESET,
         template: 'forgotPassword',
         data: {
-          name: user.name,
           url: `${config.forgotPass.url}/reset-password/${token}`
         }
       })
@@ -77,13 +68,15 @@ export class UserController {
   // Verify that the forgotten token password has not yet expired.
   public checkPasswordExpire = async (token: string) => {
     const user = await this._UserService.checkPasswordExpire(token)
-    const { name, lastname, username, picture } = user
+    if (user)
+      return {
+        token: user.forgotToken,
+        status: 'active'
+      }
 
     return {
-      name,
-      lastname,
-      username,
-      picture,
+      token,
+      status: 'expired'
     }
   }
 
@@ -100,8 +93,9 @@ export class UserController {
     }
   }) {
     const { id, userLogged, picture } = props
-    if (userLogged.id === id || userLogged.role === Roles.SCHOOL) {
-      return await this._UserService.upload(id, userLogged.codeSchool, picture)
+    if (userLogged.id === id) {
+      const user = await this._UserService.getUserById(id)
+      return await this._UserService.upload(user as User, picture)
     }
 
     throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.UNAUTHORIZED)

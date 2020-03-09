@@ -1,10 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToOne, OneToMany } from 'typeorm'
 import { Roles, UserStatus } from '../../application/user/providers/UserProvider'
-import { lowercase, encode, capitalize } from '../transformers'
+import { lowercase, encode } from '../transformers'
 import bcrypt from 'bcryptjs'
 
 // Relations
 import { School } from './School'
+import { Teacher } from './Teacher'
+import { Student } from './Student'
 import { Session } from './Session'
 
 @Entity({ name: 'users' })
@@ -17,17 +19,6 @@ export class User {
 
   @CreateDateColumn()
   createAt: Date
-
-  @Column({
-    transformer: [capitalize]
-  })
-  name: string
-
-  @Column({
-    nullable: true,
-    transformer: [capitalize]
-  })
-  lastname?: string
 
   @Column({
     unique: true,
@@ -62,29 +53,14 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserStatus,
-    default: UserStatus.UNVERIFIED
+    default: UserStatus.INCOMPLETE
   })
   status: UserStatus
-
-  @Column({
-    nullable: true
-  })
-  codeSchool: string
 
   @Column({
     default: false
   })
   isGoogle: boolean
-
-  @Column({
-    default: false
-  })
-  isPremium: boolean
-
-  @Column({
-    default: true
-  })
-  onBoarding: boolean
 
   @Column({
     nullable: true,
@@ -100,6 +76,12 @@ export class User {
   @OneToOne(type => School, school => school.user)
   school: School | null
 
+  @OneToOne(type => Teacher, teacher => teacher.user)
+  teacher: Teacher | null
+
+  @OneToOne(type => Student, student => student.user)
+  student: Student | null
+
   @OneToMany(type => Session, session => session.user)
   sessions: Session[]
 
@@ -114,13 +96,6 @@ export class User {
     return encrypted
   }
 
-  generateCodeSchool = (uuid: string): User => {
-    if (this.role === Roles.SCHOOL)
-      this.codeSchool = uuid.split('-')[0].slice(1)
-
-    return this
-  }
-
   isActive = (): boolean =>
-    this.status !== UserStatus.ACTIVE && this.status !== UserStatus.UNVERIFIED ? false : true
+    this.status === UserStatus.DELETED || this.status === UserStatus.DISABLED ? false : true
 }

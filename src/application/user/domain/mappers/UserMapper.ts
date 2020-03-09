@@ -10,7 +10,7 @@ export class UserMapper {
     return userDTO
   }
 
-  public mapToEntity = async (from: any): Promise<User> =>
+  public mapToEntity = async (from: UserPayload): Promise<User> =>
     await this._UserRepository.create(from as User)
 
   public mapListToDTO(users: User[]): UserDTO[] {

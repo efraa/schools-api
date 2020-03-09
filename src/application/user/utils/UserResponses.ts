@@ -6,7 +6,8 @@ export const UserResponses = {
     PASSWORD: 'Please, enter a password with 6 or more characters.',
     COMMON_PASSWORD: 'Oops!, your password is not safe, try using not so common words and numbers.',
     EMAIL_OR_USERNAME: 'Please include a valid username or email.',
-    TOKEN: 'The token is required',
+    TOKEN: 'Token is required',
+    ROLE: 'Please, include a valid role.'
   },
   USER_NOT_FOUND: 'Oops! We did not find this user in the organization.',
   ACCOUNT_NOT_FOUND: 'Oops! There is no user with these credentials.',
@@ -18,8 +19,8 @@ export const UserResponses = {
   DELETE: 'the user has been removed.',
   BAD_CREDENTIALS: 'Oops! Something in your credentials is wrong.',
   SUBJECT: {
-    PASSWORD_RESET: 'Password reset request',
-    WELCOME_SIGNUP_AS_SCHOOL: 'Welcome to Schools!, We\'re Happy to have you with us.'
+    PASSWORD_RESET: 'Schools Password Reset',
+    WELCOME_NEW_USER: 'Welcome to Schools!'
   },
   EMAIL_SENT: 'An email has been sent to your account.',
   FORGOT_PASS_CHANGED: 'Your password has been changed successfully.',

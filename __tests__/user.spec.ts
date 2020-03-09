@@ -12,7 +12,7 @@ const userMock = {
   username: 'school-usertest',
   email: 'testuser@schools.com',
   password: 'schoolsPass23',
-  emailOrUsername: 'school-usertest',
+  emailOrUsername: 'testuser@schools.com',
 }
 let token: string = ''
 

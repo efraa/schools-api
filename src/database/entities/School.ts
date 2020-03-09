@@ -1,6 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn } from 'typeorm'
-import { User } from './User'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm'
 import { lowercase, encode, capitalize } from '../transformers'
+
+// Relations
+import { User } from './User'
+import { Teacher } from './Teacher'
+import { Student } from './Student'
+import { Classroom } from './Classroom'
 
 @Entity({ name: 'schools' })
 export class School {
@@ -9,6 +14,11 @@ export class School {
 
   @CreateDateColumn()
   createAt: Date
+
+  @Column({
+    transformer: [capitalize]
+  })
+  name: string
 
   @Column({
     nullable: true,
@@ -53,10 +63,31 @@ export class School {
     long: string,
   }
 
+  @Column({
+    default: false
+  })
+  isPremium: boolean
+
   @Column()
   userId: number
 
+  @OneToMany(type => Classroom, classroom => classroom.school, {
+    onDelete: 'SET NULL'
+  })
+  classrooms: Classroom[]
+
+  @OneToMany(type => Teacher, teacher => teacher.school, {
+    onDelete: 'SET NULL'
+  })
+  teachers: Teacher[]
+
+  @OneToMany(type => Student, student => student.school, {
+    onDelete: 'SET NULL'
+  })
+  students: Student[]
+
   @OneToOne(type => User, user => user.school, {
+    nullable: false,
     cascade: ['update', 'insert']
   })
   @JoinColumn()

@@ -1,6 +1,6 @@
 import { ResponseHandler, RouteMethod, statusCodes, ErrorHandler } from '../../../infrastructure/routes'
 import { Router, Response, RequestHandler, Request } from 'express'
-import { UserController, validators, UserDTO, UserResponses } from '../providers/UserProvider'
+import { UserController, validators, UserDTO, UserResponses, Roles } from '../providers/UserProvider'
 import { ensureAuth } from '../../../infrastructure/middleware/AuthMiddle'
 import { userPictureMiddle } from '../../../infrastructure/middleware/uploads'
 
@@ -36,14 +36,14 @@ export class UserRoutes {
       this.checkPasswordExpire
     )
 
-    // Reset Password
+    // // Reset Password
     this.api.put(
       '/reset-password/:token',
       validators.resetPass,
       this.resetPassword
     )
 
-    // Upload Picture
+    // // Upload Picture
     this.api.put('/:id/picture',
       [ensureAuth, userPictureMiddle],
       this.upload
@@ -55,7 +55,10 @@ export class UserRoutes {
   public signupAsSchool: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
-        const user = await this._UserController.signupAsSchool(req.clientInfo as ClientInfo, req.body)
+        const user = await this._UserController.create(req.clientInfo as ClientInfo, {
+          ...req.body,
+          role: Roles.SCHOOL
+        })
         if (user)
           return res
             .status(statusCodes.CREATE)

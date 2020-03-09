@@ -43,7 +43,6 @@ export class SessionService {
         city
       }
     }
-
     const session = await this._SessionRepository.save(sessionMapped)
     return { token: session.token }
   }

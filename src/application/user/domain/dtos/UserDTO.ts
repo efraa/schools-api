@@ -8,12 +8,6 @@ export class UserDTO {
   uuid: string
 
   @MapProp()
-  name: string
-
-  @MapProp()
-  lastname: string
-
-  @MapProp()
   email: string
 
   @MapProp()
@@ -30,7 +24,4 @@ export class UserDTO {
 
   @MapProp()
   status: string
-
-  @MapProp()
-  codeSchool: string
 }
