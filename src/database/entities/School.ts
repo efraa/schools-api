@@ -6,6 +6,7 @@ import { User } from './User'
 import { Teacher } from './Teacher'
 import { Student } from './Student'
 import { Classroom } from './Classroom'
+import { Requirement } from './Requirement'
 
 @Entity({ name: 'schools' })
 export class School {
@@ -31,6 +32,12 @@ export class School {
     transformer: [lowercase]
   })
   slogan?: string
+
+  @Column({
+    nullable: true,
+    transformer: [lowercase]
+  })
+  type?: string
 
   @Column({
     nullable: true,
@@ -68,8 +75,21 @@ export class School {
   })
   isPremium: boolean
 
+  @Column({
+    type: 'simple-array',
+    nullable: true
+  })
+  phones: string[]
+
   @Column()
   userId: number
+
+  @OneToOne(type => User, user => user.school, {
+    nullable: false,
+    cascade: ['update', 'insert']
+  })
+  @JoinColumn()
+  user: User
 
   @OneToMany(type => Classroom, classroom => classroom.school, {
     onDelete: 'SET NULL'
@@ -86,10 +106,8 @@ export class School {
   })
   students: Student[]
 
-  @OneToOne(type => User, user => user.school, {
-    nullable: false,
-    cascade: ['update', 'insert']
+  @OneToMany(type => Requirement, requirement => requirement.school, {
+    onDelete: 'SET NULL'
   })
-  @JoinColumn()
-  user: User
+  requirements: Requirement[]
 }
