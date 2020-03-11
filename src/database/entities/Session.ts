@@ -1,15 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, JoinColumn, ManyToOne } from 'typeorm'
+import { Entity, Column, JoinColumn, ManyToOne } from 'typeorm'
+import { BaseEntity } from '../BaseEntity'
 import { User } from './User'
 import { lowercase } from '../transformers'
 
 @Entity({ name: 'sessions' })
-export class Session {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @CreateDateColumn()
-  createAt: Date
-
+export class Session extends BaseEntity {
   @Column({
     type: 'simple-json',
     nullable: true

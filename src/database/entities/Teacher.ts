@@ -1,19 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToMany, ManyToOne } from 'typeorm'
+import { Entity, Column, OneToOne, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
+import { BaseEntity } from '../BaseEntity'
 import { lowercase, capitalize } from '../transformers'
 
 // Relations
 import { User } from './User'
 import { School } from './School'
 import { Classroom } from './Classroom'
+import { Schedule } from './Schedule'
+import { Incident } from './Incident'
+import { AnecdotalRecord } from './AnecdotalRecord'
 
 @Entity({ name: 'teachers' })
-export class Teacher {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @CreateDateColumn()
-  createAt: Date
-
+export class Teacher extends BaseEntity {
   @Column({
     transformer: [capitalize]
   })
@@ -46,4 +44,19 @@ export class Teacher {
   @ManyToOne(type => School, { nullable: false, onUpdate: 'CASCADE' })
   @JoinColumn()
   school: School
+
+  @OneToMany(type => Schedule, schedule => schedule.teacher, {
+    onDelete: 'SET NULL'
+  })
+  schedules: Schedule[]
+
+  @OneToMany(type => Incident, incident => incident.teacher, {
+    onDelete: 'SET NULL'
+  })
+  incidents: Incident[]
+
+  @OneToMany(type => AnecdotalRecord, anecdotalRecord => anecdotalRecord.reportedBy, {
+    onDelete: 'SET NULL'
+  })
+  anecdotalRecords: AnecdotalRecord[]
 }

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm'
+import { Entity, Column, OneToOne, JoinColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm'
+import { BaseEntity } from '../BaseEntity'
 import { lowercase } from '../transformers'
 
 // Relations
@@ -8,12 +9,7 @@ import { Schedule } from './Schedule'
 import { Student } from './Student'
 
 @Entity({ name: 'classrooms' })
-export class Classroom {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @CreateDateColumn()
-  createAt: Date
+export class Classroom extends BaseEntity {
 
   @OneToOne(type => Teacher, teacher => teacher.inChargeOfClassroom, {
     cascade: ['update', 'insert']

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToOne, OneToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, OneToOne, OneToMany } from 'typeorm'
+import { BaseEntity } from '../BaseEntity'
 import { Roles, UserStatus } from '../../application/user/providers/UserProvider'
 import { lowercase, encode } from '../transformers'
 import bcrypt from 'bcryptjs'
@@ -8,17 +9,14 @@ import { School } from './School'
 import { Teacher } from './Teacher'
 import { Student } from './Student'
 import { Session } from './Session'
+import { Activity } from './Activity'
+import { Message } from './Message'
+import { Notification } from './Notification'
 
 @Entity({ name: 'users' })
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number
-
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   uuid: string
-
-  @CreateDateColumn()
-  createAt: Date
 
   @Column({
     unique: true,
@@ -82,8 +80,25 @@ export class User {
   @OneToOne(type => Student, student => student.user)
   student: Student | null
 
-  @OneToMany(type => Session, session => session.user)
+  @OneToMany(type => Session, session => session.user, {
+    onDelete: 'SET NULL'
+  })
   sessions: Session[]
+
+  @OneToMany(type => Activity, activity => activity.user, {
+    onDelete: 'SET NULL'
+  })
+  activities: Activity[]
+
+  @OneToMany(type => Message, message => message.user, {
+    onDelete: 'SET NULL'
+  })
+  messages: Message[]
+
+  @OneToMany(type => Notification, notification => notification.user, {
+    onDelete: 'SET NULL'
+  })
+  notifications: Notification[]
 
   comparePassword = async (password: string): Promise<boolean> =>
     await bcrypt.compareSync(password, this.password)

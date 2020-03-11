@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm'
+import { Entity, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm'
+import { BaseEntity } from '../BaseEntity'
 import { lowercase, encode, capitalize } from '../transformers'
 
 // Relations
@@ -7,15 +8,12 @@ import { Teacher } from './Teacher'
 import { Student } from './Student'
 import { Classroom } from './Classroom'
 import { Requirement } from './Requirement'
+import { Schedule } from './Schedule'
+import { Contact } from './Contact'
+import { Incident } from './Incident'
 
 @Entity({ name: 'schools' })
-export class School {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @CreateDateColumn()
-  createAt: Date
-
+export class School extends BaseEntity {
   @Column({
     transformer: [capitalize]
   })
@@ -110,4 +108,19 @@ export class School {
     onDelete: 'SET NULL'
   })
   requirements: Requirement[]
+
+  @OneToMany(type => Schedule, schedule => schedule.school, {
+    onDelete: 'SET NULL'
+  })
+  schedules: Schedule[]
+
+  @OneToMany(type => Contact, contact => contact.school, {
+    onDelete: 'SET NULL'
+  })
+  contacts: Contact[]
+
+  @OneToMany(type => Incident, incident => incident.school, {
+    onDelete: 'SET NULL'
+  })
+  incidents: Incident[]
 }

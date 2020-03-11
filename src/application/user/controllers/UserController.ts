@@ -74,10 +74,7 @@ export class UserController {
         status: 'active'
       }
 
-    return {
-      token,
-      status: 'expired'
-    }
+    throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.UNAUTHORIZED)
   }
 
   // Receive the token and the new password and return confirmation message.
