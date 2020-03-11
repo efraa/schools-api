@@ -1,11 +1,11 @@
 import { DatabaseConnection } from './database/DatabaseConnection'
 import { Application, Router } from 'express'
 
-//
+// Modules
 import { UserModule } from './application/user/modules/UserModule'
 import { UserRoutes } from './application/user/routes/UserRoutes'
 
-export class AppContext {
+export class Main {
   protected router: Router = Router()
 
   constructor(protected prefixRoute: string, protected app: Application) {

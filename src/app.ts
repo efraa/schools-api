@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Configuration as config } from '../config/Configuration'
 import express, { Application } from 'express'
-import { AppContext } from './appContext'
+import { Main } from './mainApplication'
 import compression from 'compression'
 import { Worker } from '../workers'
 import BullBoard from 'bull-board'
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const initialize = () =>
-  new AppContext(config.server.prefixRoutes as string, app).init()
+  new Main(config.server.prefixRoutes as string, app).init()
 
 export {
   app,
