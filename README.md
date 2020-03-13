@@ -19,17 +19,17 @@ Core of School Management System, built with TypeScript.
 1. clone this repo
 2. Move to the cloned directory.
 
-### Running API Server alone to consume (Frontend development)
+**Running API Server alone to consume (Frontend development)**
 
 3. copy ``` prod.env ``` to ``` .env ```
 4. run ``` yarn && yarn build && yarn start ```
 
-**Your API should be ready on port 2302**
+_Your API should be ready on port 2302_
 
 ``` localhost:2302/api/v1 ```
 
 
-### Or running API Server to development
+**Or running API Server to development**
 
 3. copy ``` development.env ``` to ``` .env ```
 4. run ``` yarn install && docker-compose up --build ```
