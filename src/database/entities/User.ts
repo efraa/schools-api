@@ -12,6 +12,7 @@ import { Session } from './Session'
 import { Activity } from './Activity'
 import { Message } from './Message'
 import { Notification } from './Notification'
+import { MassiveLoad } from './MassiveLoad'
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -99,6 +100,11 @@ export class User extends BaseEntity {
     onDelete: 'SET NULL'
   })
   notifications: Notification[]
+
+  @OneToMany(type => MassiveLoad, massiveLoad => massiveLoad.user, {
+    onDelete: 'SET NULL'
+  })
+  massiveLoads: MassiveLoad[]
 
   comparePassword = async (password: string): Promise<boolean> =>
     await bcrypt.compareSync(password, this.password)

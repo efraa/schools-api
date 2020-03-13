@@ -5,12 +5,12 @@ import { lowercase, encode, capitalize } from '../transformers'
 // Relations
 import { User } from './User'
 
-@Entity({ name: 'messages' })
-export class Message extends BaseEntity {
+@Entity({ name: 'massive_loads' })
+export class MassiveLoad extends BaseEntity {
   @Column()
   userId: number
 
-  @ManyToOne(type => User, user => user.messages, {
+  @ManyToOne(type => User, user => user.sessions, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()

@@ -10,7 +10,7 @@ export class Activity extends BaseEntity {
   @Column()
   userId: number
 
-  @ManyToOne(type => User, user => user.sessions, {
+  @ManyToOne(type => User, user => user.activities, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()

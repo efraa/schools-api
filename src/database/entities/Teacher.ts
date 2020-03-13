@@ -18,7 +18,7 @@ export class Teacher extends CommonOfPersonsEntity {
   @Column()
   userId: number
 
-  @OneToOne(type => User, user => user.school, {
+  @OneToOne(type => User, user => user.teacher, {
     nullable: false,
     cascade: ['update', 'insert']
   })
