@@ -23,7 +23,7 @@ export class Notification extends BaseEntity {
   @Column()
   userId: number
 
-  @ManyToOne(type => User, user => user.notifications, {
+  @ManyToOne(type => User, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()

@@ -10,7 +10,7 @@ export class MassiveLoad extends BaseEntity {
   @Column()
   userId: number
 
-  @ManyToOne(type => User, user => user.sessions, {
+  @ManyToOne(type => User, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()

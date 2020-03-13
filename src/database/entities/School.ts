@@ -88,10 +88,7 @@ export class School extends BaseEntity {
   @Column()
   userId: number
 
-  @OneToOne(type => User, user => user.school, {
-    nullable: false,
-    cascade: ['update', 'insert']
-  })
+  @OneToOne(type => User)
   @JoinColumn()
   user: User
 

@@ -1,18 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, OneToOne, OneToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm'
 import { BaseEntity } from '../baseEntities/BaseEntity'
 import { Roles, UserStatus } from '../../application/user/providers/UserProvider'
 import { lowercase, encode } from '../transformers'
 import bcrypt from 'bcryptjs'
-
-// Relations
-import { School } from './School'
-import { Teacher } from './Teacher'
-import { Student } from './Student'
-import { Session } from './Session'
-import { Activity } from './Activity'
-import { Message } from './Message'
-import { Notification } from './Notification'
-import { MassiveLoad } from './MassiveLoad'
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -71,40 +61,6 @@ export class User extends BaseEntity {
     nullable: true
   })
   forgotExpire: Date
-
-  @OneToOne(type => School, school => school.user)
-  school: School | null
-
-  @OneToOne(type => Teacher, teacher => teacher.user)
-  teacher: Teacher | null
-
-  @OneToOne(type => Student, student => student.user)
-  student: Student | null
-
-  @OneToMany(type => Session, session => session.user, {
-    onDelete: 'SET NULL'
-  })
-  sessions: Session[]
-
-  @OneToMany(type => Activity, activity => activity.user, {
-    onDelete: 'SET NULL'
-  })
-  activities: Activity[]
-
-  @OneToMany(type => Message, message => message.user, {
-    onDelete: 'SET NULL'
-  })
-  messages: Message[]
-
-  @OneToMany(type => Notification, notification => notification.user, {
-    onDelete: 'SET NULL'
-  })
-  notifications: Notification[]
-
-  @OneToMany(type => MassiveLoad, massiveLoad => massiveLoad.user, {
-    onDelete: 'SET NULL'
-  })
-  massiveLoads: MassiveLoad[]
 
   comparePassword = async (password: string): Promise<boolean> =>
     await bcrypt.compareSync(password, this.password)

@@ -8,9 +8,22 @@ import { User } from './User'
 @Entity({ name: 'messages' })
 export class Message extends BaseEntity {
   @Column()
+  content: string
+
+  @Column({
+    default: false
+  })
+  isRead: boolean
+
+  @Column({
+    default: false
+  })
+  isDeleted: boolean
+
+  @Column()
   userId: number
 
-  @ManyToOne(type => User, user => user.messages, {
+  @ManyToOne(type => User, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()
