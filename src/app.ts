@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Configuration as config } from '../config/Configuration'
 import express, { Application } from 'express'
-import { Main } from './mainApplication'
+import { Main } from './main'
 import compression from 'compression'
 import { Worker } from '../workers'
 import BullBoard from 'bull-board'
