@@ -7,7 +7,6 @@ export const Configuration = {
   server: {
     port: parseInt(process.env.PORT as string),
     prefixRoutes: process.env.PREFIX_ROUTES,
-    socketPort: parseInt(process.env.SOCKET_PORT as string)
   },
   jwt: {
     secret: process.env.SECRET,
