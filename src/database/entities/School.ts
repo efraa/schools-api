@@ -1,5 +1,5 @@
 import { Entity, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm'
-import { BaseEntity } from '../BaseEntity'
+import { BaseEntity } from '../baseEntities/BaseEntity'
 import { lowercase, encode, capitalize } from '../transformers'
 
 // Relations
@@ -69,15 +69,21 @@ export class School extends BaseEntity {
   }
 
   @Column({
-    default: false
+    transformer: [lowercase],
+    nullable: true
   })
-  isPremium: boolean
+  postalCode: string
 
   @Column({
     type: 'simple-array',
     nullable: true
   })
   phones: string[]
+
+  @Column({
+    default: false
+  })
+  isPremium: boolean
 
   @Column()
   userId: number
@@ -107,7 +113,7 @@ export class School extends BaseEntity {
   @OneToMany(type => Requirement, requirement => requirement.school, {
     onDelete: 'SET NULL'
   })
-  requirements: Requirement[]
+  admissionsRequirements: Requirement[]
 
   @OneToMany(type => Schedule, schedule => schedule.school, {
     onDelete: 'SET NULL'

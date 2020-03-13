@@ -1,6 +1,6 @@
 import { Entity, Column, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../BaseEntity'
-import { capitalize } from '../transformers'
+import { CommonOfPersonsEntity } from '../baseEntities/CommonOfPersonsEntity'
+import { lowercase } from '../transformers'
 
 // Relations
 import { User } from './User'
@@ -10,16 +10,18 @@ import { Incident } from './Incident'
 import { AnecdotalRecord } from './AnecdotalRecord'
 
 @Entity({ name: 'students' })
-export class Student extends BaseEntity {
+export class Student extends CommonOfPersonsEntity {
   @Column({
-    transformer: [capitalize]
+    transformer: [lowercase],
+    nullable: true
   })
-  name: string
+  folio: string
 
   @Column({
-    transformer: [capitalize]
+    transformer: [lowercase],
+    nullable: true
   })
-  lastname: string
+  RNE: string
 
   @Column()
   userId: number

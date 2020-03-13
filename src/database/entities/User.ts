@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, OneToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../BaseEntity'
+import { BaseEntity } from '../baseEntities/BaseEntity'
 import { Roles, UserStatus } from '../../application/user/providers/UserProvider'
 import { lowercase, encode } from '../transformers'
 import bcrypt from 'bcryptjs'

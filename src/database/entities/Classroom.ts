@@ -1,5 +1,5 @@
 import { Entity, Column, OneToOne, JoinColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm'
-import { BaseEntity } from '../BaseEntity'
+import { BaseEntity } from '../baseEntities/BaseEntity'
 import { lowercase } from '../transformers'
 
 // Relations

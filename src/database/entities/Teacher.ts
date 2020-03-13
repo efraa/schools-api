@@ -1,6 +1,6 @@
 import { Entity, Column, OneToOne, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../BaseEntity'
-import { lowercase, capitalize } from '../transformers'
+import { CommonOfPersonsEntity } from '../baseEntities/CommonOfPersonsEntity'
+import { lowercase } from '../transformers'
 
 // Relations
 import { User } from './User'
@@ -11,17 +11,7 @@ import { Incident } from './Incident'
 import { AnecdotalRecord } from './AnecdotalRecord'
 
 @Entity({ name: 'teachers' })
-export class Teacher extends BaseEntity {
-  @Column({
-    transformer: [capitalize]
-  })
-  name: string
-
-  @Column({
-    transformer: [capitalize]
-  })
-  lastname: string
-
+export class Teacher extends CommonOfPersonsEntity {
   @OneToOne(type => Classroom, classroom => classroom.teacherInCharge)
   inChargeOfClassroom: Classroom | null
 

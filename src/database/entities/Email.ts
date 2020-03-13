@@ -1,5 +1,5 @@
 import { Entity, Column } from 'typeorm'
-import { BaseEntity } from '../BaseEntity'
+import { BaseEntity } from '../baseEntities/BaseEntity'
 import { lowercase, encode } from '../transformers'
 
 @Entity({ name: 'emails' })
