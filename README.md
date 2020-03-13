@@ -60,7 +60,7 @@ run ``` yarn worker ```
 
 ``` localhost:2302 ```
 
-## Conventional Commits
+### Conventional Commits
 
 * **build**: Changes that affect the build system or external dependencies (example scopes: yarn, npm).
 * **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, Docker).
