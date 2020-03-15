@@ -37,7 +37,7 @@ export class UserModule {
   }
 
   static getEmailService(): EmailService {
-    return new EmailService(this.getEmailRepository(), this.getEmailMapper())
+    return new EmailService(this.getEmailRepository(), this.getEmailMapper(), this.getUserService())
   }
 
   // Controllers
