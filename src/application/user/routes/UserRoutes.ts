@@ -55,6 +55,12 @@ export class UserRoutes {
       this.checkEmail
     )
 
+    // Verify email code
+    this.api.post('/verify-email-code',
+      validators.verifyEmailWithCode,
+      this.verifyEmailWithCode
+    )
+
     return this.api
   }
 
@@ -145,6 +151,17 @@ export class UserRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(response))
+      }, req, res
+    })
+
+  public verifyEmailWithCode: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const email = await this._UserController.verifyEmailWithCode(req.body.email, req.body.code)
+        if (email)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(email, false))
       }, req, res
     })
 }
