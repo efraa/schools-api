@@ -4,11 +4,13 @@ import { Worker } from '../../../../workers'
 import { Configuration as config } from '../../../../config/Configuration'
 import { SessionService } from '../providers/SessionProvider'
 import { User } from 'src/database/entities/User'
+import { EmailService } from '../providers/EmailProvider'
 
 export class UserController {
   constructor(
     private _UserService: UserService,
     private _SessionService: SessionService,
+    private _EmailService: EmailService
   ) {}
 
   public async create(device: ClientInfo, userPayload: UserPayload) {
@@ -96,5 +98,22 @@ export class UserController {
     }
 
     throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.UNAUTHORIZED)
+  }
+
+  public async checkEmail(emailString: string) {
+    const emailEntity = await this._EmailService.getOrCreateEmailAndGenerateCode(emailString)
+
+    if (emailEntity) {
+      await Worker.EmailJob.add({
+        to: emailEntity.email,
+        subject: UserResponses.SUBJECT.VERIFY_EMAIL,
+        template: 'verifyEmail',
+        data: {
+          code: emailEntity.code
+        }
+      })
+
+      return UserResponses.EMAIL_SENT
+    }
   }
 }
