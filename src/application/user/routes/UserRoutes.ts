@@ -51,6 +51,7 @@ export class UserRoutes {
 
     // Verify Email
     this.api.post('/verify-email',
+      validators.verifyEmail,
       this.checkEmail
     )
 

@@ -56,10 +56,17 @@ const resetPass = [
     })
 ]
 
+const verifyEmail = [
+  check('email', VALIDATOR.EMAIL)
+    .isEmail()
+    .normalizeEmail({ all_lowercase: true })
+]
+
 export const validators = {
   signup,
   login,
   forgotPassword,
   forgotPassExpire,
   resetPass,
+  verifyEmail,
 }
