@@ -20,9 +20,11 @@ export const UserResponses = {
   BAD_CREDENTIALS: 'Oops! Something in your credentials is wrong.',
   SUBJECT: {
     PASSWORD_RESET: 'Schools Password Reset',
-    WELCOME_NEW_USER: 'Welcome to Schools!'
+    WELCOME_NEW_USER: 'Welcome to Schools!',
+    VERIFY_EMAIL: 'Verification code'
   },
   EMAIL_SENT: 'An email has been sent to your account.',
   FORGOT_PASS_CHANGED: 'Your password has been changed successfully.',
-  INVALID_FILE_EXT: 'Oops! The file or its extension is incorrect.'
+  INVALID_FILE_EXT: 'Oops! The file or its extension is incorrect.',
+  EMAIL_MANY_REQUEST_ATTEMPTS: 'Oops! This email has too many requests, it has been blocked for 24 hours.'
 }
