@@ -102,18 +102,24 @@ export class UserController {
 
   public async checkEmail(emailString: string) {
     const emailEntity = await this._EmailService.getOrCreateEmailAndGenerateCode(emailString)
+    const { email, code, expire } = emailEntity
 
     if (emailEntity) {
       await Worker.EmailJob.add({
-        to: emailEntity.email,
+        to: email,
         subject: UserResponses.SUBJECT.VERIFY_EMAIL,
         template: 'verifyEmail',
         data: {
-          code: emailEntity.code
+          code
         }
       })
+
+      await Worker.RemoveEmailJob.add({ email, expire })
 
       return UserResponses.EMAIL_SENT
     }
   }
+
+  public verifyEmailWithCode = async (emailString: string, code: number) =>
+    await this._EmailService.verifyEmailCode(emailString, code)
 }
