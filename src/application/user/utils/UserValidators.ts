@@ -4,10 +4,14 @@ import { getCommonPassword as passwords } from '../../../infrastructure/utils'
 
 const { VALIDATOR } = UserResponses
 
-const signup = [
+const verifyEmail = [
   check('email', VALIDATOR.EMAIL)
     .isEmail()
-    .normalizeEmail({ all_lowercase: true }),
+    .normalizeEmail({ all_lowercase: true })
+]
+
+const signup = [
+  ...verifyEmail,
   check('username', VALIDATOR.USERNAME)
     .trim()
     .isLength({ min: 3 }),
@@ -27,12 +31,6 @@ const login = [
     .isLength({
       min: 6
     })
-]
-
-const forgotPassword = [
-  check('email', VALIDATOR.EMAIL)
-    .isEmail()
-    .normalizeEmail({ all_lowercase: true }),
 ]
 
 const forgotPassExpire = [
@@ -56,16 +54,10 @@ const resetPass = [
     })
 ]
 
-const verifyEmail = [
-  check('email', VALIDATOR.EMAIL)
-    .isEmail()
-    .normalizeEmail({ all_lowercase: true })
-]
-
 export const validators = {
   signup,
   login,
-  forgotPassword,
+  forgotPassword: [...verifyEmail],
   forgotPassExpire,
   resetPass,
   verifyEmail,
