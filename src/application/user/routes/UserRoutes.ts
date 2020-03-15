@@ -36,17 +36,22 @@ export class UserRoutes {
       this.checkPasswordExpire
     )
 
-    // // Reset Password
+    // Reset Password
     this.api.put(
       '/reset-password/:token',
       validators.resetPass,
       this.resetPassword
     )
 
-    // // Upload Picture
+    // Upload Picture
     this.api.put('/:id/picture',
       [ensureAuth, userPictureMiddle],
       this.upload
+    )
+
+    // Verify Email
+    this.api.post('/verify-email',
+      this.checkEmail
     )
 
     return this.api
@@ -128,6 +133,17 @@ export class UserRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(uploaded, false))
+      }, req, res
+    })
+
+  public checkEmail: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const response = await this._UserController.checkEmail(req.body.email)
+        if (response)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(response))
       }, req, res
     })
 }
