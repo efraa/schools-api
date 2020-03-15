@@ -8,3 +8,4 @@ export { UserResponses } from '../utils/UserResponses'
 export { UserMapper } from '../domain/mappers/UserMapper'
 export { validators } from '../utils/UserValidators'
 export { Roles, UserStatus }
+export { generateRandomCode } from '../utils/generateRandomCode'
