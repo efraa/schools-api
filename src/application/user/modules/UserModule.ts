@@ -1,6 +1,7 @@
 import { getConnection  } from 'typeorm'
 import { UserRepository, UserController, UserService, UserMapper } from '../providers/UserProvider'
 import { SessionRepository, SessionService, SessionMapper } from '../providers/SessionProvider'
+import { EmailRepository, EmailService, EmailMapper } from '../providers/EmailProvider'
 
 export class UserModule {
   // Repositories
@@ -10,6 +11,9 @@ export class UserModule {
   static getSessionRepository = () =>
     getConnection().createEntityManager().getCustomRepository(SessionRepository)
 
+  static getEmailRepository = () =>
+    getConnection().createEntityManager().getCustomRepository(EmailRepository)
+
   // Mappers
   static getUserMapper(): UserMapper {
     return new UserMapper(this.getUserRepository())
@@ -17,6 +21,10 @@ export class UserModule {
 
   static getSessionMapper(): SessionMapper {
     return new SessionMapper(this.getSessionRepository())
+  }
+
+  static getEmailMapper(): EmailMapper {
+    return new EmailMapper(this.getEmailRepository())
   }
 
   // Services
@@ -28,8 +36,12 @@ export class UserModule {
     return new SessionService(this.getSessionRepository(), this.getSessionMapper(), this.getUserMapper())
   }
 
+  static getEmailService(): EmailService {
+    return new EmailService(this.getEmailRepository(), this.getEmailMapper())
+  }
+
   // Controllers
   static getUserController() {
-    return new UserController(this.getUserService(), this.getSessionService())
+    return new UserController(this.getUserService(), this.getSessionService(), this.getEmailService())
   }
 }
