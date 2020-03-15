@@ -10,6 +10,15 @@ const verifyEmail = [
     .normalizeEmail({ all_lowercase: true })
 ]
 
+const verifyEmailWithCode = [
+  ...verifyEmail,
+  check('code', VALIDATOR.CODE)
+    .isInt()
+    .isLength({
+      min: 4
+    })
+]
+
 const signup = [
   ...verifyEmail,
   check('username', VALIDATOR.USERNAME)
@@ -61,4 +70,5 @@ export const validators = {
   forgotPassExpire,
   resetPass,
   verifyEmail,
+  verifyEmailWithCode,
 }
