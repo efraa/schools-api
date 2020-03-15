@@ -38,4 +38,7 @@ export class Email extends BaseEntity {
 
   hasTooManyRequestAttempts = (): boolean =>
     this.requestsAttempts >= config.maxRequestsAttempts
+
+  hasTooManyVerifyFailedAttempts = (): boolean =>
+    this.verifyFailedAttempts >= config.maxRequestsAttempts
 }
