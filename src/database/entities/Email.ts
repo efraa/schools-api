@@ -1,6 +1,7 @@
 import { Entity, Column } from 'typeorm'
 import { BaseEntity } from '../baseEntities/BaseEntity'
 import { lowercase, encode } from '../transformers'
+import { Configuration as config } from '../../../config/Configuration'
 
 @Entity({ name: 'emails' })
 export class Email extends BaseEntity {
@@ -8,20 +9,22 @@ export class Email extends BaseEntity {
     unique: true,
     transformer: [lowercase, encode]
   })
-  email?: string
+  email: string
 
   @Column({
-    transformer: [lowercase]
+    nullable: true
   })
-  code: string
+  code: number
 
   @Column({
-    default: 0
+    default: 0,
+    name: 'verify_failed_attemps'
   })
-  attempts: number
+  verifyFailedAttempts: number
 
   @Column({
-    default: 0
+    default: 0,
+    name: 'requests_attemps'
   })
   requestsAttempts: number
 
@@ -32,4 +35,10 @@ export class Email extends BaseEntity {
     default: false
   })
   isVerified: boolean
+
+  hasTooManyRequestAttempts = (): boolean =>
+    this.requestsAttempts >= config.maxRequestsAttempts
+
+  hasTooManyVerifyFailedAttempts = (): boolean =>
+    this.verifyFailedAttempts >= config.maxRequestsAttempts
 }

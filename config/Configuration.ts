@@ -20,10 +20,9 @@ export const Configuration = {
   },
   utils: {
     uploads: process.env.UPLOADS_USERS || 'uploads',
-    maxTeachers: process.env.MAX_TEACHERS || 4,
-    maxStudents: process.env.MAX_STUDENTS || 25,
     googleClientID: process.env.GOOGLE_CLIENT_ID,
     slackHook: process.env.SLACK_WEBHOOK,
   },
   redis: process.env.REDIS_URI,
+  maxRequestsAttempts: process.env.MAX_REQUEST_ATTEMPTS || 4
 }
