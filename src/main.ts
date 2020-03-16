@@ -2,7 +2,7 @@ import { DatabaseConnection } from './database/DatabaseConnection'
 import { Application, Router } from 'express'
 
 // Modules
-import { UserModule } from './application/user/modules/UserModule'
+import { userModule } from './application/user/modules/UserModule'
 import { UserRoutes } from './application/user/routes/UserRoutes'
 
 export class Main {
@@ -27,7 +27,7 @@ export class Main {
 
   public buildRouting() {
     // Routes
-    const userRoutes = new UserRoutes(this.router, UserModule.getUserController()).routes
+    const userRoutes = new UserRoutes(this.router, userModule.getUserController()).routes
     this.router.use('/users', userRoutes)
   }
 }
