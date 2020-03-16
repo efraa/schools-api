@@ -22,27 +22,25 @@ export class UserService {
   public getUserById = async (id: number) =>
     await this._UserRepository.getById(id)
 
-  public async getUserByUsername(username: string): Promise<UserDTO|undefined> {
-    const user = await this._UserRepository.getByUsername(username)
-    if (user)
-      return this._UserMapper.mapToDTO(user)
-  }
+  public getUserByUsername = async (username: string) =>
+    await this._UserRepository.getByUsername(username).then(user =>
+      this._UserMapper.mapToDTO(user as User))
 
-  public create = async (userEntity: User): Promise<User> =>
-    await this._UserRepository.save(userEntity)
+  public create = async (userEntity: User) =>
+    await this._UserRepository.save(userEntity).then(user =>
+      this._UserMapper.mapToDTO(user))
 
-  public async login(emailOrUsername: string, password: string): Promise<User> {
+  public async login(emailOrUsername: string, password: string): Promise<UserDTO> {
     const user = await this._UserRepository.getByEmailOrUsername(emailOrUsername)
-
     if (user && user.id) {
       if (!user.isActive())
         throw ErrorHandler.build(statusCodes.UNAUTHORIZED, `${UserResponses.STATUS} ${user.status}`)
 
       const matchPassword = await user.comparePassword(password)
       if (!matchPassword)
-        throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.BAD_CREDENTIALS)
+        throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserResponses.BAD_CREDENTIALS)
 
-      return user
+      return this._UserMapper.mapToDTO(user)
     }
 
     throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.ACCOUNT_NOT_FOUND)
