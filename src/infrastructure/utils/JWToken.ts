@@ -1,14 +1,13 @@
 import jwt, { Secret } from 'jsonwebtoken'
-import { Configuration } from '../../../config/Configuration'
+import { Configuration as config } from '../../../config/Configuration'
+import { UserDTO } from '../../application/user/domain/dtos/UserDTO'
 
 export const JWToken = {
   verifyToken: async (token: string): Promise<any> =>
-    await jwt.verify(token, Configuration.jwt.secret as string | Buffer),
+    await jwt.verify(token, config.jwt.secret as string | Buffer),
 
-  generateToken: async (user: any): Promise<string> =>
-    await jwt.sign(
-        { user },
-        Configuration.jwt.secret as Secret,
-        { expiresIn: Configuration.jwt.tokenExpire }
-      )
+  generateToken: async (user: UserDTO) =>
+    ({ token: await jwt.sign({ user }, config.jwt.secret as Secret,
+      { expiresIn: config.jwt.tokenExpire })
+    })
 }
