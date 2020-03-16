@@ -1,47 +1,60 @@
 import { getConnection  } from 'typeorm'
 import { UserRepository, UserController, UserService, UserMapper } from '../providers/UserProvider'
-import { SessionRepository, SessionService, SessionMapper } from '../providers/SessionProvider'
 import { EmailRepository, EmailService, EmailMapper } from '../providers/EmailProvider'
 
 export class UserModule {
   // Repositories
-  static getUserRepository = () =>
-    getConnection().createEntityManager().getCustomRepository(UserRepository)
+  private userRepository: UserRepository
+  private emailRepository: EmailRepository
 
-  static getSessionRepository = () =>
-    getConnection().createEntityManager().getCustomRepository(SessionRepository)
+  getUserRepository(): UserRepository {
+    return !this.userRepository ?
+      (this.userRepository = getConnection().createEntityManager().getCustomRepository(UserRepository))
+    : this.userRepository
+  }
 
-  static getEmailRepository = () =>
-    getConnection().createEntityManager().getCustomRepository(EmailRepository)
+  getEmailRepository(): EmailRepository {
+    return !this.emailRepository ?
+      (this.emailRepository = getConnection().createEntityManager().getCustomRepository(EmailRepository))
+    : this.emailRepository
+  }
 
   // Mappers
-  static getUserMapper(): UserMapper {
-    return new UserMapper(this.getUserRepository())
+  private userMapper: UserMapper
+  private emailMapper: EmailMapper
+
+  getUserMapper(): UserMapper {
+    return !this.userMapper ?
+      (this.userMapper = new UserMapper(this.getUserRepository()))
+      : this.userMapper
   }
 
-  static getSessionMapper(): SessionMapper {
-    return new SessionMapper(this.getSessionRepository())
-  }
-
-  static getEmailMapper(): EmailMapper {
-    return new EmailMapper(this.getEmailRepository())
+  getEmailMapper(): EmailMapper {
+    return !this.emailMapper ?
+      (this.emailMapper = new EmailMapper(this.getEmailRepository()))
+      : this.emailMapper
   }
 
   // Services
-  static getUserService(): UserService {
-    return new UserService(this.getUserRepository(), this.getUserMapper())
+  private userService: UserService
+  private emailService: EmailService
+
+  getUserService(): UserService {
+    return !this.userService ?
+      (this.userService = new UserService(this.getUserRepository(), this.getUserMapper()))
+      : this.userService
   }
 
-  static getSessionService(): SessionService {
-    return new SessionService(this.getSessionRepository(), this.getSessionMapper(), this.getUserMapper())
-  }
-
-  static getEmailService(): EmailService {
-    return new EmailService(this.getEmailRepository(), this.getEmailMapper(), this.getUserService())
+  getEmailService(): EmailService {
+    return !this.emailService ?
+      (this.emailService = new EmailService(this.getEmailRepository(), this.getEmailMapper(), this.getUserService()))
+      : this.emailService
   }
 
   // Controllers
-  static getUserController() {
-    return new UserController(this.getUserService(), this.getSessionService(), this.getEmailService())
+  getUserController() {
+    return new UserController(this.getUserService(), this.getEmailService())
   }
 }
+
+export const userModule = new UserModule()
