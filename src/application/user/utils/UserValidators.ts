@@ -21,9 +21,6 @@ const verifyEmailWithCode = [
 
 const signup = [
   ...verifyEmail,
-  check('username', VALIDATOR.USERNAME)
-    .trim()
-    .isLength({ min: 3 }),
   check('password', VALIDATOR.PASSWORD)
     .trim()
     .not().isIn(passwords() as string[])
