@@ -7,7 +7,6 @@ import { Worker } from '../workers'
 import BullBoard from 'bull-board'
 import morgan from 'morgan'
 import cors from 'cors'
-import ipParser from 'ip-device-parser'
 
 // Express Application
 const app: Application = express()
@@ -18,7 +17,6 @@ app.set('port', config.server.port)
 app.use(express.json())
 app.use(compression())
 app.use(cors())
-app.use(ipParser())
 app.get('/', (req, res) =>
   res.status(200).send({ msg: 'API Server of Schools Application' }))
 
