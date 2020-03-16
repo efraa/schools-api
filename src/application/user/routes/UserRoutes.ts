@@ -67,7 +67,7 @@ export class UserRoutes {
   public signupAsSchool: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
-        const user = await this._UserController.create(req.clientInfo as ClientInfo, {
+        const user = await this._UserController.create({
           ...req.body,
           role: Roles.SCHOOL
         })
@@ -81,11 +81,11 @@ export class UserRoutes {
   public login: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
-        const session = await this._UserController.login(req.clientInfo as ClientInfo, req.body)
-        if (session)
+        const userLogged = await this._UserController.login(req.body)
+        if (userLogged)
           return res
             .status(statusCodes.OK)
-            .send(ResponseHandler.build(session, false))
+            .send(ResponseHandler.build(userLogged, false))
       }, req, res
     })
 

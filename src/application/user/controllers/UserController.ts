@@ -2,29 +2,24 @@ import { UserService, UserResponses, UserDTO } from '../providers/UserProvider'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import { Worker } from '../../../../workers'
 import { Configuration as config } from '../../../../config/Configuration'
-import { SessionService } from '../providers/SessionProvider'
 import { User } from 'src/database/entities/User'
 import { EmailService } from '../providers/EmailProvider'
+import { JWToken } from '../../../infrastructure/utils'
 
 export class UserController {
   constructor(
     private _UserService: UserService,
-    private _SessionService: SessionService,
     private _EmailService: EmailService
   ) {}
 
-  public async create(device: ClientInfo, userPayload: UserPayload) {
+  public async create(userPayload: UserPayload) {
     const user = await this._UserService.mapToEntity(userPayload)
     const emailExists = await this._UserService.getUserByEmail(user.email as string)
-    const usernameExists = await this._UserService.getUserByUsername(user.username)
 
     if (emailExists)
       throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.EMAIL_EXISTS)
 
-    if (usernameExists)
-      throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.USERNAME_EXISTS)
-
-    const created = await this._UserService.create(user)
+    let created = await this._UserService.create(user)
     if (created) {
       await Worker.EmailJob.add({
         to: user.email as string,
@@ -34,22 +29,12 @@ export class UserController {
       })
     }
 
-    const session = await this._SessionService.create(device, created)
-    if (session)
-      return session
+    return await JWToken.generateToken(created)
   }
 
-  public async login(device: ClientInfo, userPayload: {
-    emailOrUsername: string,
-    password: string
-  }) {
-    const user = await this._UserService.login(userPayload.emailOrUsername, userPayload.password)
-    if (user && user.id) {
-      const session = await this._SessionService.create(device, user)
-      if (session)
-        return session
-    }
-  }
+  public login = async (user: { emailOrUsername: string, password: string }) =>
+    await this._UserService.login(user.emailOrUsername, user.password)
+      .then(async userLogged => await JWToken.generateToken(userLogged))
 
   public async forgotPassword(email: string) {
     const { token, user } = await this._UserService.forgotPassword(email)
