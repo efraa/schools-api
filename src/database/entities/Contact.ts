@@ -10,7 +10,7 @@ export class Contact extends BaseEntity {
   @Column()
   schoolId: number
 
-  @ManyToOne(type => School, school => school.contacts, {
+  @ManyToOne(type => School, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()

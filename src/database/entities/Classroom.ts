@@ -19,7 +19,7 @@ export class Classroom extends BaseEntity {
   @Column()
   schoolId: number
 
-  @ManyToOne(type => School, school => school.classrooms, {
+  @ManyToOne(type => School, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()

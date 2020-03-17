@@ -14,7 +14,7 @@ export class Schedule extends BaseEntity {
   })
   classroom: Classroom | null
 
-  @ManyToOne(type => School, school => school.schedules, {
+  @ManyToOne(type => School, {
     nullable: true,
     cascade: ['update', 'insert']
   })
