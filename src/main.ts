@@ -26,8 +26,7 @@ export class Main {
   }
 
   public buildRouting() {
-    // Routes
-    const userRoutes = new UserRoutes(this.router, userModule.getUserController()).routes
+    const userRoutes = new UserRoutes(this.router, userModule.controller).routes
     this.router.use('/users', userRoutes)
   }
 }

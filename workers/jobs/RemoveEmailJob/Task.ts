@@ -5,6 +5,6 @@ export const RemoveEmailTask = {
   key: 'REMOVE_EMAIL_JOB',
   async handle({ data }) {
     await DatabaseConnection.connect().then(async () =>
-      await userModule.getEmailService().delete(data.email))
+      await userModule.emailService.delete(data.email))
   }
 }
