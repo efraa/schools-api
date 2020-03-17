@@ -4,56 +4,65 @@ import { EmailRepository, EmailService, EmailMapper } from '../providers/EmailPr
 
 export class UserModule {
   // Repositories
-  private userRepository: UserRepository
-  private emailRepository: EmailRepository
-
-  getUserRepository(): UserRepository {
-    return !this.userRepository ?
-      (this.userRepository = getConnection().createEntityManager().getCustomRepository(UserRepository))
-    : this.userRepository
-  }
-
-  getEmailRepository(): EmailRepository {
-    return !this.emailRepository ?
-      (this.emailRepository = getConnection().createEntityManager().getCustomRepository(EmailRepository))
-    : this.emailRepository
-  }
+  private _userRepository: UserRepository
+  private _emailRepository: EmailRepository
 
   // Mappers
-  private userMapper: UserMapper
-  private emailMapper: EmailMapper
-
-  getUserMapper(): UserMapper {
-    return !this.userMapper ?
-      (this.userMapper = new UserMapper(this.getUserRepository()))
-      : this.userMapper
-  }
-
-  getEmailMapper(): EmailMapper {
-    return !this.emailMapper ?
-      (this.emailMapper = new EmailMapper(this.getEmailRepository()))
-      : this.emailMapper
-  }
+  private _userMapper: UserMapper
+  private _emailMapper: EmailMapper
 
   // Services
-  private userService: UserService
-  private emailService: EmailService
-
-  getUserService(): UserService {
-    return !this.userService ?
-      (this.userService = new UserService(this.getUserRepository(), this.getUserMapper()))
-      : this.userService
-  }
-
-  getEmailService(): EmailService {
-    return !this.emailService ?
-      (this.emailService = new EmailService(this.getEmailRepository(), this.getEmailMapper(), this.getUserService()))
-      : this.emailService
-  }
+  private _userService: UserService
+  private _emailService: EmailService
 
   // Controllers
-  getUserController() {
-    return new UserController(this.getUserService(), this.getEmailService())
+  private _userController: UserController
+
+  get userRepository(): UserRepository {
+    return !this._userRepository ?
+      (this._userRepository = getConnection().createEntityManager()
+        .getCustomRepository(UserRepository))
+    : this._userRepository
+  }
+
+  get emailRepository(): EmailRepository {
+    return !this._emailRepository ?
+      (this._emailRepository = getConnection().createEntityManager()
+        .getCustomRepository(EmailRepository))
+    : this._emailRepository
+  }
+
+  get userMapper(): UserMapper {
+    return !this._userMapper ?
+      (this._userMapper = new UserMapper(this.userRepository))
+      : this._userMapper
+  }
+
+  get emailMapper(): EmailMapper {
+    return !this._emailMapper ?
+      (this._emailMapper = new EmailMapper(this.emailRepository))
+      : this._emailMapper
+  }
+
+  get userService(): UserService {
+    return !this._userService ?
+      (this._userService = new UserService(this.userRepository, this.userMapper))
+      : this._userService
+  }
+
+  get emailService(): EmailService {
+    return !this._emailService ?
+      (this._emailService = new EmailService(
+        this.emailRepository,
+        this.emailMapper,
+        this.userService
+      )) : this._emailService
+  }
+
+  get controller(): UserController {
+    return !this._userController ?
+      (this._userController = new UserController(this.userService, this.emailService))
+      : this._userController
   }
 }
 
