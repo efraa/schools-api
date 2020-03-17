@@ -10,7 +10,6 @@ import { Student } from './Student'
 
 @Entity({ name: 'classrooms' })
 export class Classroom extends BaseEntity {
-
   @OneToOne(type => Teacher, teacher => teacher.inChargeOfClassroom, {
     cascade: ['update', 'insert']
   })
