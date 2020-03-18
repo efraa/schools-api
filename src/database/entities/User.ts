@@ -1,8 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, OneToOne } from 'typeorm'
 import { BaseEntity } from '../baseEntities/BaseEntity'
 import { Roles, UserStatus } from '../../application/user/providers/UserProvider'
+import { SchoolDTO } from '../../application/school/domain/dtos/SchoolDTO'
 import { lowercase, encode } from '../transformers'
 import bcrypt from 'bcryptjs'
+
+// Relations
+import { School } from './School'
+import { Teacher } from './Teacher'
+import { Student } from './Student'
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -62,6 +68,27 @@ export class User extends BaseEntity {
     nullable: true
   })
   forgotExpire: Date
+
+  @OneToOne(type => School, school => school.user, {
+    nullable: true
+  })
+  school: School | null
+
+  @OneToOne(type => Teacher, teacher => teacher.user, {
+    nullable: true
+  })
+  teacher: Teacher | null
+
+  @OneToOne(type => Student, student => student.user, {
+    nullable: true
+  })
+  student: Student | null
+
+  @Column({
+    type: 'simple-json',
+    nullable: true
+  })
+  account: SchoolDTO | {}
 
   comparePassword = async (password: string): Promise<boolean> =>
     await bcrypt.compareSync(password, this.password)
