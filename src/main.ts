@@ -3,7 +3,11 @@ import { Application, Router } from 'express'
 
 // Modules
 import { userModule } from './application/user/modules/UserModule'
+import { schoolModule } from './application/school/modules/SchoolModule'
+
+// Routes
 import { UserRoutes } from './application/user/routes/UserRoutes'
+import { SchoolRoutes } from './application/school/routes/SchoolRoutes'
 
 export class Main {
   protected router: Router = Router()
@@ -27,6 +31,9 @@ export class Main {
 
   public buildRouting() {
     const userRoutes = new UserRoutes(this.router, userModule.controller).routes
+    const schoolRoutes = new SchoolRoutes(this.router, schoolModule.controller).routes
+
     this.router.use('/users', userRoutes)
+    this.router.use('/schools', schoolRoutes)
   }
 }
