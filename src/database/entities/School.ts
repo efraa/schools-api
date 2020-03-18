@@ -4,13 +4,7 @@ import { lowercase, encode, capitalize } from '../transformers'
 
 // Relations
 import { User } from './User'
-import { Teacher } from './Teacher'
-import { Student } from './Student'
-import { Classroom } from './Classroom'
 import { Requirement } from './Requirement'
-import { Schedule } from './Schedule'
-import { Contact } from './Contact'
-import { Incident } from './Incident'
 
 @Entity({ name: 'schools' })
 export class School extends BaseEntity {
@@ -91,6 +85,7 @@ export class School extends BaseEntity {
   user: User
 
   @OneToMany(type => Requirement, requirement => requirement.school, {
+    nullable: true,
     onDelete: 'SET NULL'
   })
   admissionsRequirements: Requirement[]
