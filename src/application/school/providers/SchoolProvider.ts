@@ -1,0 +1,7 @@
+export { SchoolController } from '../controllers/SchoolController'
+export { SchoolService } from '../services/SchoolService'
+export { SchoolRepository } from '../repositories/SchoolRepository'
+export { SchoolDTO } from '../domain/dtos/SchoolDTO'
+export { SchoolResponses } from '../utils/SchoolResponses'
+export { SchoolMapper } from '../domain/mappers/SchoolMapper'
+export { validators } from '../utils/SchoolValidators'
