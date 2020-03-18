@@ -4,13 +4,7 @@ import { lowercase, encode, capitalize } from '../transformers'
 
 // Relations
 import { User } from './User'
-import { Teacher } from './Teacher'
-import { Student } from './Student'
-import { Classroom } from './Classroom'
 import { Requirement } from './Requirement'
-import { Schedule } from './Schedule'
-import { Contact } from './Contact'
-import { Incident } from './Incident'
 
 @Entity({ name: 'schools' })
 export class School extends BaseEntity {
@@ -32,13 +26,11 @@ export class School extends BaseEntity {
   slogan?: string
 
   @Column({
-    nullable: true,
     transformer: [lowercase]
   })
   type?: string
 
   @Column({
-    nullable: true,
     transformer: [lowercase]
   })
   zone?: string
@@ -92,38 +84,9 @@ export class School extends BaseEntity {
   @JoinColumn()
   user: User
 
-  @OneToMany(type => Classroom, classroom => classroom.school, {
-    onDelete: 'SET NULL'
-  })
-  classrooms: Classroom[]
-
-  @OneToMany(type => Teacher, teacher => teacher.school, {
-    onDelete: 'SET NULL'
-  })
-  teachers: Teacher[]
-
-  @OneToMany(type => Student, student => student.school, {
-    onDelete: 'SET NULL'
-  })
-  students: Student[]
-
   @OneToMany(type => Requirement, requirement => requirement.school, {
+    nullable: true,
     onDelete: 'SET NULL'
   })
   admissionsRequirements: Requirement[]
-
-  @OneToMany(type => Schedule, schedule => schedule.school, {
-    onDelete: 'SET NULL'
-  })
-  schedules: Schedule[]
-
-  @OneToMany(type => Contact, contact => contact.school, {
-    onDelete: 'SET NULL'
-  })
-  contacts: Contact[]
-
-  @OneToMany(type => Incident, incident => incident.school, {
-    onDelete: 'SET NULL'
-  })
-  incidents: Incident[]
 }

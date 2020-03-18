@@ -9,7 +9,7 @@ import { Student } from './Student'
 
 @Entity({ name: 'incidents' })
 export class Incident extends BaseEntity {
-  @ManyToOne(type => School, school => school.incidents, {
+  @ManyToOne(type => School, {
     nullable: true,
     cascade: ['update', 'insert']
   })

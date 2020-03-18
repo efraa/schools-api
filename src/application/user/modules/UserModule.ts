@@ -1,4 +1,4 @@
-import { getConnection  } from 'typeorm'
+import { getCustomRepository  } from 'typeorm'
 import { UserRepository, UserController, UserService, UserMapper } from '../providers/UserProvider'
 import { EmailRepository, EmailService, EmailMapper } from '../providers/EmailProvider'
 
@@ -20,15 +20,13 @@ export class UserModule {
 
   get userRepository(): UserRepository {
     return !this._userRepository ?
-      (this._userRepository = getConnection().createEntityManager()
-        .getCustomRepository(UserRepository))
+      (this._userRepository = getCustomRepository(UserRepository))
     : this._userRepository
   }
 
   get emailRepository(): EmailRepository {
     return !this._emailRepository ?
-      (this._emailRepository = getConnection().createEntityManager()
-        .getCustomRepository(EmailRepository))
+      (this._emailRepository = getCustomRepository(EmailRepository))
     : this._emailRepository
   }
 

@@ -3,16 +3,13 @@ import { BaseEntity } from '../baseEntities/BaseEntity'
 import { lowercase, encode, capitalize } from '../transformers'
 
 // Relations
-import { School } from './School'
+import { Teacher } from './Teacher'
 
-@Entity({ name: 'contacts' })
-export class Contact extends BaseEntity {
-  @Column()
-  schoolId: number
-
-  @ManyToOne(type => School, {
+@Entity({ name: 'daily_planning' })
+export class DailyPlanning extends BaseEntity {
+  @ManyToOne(type => Teacher, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()
-  school: School
+  teacher: Teacher
 }

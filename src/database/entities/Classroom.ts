@@ -10,7 +10,6 @@ import { Student } from './Student'
 
 @Entity({ name: 'classrooms' })
 export class Classroom extends BaseEntity {
-
   @OneToOne(type => Teacher, teacher => teacher.inChargeOfClassroom, {
     cascade: ['update', 'insert']
   })
@@ -20,7 +19,7 @@ export class Classroom extends BaseEntity {
   @Column()
   schoolId: number
 
-  @ManyToOne(type => School, school => school.classrooms, {
+  @ManyToOne(type => School, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()
