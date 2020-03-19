@@ -52,6 +52,9 @@ export class UserController {
     }
   }
 
+  public userLoggedWithAccountInfo = async (userId: number) =>
+    await this._UserService.getUserWithAccountInfo(userId)
+
   // Verify that the forgotten token password has not yet expired.
   public checkPasswordExpire = async (token: string) => {
     const user = await this._UserService.checkPasswordExpire(token)
