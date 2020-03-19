@@ -1,13 +1,16 @@
-import { UserDTO, UserRepository, UserMapper, UserResponses } from '../providers/UserProvider'
+import { UserDTO, UserRepository, UserMapper, UserResponses, Roles } from '../providers/UserProvider'
 import { User } from 'src/database/entities/User'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import crypto from 'crypto'
 import { cloud, deleteUploadedFiles } from '../../../infrastructure/utils'
+import { SchoolMapper } from '../../../application/school/providers/SchoolProvider'
+import { School } from '../../../database/entities/School'
 
 export class UserService {
   constructor(
     private _UserRepository: UserRepository,
     private _UserMapper: UserMapper,
+    private _SchoolMapper: SchoolMapper,
   ) {}
 
   public mapToEntity = async (userPayload: UserPayload): Promise<User> =>
@@ -29,6 +32,19 @@ export class UserService {
   public create = async (userEntity: User) =>
     await this._UserRepository.save(userEntity).then(user =>
       this._UserMapper.mapToDTO(user))
+
+  public getUserWithAccountInfo = async (userId: number) =>
+    await this._UserRepository.getUserWithAccountInfo(userId).then(user => {
+      const account = user?.role === Roles.SCHOOL ?
+        this._SchoolMapper.mapToDTO(user?.school as School) : null
+
+      return this._UserMapper.mapToDTO({ ...user, account } as User)
+    })
+
+  public async update(user: User, update: {}) {
+    const updated = await this._UserRepository.updateUser(user, update)
+    return await this._UserRepository.save(updated as User)
+  }
 
   public async login(emailOrUsername: string, password: string): Promise<UserDTO> {
     const user = await this._UserRepository.getByEmailOrUsername(emailOrUsername)
