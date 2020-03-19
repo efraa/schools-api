@@ -61,6 +61,9 @@ export class UserRoutes {
       this.verifyEmailWithCode
     )
 
+    // Get current user (Logged) info
+    this.api.get('/logged', ensureAuth, this.userLoggedWithAccountInfo)
+
     return this.api
   }
 
@@ -162,6 +165,17 @@ export class UserRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(email, false))
+      }, req, res
+    })
+
+  public userLoggedWithAccountInfo: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const userLogged = await this._UserController.userLoggedWithAccountInfo(req.user.id)
+        if (userLogged)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(userLogged, false))
       }, req, res
     })
 }
