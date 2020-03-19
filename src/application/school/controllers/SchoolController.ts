@@ -1,5 +1,5 @@
 import { SchoolService, SchoolResponses } from '../providers/SchoolProvider'
-import { UserDTO, UserService, UserResponses } from '../../../application/user/providers/UserProvider'
+import { UserDTO, UserService, UserResponses, UserStatus } from '../../../application/user/providers/UserProvider'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 
 export class SchoolController {
@@ -17,6 +17,7 @@ export class SchoolController {
     if (!user)
       throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserResponses.USER_NOT_FOUND)
 
+    await this._UserService.update(user, { status: UserStatus.ACTIVE })
     const school = await this._SchoolService.mapToEntity({
       ...schoolPayload,
       location: {
