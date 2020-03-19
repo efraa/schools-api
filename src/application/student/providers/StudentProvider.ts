@@ -1,0 +1,7 @@
+export { StudentController } from '../controllers/StudentController'
+export { StudentService } from '../services/StudentService'
+export { StudentRepository } from '../repositories/StudentRepository'
+export { StudentDTO } from '../domain/dtos/StudentDTO'
+export { StudentResponses } from '../utils/StudentResponses'
+export { StudentMapper } from '../domain/mappers/StudentMapper'
+export { validators } from '../utils/StudentValidators'
