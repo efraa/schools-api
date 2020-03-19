@@ -24,4 +24,7 @@ export class UserDTO {
 
   @MapProp()
   status: string
+
+  @MapProp()
+  account: {} | null
 }

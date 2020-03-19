@@ -1,6 +1,7 @@
 import { getCustomRepository  } from 'typeorm'
 import { UserRepository, UserController, UserService, UserMapper } from '../providers/UserProvider'
 import { EmailRepository, EmailService, EmailMapper } from '../providers/EmailProvider'
+import { schoolModule } from '../../school/modules/SchoolModule'
 
 export class UserModule {
   // Repositories
@@ -44,8 +45,11 @@ export class UserModule {
 
   get userService(): UserService {
     return !this._userService ?
-      (this._userService = new UserService(this.userRepository, this.userMapper))
-      : this._userService
+      (this._userService = new UserService(
+        this.userRepository,
+        this.userMapper,
+        schoolModule.schoolMapper
+      )) : this._userService
   }
 
   get emailService(): EmailService {
