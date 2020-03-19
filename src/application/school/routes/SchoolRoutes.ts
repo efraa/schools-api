@@ -1,21 +1,19 @@
+import { BaseRoutes } from '../../../infrastructure/routes/BaseRoutes'
 import { ResponseHandler, RouteMethod, statusCodes } from '../../../infrastructure/routes'
-import { Router, Response, RequestHandler, Request } from 'express'
+import { Response, RequestHandler, Request } from 'express'
 import { SchoolController, validators } from '../providers/SchoolProvider'
 import { ensureAuth } from '../../../infrastructure/middleware/AuthMiddle'
 import { UserDTO } from '../../../application/user/domain/dtos/UserDTO'
 
-export class SchoolRoutes {
-  constructor(private api: Router, private _SchoolController: SchoolController) {}
+export class SchoolRoutes extends BaseRoutes {
 
-  public get routes(): Router {
-    this.api.post(
-      '/create',
-      validators.create,
-      ensureAuth,
-      this.create
-    )
+  constructor(modulePath: string, private _SchoolController: SchoolController) {
+    super(modulePath)
+    this.addRoutes()
+  }
 
-    return this.api
+  addRoutes() {
+    this.api.post('/create', validators.create, ensureAuth, this.create)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>

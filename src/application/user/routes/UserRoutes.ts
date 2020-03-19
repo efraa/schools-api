@@ -1,70 +1,29 @@
+import { BaseRoutes } from '../../../infrastructure/routes/BaseRoutes'
 import { ResponseHandler, RouteMethod, statusCodes, ErrorHandler } from '../../../infrastructure/routes'
-import { Router, Response, RequestHandler, Request } from 'express'
+import { Response, RequestHandler, Request } from 'express'
 import { UserController, validators, UserDTO, UserResponses, Roles } from '../providers/UserProvider'
 import { ensureAuth } from '../../../infrastructure/middleware/AuthMiddle'
 import { userPictureMiddle } from '../../../infrastructure/middleware/uploads'
 
-export class UserRoutes {
-  constructor(private api: Router, private _UserController: UserController) {}
+export class UserRoutes extends BaseRoutes {
 
-  public get routes(): Router {
-    // Sign up
-    this.api.post(
-      '/signup',
-      validators.signup,
-      this.signupAsSchool
-    )
+  constructor(modulePath: string, private _UserController: UserController) {
+    super(modulePath)
+    this.addRoutes()
+  }
 
-    // Login
-    this.api.post(
-      '/login',
-      validators.login,
-      this.login
-    )
-
-    // Forgot Password
-    this.api.post(
-      '/forgot-password',
-      validators.forgotPassword,
-      this.forgotPassword
-    )
-
-    // Check Password Expire
-    this.api.get(
-      '/forgot-password-expire/:token',
-      validators.forgotPassExpire,
-      this.checkPasswordExpire
-    )
-
-    // Reset Password
-    this.api.put(
-      '/reset-password/:token',
-      validators.resetPass,
-      this.resetPassword
-    )
-
+  addRoutes() {
+    this.api.post('/signup', validators.signup, this.signupAsSchool)
+    this.api.post('/login', validators.login, this.login)
+    this.api.post('/forgot-password', validators.forgotPassword, this.forgotPassword)
+    this.api.get('/forgot-password-expire/:token', validators.forgotPassExpire, this.checkPasswordExpire)
+    this.api.put('/reset-password/:token', validators.resetPass, this.resetPassword)
     // Upload Picture
-    this.api.put('/:id/picture',
-      [ensureAuth, userPictureMiddle],
-      this.upload
-    )
-
-    // Verify Email
-    this.api.post('/verify-email',
-      validators.verifyEmail,
-      this.checkEmail
-    )
-
-    // Verify email code
-    this.api.post('/verify-email-code',
-      validators.verifyEmailWithCode,
-      this.verifyEmailWithCode
-    )
-
+    this.api.put('/:id/picture', [ensureAuth, userPictureMiddle], this.upload)
+    this.api.post('/verify-email', validators.verifyEmail, this.checkEmail)
+    this.api.post('/verify-email-code', validators.verifyEmailWithCode, this.verifyEmailWithCode)
     // Get current user (Logged) info
     this.api.get('/logged', ensureAuth, this.userLoggedWithAccountInfo)
-
-    return this.api
   }
 
   public signupAsSchool: RequestHandler = (req: Request, res: Response) =>

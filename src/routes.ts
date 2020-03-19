@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { BaseRoutes } from './infrastructure/routes/BaseRoutes'
 
 // Modules
 import { userModule } from './application/user/modules/UserModule'
@@ -12,16 +13,18 @@ import { SchoolRoutes } from './application/school/routes/SchoolRoutes'
 import { StudentRoutes } from './application/student/routes/StudentRoutes'
 import { TeacherRoutes } from './application/teacher/routes/TeacherRoutes'
 
-export const routes = (router: Router): Router => {
-  const userRoutes = new UserRoutes(router, userModule.controller).routes
-  const schoolRoutes = new SchoolRoutes(router, schoolModule.controller).routes
-  const studentRoutes = new StudentRoutes(router, studentModule.controller).routes
-  const teacherRoutes = new TeacherRoutes(router, teacherModule.controller).routes
+export class Routes {
+  constructor(private router: Router) {
+    this.build()
+  }
 
-  router.use('/users', userRoutes)
-  router.use('/schools', schoolRoutes)
-  router.use('/students', studentRoutes)
-  router.use('/teachers', teacherRoutes)
+  private addRoutes = (moduleRoutes: BaseRoutes) =>
+    this.router.use(moduleRoutes.domain, moduleRoutes.routes)
 
-  return router
+  private build() {
+    this.addRoutes(new UserRoutes('/users', userModule.controller))
+    this.addRoutes(new SchoolRoutes('/schools', schoolModule.controller))
+    this.addRoutes(new StudentRoutes('/students', studentModule.controller))
+    this.addRoutes(new TeacherRoutes('/teachers', teacherModule.controller))
+  }
 }

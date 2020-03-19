@@ -1,6 +1,6 @@
 import { DatabaseConnection } from './database/DatabaseConnection'
 import { Application, Router } from 'express'
-import { routes } from './routes'
+import { Routes } from './routes'
 
 export class Main {
   protected router: Router = Router()
@@ -19,5 +19,5 @@ export class Main {
       .connect().then(connection =>
         console.log(`[DATABASE]: connected to ${connection.options.database} database`))
 
-  public buildRouting = () => routes(this.router)
+  public buildRouting = () => new Routes(this.router)
 }
