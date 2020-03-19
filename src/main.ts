@@ -5,11 +5,13 @@ import { Application, Router } from 'express'
 import { userModule } from './application/user/modules/UserModule'
 import { schoolModule } from './application/school/modules/SchoolModule'
 import { studentModule } from './application/student/modules/StudentModule'
+import { teacherModule } from './application/teacher/modules/TeacherModule'
 
 // Routes
 import { UserRoutes } from './application/user/routes/UserRoutes'
 import { SchoolRoutes } from './application/school/routes/SchoolRoutes'
 import { StudentRoutes } from './application/student/routes/StudentRoutes'
+import { TeacherRoutes } from './application/teacher/routes/TeacherRoutes'
 
 export class Main {
   protected router: Router = Router()
@@ -35,9 +37,11 @@ export class Main {
     const userRoutes = new UserRoutes(this.router, userModule.controller).routes
     const schoolRoutes = new SchoolRoutes(this.router, schoolModule.controller).routes
     const studentRoutes = new StudentRoutes(this.router, studentModule.controller).routes
+    const teacherRoutes = new TeacherRoutes(this.router, teacherModule.controller).routes
 
     this.router.use('/users', userRoutes)
     this.router.use('/schools', schoolRoutes)
     this.router.use('/students', studentRoutes)
+    this.router.use('/teachers', teacherRoutes)
   }
 }
