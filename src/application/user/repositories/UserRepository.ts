@@ -32,4 +32,10 @@ export class UserRepository extends Repository<User> {
       .where('user.email = :email', { email: term })
       .orWhere('user.username = :username', { username: term })
       .getOne()
+
+  public getUserWithAccountInfo = async (id: number) =>
+    await this.manager.getRepository(User).findOne({
+      where: { id },
+      relations: ['school', 'teacher', 'student']
+    })
 }
