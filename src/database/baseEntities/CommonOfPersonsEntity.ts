@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import { capitalize, lowercase } from '../transformers'
+import { BaseEntity } from './BaseEntity'
 
 enum Genders {
   MALE = 'male',
@@ -7,10 +8,7 @@ enum Genders {
 }
 
 @Entity()
-export class CommonOfPersonsEntity {
-  @PrimaryGeneratedColumn()
-  id: number
-
+export class CommonOfPersonsEntity extends BaseEntity {
   @Column({
     transformer: [capitalize]
   })
