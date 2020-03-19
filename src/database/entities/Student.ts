@@ -33,7 +33,9 @@ export class Student extends CommonOfPersonsEntity {
   @JoinColumn()
   user: User
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   classroomId: number
 
   @ManyToOne(type => Classroom, classroom => classroom.students, {

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, Column } from 'typeorm'
 import { capitalize, lowercase } from '../transformers'
 import { BaseEntity } from './BaseEntity'
 
@@ -45,14 +45,9 @@ export class CommonOfPersonsEntity extends BaseEntity {
   nationality: string
 
   @Column({
-    type: 'simple-json',
     nullable: true
   })
-  location?: {
-    name: string,
-    lat: string,
-    long: string,
-  }
+  location?: string
 
   @Column({
     transformer: [lowercase],
