@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Verify Email</title>
+  <style type="text/css">
+    html, body {
+      padding: 0;
+      margin: 0;
+      font-weight: 400;
+      color: #363636;
+      font-family: Tahoma, Helvetica, sans-serif;
+    }
+
+    .body {
+      padding: 50px 16px;
+    }
+
+    .bg-gray {
+      background-color: #F5F8FA;
+    }
+
+    .bg-white {
+      background-color: white;
+    }
+
+    .container {
+      background-color: white;
+      padding: 32px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+      padding-top: 16px;
+    }
+
+    .content-body {
+      min-height: 150px;
+      display: block;
+    }
+
+    .header {
+      padding-bottom: 16px;
+      border-bottom: solid 1px #F5F8FA;
+      margin-bottom: 16px;
+      display: block;
+      text-align: center;
+    }
+
+    .header img {
+      margin: auto;
+      max-width: 108px;
+      display: inline-block;
+    }
+
+    h3, h1, h2 {
+      margin: 0 !important;
+    }
+
+    h3 {
+      font-size: 24px !important;
+    }
+
+    p {
+      font-size: 16px !important;
+      line-height: 24px;
+    }
+
+    code {
+      font-size: 32px;
+      padding: 18px 32px;
+      display: inline-block;
+      margin-top: 16px;
+      border-radius: 4px;
+    }
+
+    .signature {
+      margin-top: 16px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="bg-gray">
+  <div class="body">
+    <table class="container">
+      <tr>
+        <td class="header">
+          <img src="https://res.cloudinary.com/schools-api/image/upload/v1584823491/schools-app/logo_yw63u4.png" alt="Schools App" />
+        </td>
+      </tr>
+
+      <tr class="content">
+        <td class="content-body">
+          <table>
+            <tr>
+              <td>
+                <h3>Your verification code is:</h3>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <code class="bg-gray">
+                  {{ code }}
+                </code>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <p>Please enter code in Schools to complete verification of your email.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -6,6 +6,6 @@ const BulkLoadQueue = CreateQueue({ name: BulkLoadTask.key, handle: BulkLoadTask
 
 export const BulkLoadJob = {
   ...BulkLoadQueue,
-  add: (data: IBulkLoadJob) =>
-    BulkLoadQueue.queue.add({ file: data.file, userLogged: data.userLogged })
+  add: (data: IBulkLoadJob) => console.log(data)
+    // BulkLoadQueue.queue.add({ file: data.file, userLogged: data.userLogged })
 }

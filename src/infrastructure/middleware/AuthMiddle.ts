@@ -1,5 +1,5 @@
 import { Response, NextFunction, Request } from 'express'
-import { ResponseHandler, statusCodes } from '../http/routes'
+import { ResponseHandler, statusCodes } from '../routes'
 import { JWToken } from '../utils/JWToken'
 import { Logger } from '../utils/logging/Logger'
 
@@ -15,15 +15,14 @@ export const ensureAuth = async (req: Request, res: Response, next: NextFunction
     }
 
     const isValidToken = await JWToken.verifyToken(token)
-    if (isValidToken)
+    if (isValidToken) {
       req.user = isValidToken.user
       next()
-
+    }
   } catch (e) {
-    const message = `An error occurred with the token verification. \n [${e.name}]: ${e.message}`
-    Logger.error(message)
+    Logger.error(`[TOKEN ERROR]: ${e.name}, ${e.message}`)
     return res
       .status(statusCodes.UNAUTHORIZED)
-      .send(ResponseHandler.build(message))
+      .send(ResponseHandler.build('An error occurred with the token verification.'))
   }
 }
