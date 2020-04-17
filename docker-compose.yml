@@ -22,17 +22,6 @@ services:
     networks:
       - app
 
-  redis-commander:
-    container_name: ${APP_NAME}_REDIS_ADMIN
-    image: rediscommander/redis-commander:latest
-    restart: always
-    environment:
-      - REDIS_HOSTS=local:${REDIS_URI}
-    ports:
-      - 8081:8081
-    networks:
-      - app
-
   db:
     image: postgres:11.5
     container_name: ${APP_NAME}_DB
