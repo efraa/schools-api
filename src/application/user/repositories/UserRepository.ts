@@ -28,10 +28,9 @@ export class UserRepository extends Repository<User> {
     })
 
   public getByEmailOrUsername = async (term: string): Promise<User|undefined> =>
-    await this.manager.getRepository(User).createQueryBuilder('user')
-      .where('user.email = :email', { email: term })
-      .orWhere('user.username = :username', { username: term })
-      .getOne()
+    await this.manager.getRepository(User).findOne({
+      where: { $or: [{ email: term }, { username: term }] }
+    })
 
   public getUserWithAccountInfo = async (id: number) =>
     await this.manager.getRepository(User).findOne({

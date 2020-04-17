@@ -1,4 +1,4 @@
-import { UserDTO, UserRepository, UserMapper, UserResponses, Roles } from '../providers/UserProvider'
+import { UserDTO, UserRepository, UserMapper, UserResponses, Roles, UserStatus } from '../providers/UserProvider'
 import { User } from 'src/database/entities/User'
 import { ErrorHandler, statusCodes } from '../../../infrastructure/routes'
 import crypto from 'crypto'
@@ -71,8 +71,7 @@ export class UserService {
       throw ErrorHandler.build(statusCodes.NOT_FOUND, UserResponses.ACCOUNT_NOT_FOUND)
 
     // Generate token
-    const token: string = crypto.randomBytes(20).toString('hex')
-    const forgotToken = crypto.createHash('sha256').update(token).digest('hex')
+    const forgotToken = crypto.randomBytes(50).toString('hex')
     const expireDate = new Date()
     // Increase 60 minutes to the current time
     expireDate.setMinutes(expireDate.getMinutes() + 60)
@@ -139,5 +138,19 @@ export class UserService {
 
     await deleteUploadedFiles(picture.name)
     throw ErrorHandler.build(statusCodes.NOT_FOUND, UserResponses.USER_NOT_FOUND)
+  }
+
+  public async createSchoolMember(role: Roles, nameString: string) {
+    const name = nameString.toLowerCase().replace(' ', '')
+    const count = await this._UserRepository.count()
+      .then(count => count.toString().padStart(4, '0'))
+
+    const user = await this.mapToEntity({
+      role,
+      username: `${name}${count}`,
+      password: crypto.randomBytes(6).toString('hex'),
+      status: UserStatus.UNVERIFIED
+    })
+    return await this._UserRepository.save(user)
   }
 }

@@ -19,6 +19,6 @@ export class TeacherService {
   public create = async (userEntity: Teacher) =>
     await this._TeacherRepository.save(userEntity).then(teacher => {
       const user = this._UserMapper.mapToDTO(teacher.user)
-      return this._TeacherMapper.mapToDTO({ ...teacher, user: user as User })
+      return this._TeacherMapper.mapToDTO({ ...teacher, user: user as any })
     })
 }

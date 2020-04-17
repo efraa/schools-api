@@ -3,7 +3,10 @@ import { StudentResponses } from './StudentResponses'
 
 const { validator } = StudentResponses
 
-const create = []
+const create = [
+  check('name', validator('name')).isLength({ min: 3 }),
+  check('lastname', validator('lastname', 4)).isLength({ min: 4 }),
+]
 
 export const validators = {
   create,

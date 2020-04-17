@@ -1,5 +1,6 @@
 import { getCustomRepository  } from 'typeorm'
 import { userModule } from '../../user/modules/UserModule'
+import { schoolModule } from '../../school/modules/SchoolModule'
 import { StudentRepository, StudentController, StudentService, StudentMapper } from '../providers/StudentProvider'
 
 export class StudentModule {
@@ -16,20 +17,29 @@ export class StudentModule {
 
   get studentMapper(): StudentMapper {
     return !this._studentMapper ?
-      (this._studentMapper = new StudentMapper(this.studentRepository))
+      (this._studentMapper = new StudentMapper(this.studentRepository, userModule.userMapper))
       : this._studentMapper
   }
 
   get studentService(): StudentService {
     return !this._studentService ?
-      (this._studentService = new StudentService(this.studentRepository, this.studentMapper, userModule.userMapper))
+      (this._studentService = new StudentService(
+        this.studentRepository,
+        this.studentMapper,
+        userModule.userMapper,
+        schoolModule.schoolMapper,
+        schoolModule.schoolService,
+      ))
       : this._studentService
   }
 
   get controller(): StudentController {
     return !this._studentController ?
-      (this._studentController = new StudentController(this.studentService, userModule.userService))
-      : this._studentController
+      (this._studentController = new StudentController(
+        this.studentService,
+        userModule.userService,
+        schoolModule.schoolService
+      )) : this._studentController
   }
 }
 

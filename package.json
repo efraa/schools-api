@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node build/src/server.js",
     "worker": "node build/workers/init.js",
+    "seed": "node build/src/database/seeders/Seeders.js",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",

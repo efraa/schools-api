@@ -26,5 +26,8 @@ export class UserDTO {
   status: string
 
   @MapProp()
+  schoolId: number
+
+  @MapProp()
   account: {} | null
 }

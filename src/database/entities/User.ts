@@ -16,14 +16,12 @@ export class User extends BaseEntity {
   uuid: string
 
   @Column({
-    unique: true,
     nullable: true,
     transformer: [lowercase, encode]
   })
   email?: string
 
   @Column({
-    unique: true,
     nullable: true,
   })
   username?: string
@@ -90,13 +88,13 @@ export class User extends BaseEntity {
   })
   account: SchoolDTO | {}
 
-  comparePassword = async (password: string): Promise<boolean> =>
-    await bcrypt.compareSync(password, this.password)
+  comparePassword = (password: string): boolean =>
+    bcrypt.compareSync(password, this.password)
 
   @BeforeInsert()
-  async encryptPassword(password?: string): Promise<string> {
+  encryptPassword(password?: string): string {
     const pass = password ? password : this.password
-    const encrypted = await bcrypt.hashSync(pass, 10)
+    const encrypted = bcrypt.hashSync(pass, 10)
     this.password = encrypted
     return encrypted
   }
