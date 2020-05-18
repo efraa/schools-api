@@ -1,12 +1,11 @@
 {
   "name": "schools-api",
   "version": "0.2.3",
-  "description": "Core of Schools Management Application, built with TypeScript and served by docker.",
+  "description": "Created with NodeJS.",
   "main": "build/main.js",
   "scripts": {
     "start": "node build/src/server.js",
     "worker": "node build/workers/init.js",
-    "seed": "node build/src/database/seeders/Seeders.js",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -29,6 +28,7 @@
     "@types/morgan": "^1.9.0",
     "@types/multer": "^1.4.2",
     "@types/node": "^13.7.7",
+    "@types/nodemailer": "^6.4.0",
     "@types/socket.io": "^2.1.4",
     "@types/supertest": "^2.0.8",
     "jest": "^25.1.0",
@@ -39,7 +39,6 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@sendgrid/mail": "^6.5.4",
     "bcryptjs": "^2.4.3",
     "bull": "^3.13.0",
     "bull-board": "^0.6.0",
@@ -54,6 +53,7 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
+    "nodemailer": "^6.4.4",
     "pg": "^7.18.2",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.3.0",

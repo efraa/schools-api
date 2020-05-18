@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Configuration as config } from '../config/Configuration'
+import { Routing } from './infrastructure/http/routes'
 import express, { Application } from 'express'
-import { Main } from './main'
 import compression from 'compression'
 import { Worker } from '../workers'
 import BullBoard from 'bull-board'
@@ -17,8 +17,6 @@ app.set('port', config.server.port)
 app.use(express.json())
 app.use(compression())
 app.use(cors())
-app.get('/', (req, res) =>
-  res.status(200).send({ msg: 'API Server of Schools Application' }))
 
 if (process.env.NODE_ENV === 'development') {
   BullBoard.setQueues(Worker.queues.map(job => job.queue))
@@ -26,10 +24,9 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-const initialize = () =>
-  new Main(config.server.prefixRoutes as string, app).init()
+// Routes
+app.use(Routing.build())
 
 export {
-  app,
-  initialize,
+  app
 }

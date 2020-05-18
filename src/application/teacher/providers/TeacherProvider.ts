@@ -1,7 +1,0 @@
-export { TeacherController } from '../controllers/TeacherController'
-export { TeacherService } from '../services/TeacherService'
-export { TeacherRepository } from '../repositories/TeacherRepository'
-export { TeacherDTO } from '../domain/dtos/TeacherDTO'
-export { TeacherResponses } from '../utils/TeacherResponses'
-export { TeacherMapper } from '../domain/mappers/TeacherMapper'
-export { validators } from '../utils/TeacherValidators'
